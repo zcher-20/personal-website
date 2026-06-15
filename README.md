@@ -7,10 +7,6 @@
 <br />
 
 
-## Preview
-
-[My site](https://anikasomaia.com/)
-
 
 ## Getting started
 
