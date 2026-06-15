@@ -37,6 +37,10 @@ export const navBarLinks: NavBarLink[] = [
     title: "Bookshelf",
     url: "/books",
   },
+  {
+    title: "Photography",
+    url: "/photography",
+  },
 ];
 
 export const socialLinks: SocialLink[] = [
