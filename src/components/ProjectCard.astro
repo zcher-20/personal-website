@@ -137,15 +137,15 @@ const cardId = Math.random().toString(36).slice(2, 8);
     pdfInitialized = true;
 
     // Load PDF.js via script tag
-    await new Promise<void>((resolve) => {
-      if ((window as any).pdfjsLib) { resolve(); return; }
+    await new Promise((resolve) => {
+      if (window.pdfjsLib) { resolve(); return; }
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
       script.onload = () => resolve();
       document.head.appendChild(script);
     });
 
-    const pdfjsLib = (window as any).pdfjsLib;
+    const pdfjsLib = window.pdfjsLib;
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
     pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
