@@ -61,7 +61,6 @@ const NODES = [
   { id: "who-builds", label: "Who Gets to Build AI", cluster: "power", note: "The people building AI systems are not a representative sample of humanity. They skew heavily toward certain demographics, certain countries, certain educational backgrounds. This shapes everything: what problems get solved, what gets called a problem, what counts as a good outcome. Diversity in AI is not a soft goal. It's an epistemic necessity." },
   { id: "open-closed", label: "Open Source vs. Closed", cluster: "power", note: "The open source vs. closed AI debate is really a debate about who controls the infrastructure of intelligence. Closed models concentrate power. Open models distribute it — but also distribute risk. There's no clean answer. But the question of who controls the model is the question of who controls what the model believes." },
   { id: "compute-geopolitics", label: "Geopolitics of Compute", cluster: "power", note: "GPU clusters, chip fabs, rare earth minerals, undersea cables — AI is physically instantiated in infrastructure that is geographically concentrated and strategically controlled. The country that controls compute has leverage over the development of intelligence itself. This is a new kind of geopolitical power and we're only beginning to understand it." },
-  { id: "algo-colonialism", label: "Algorithmic Colonialism", cluster: "power", note: "When AI systems trained on Western data are deployed in African or Middle Eastern contexts, they import the assumptions of their training distribution. What counts as a face, a name, a sentence, a fair outcome — all of these are culturally specific. Algorithmic colonialism is the extension of older patterns of imposed universality." },
   // Mathematics as Language
   { id: "proof-narrative", label: "Proof as Narrative", cluster: "math-language", note: "A mathematical proof is an argument — it has structure, tension, and resolution. The best proofs feel inevitable in retrospect, like a good story. Mathematicians talk about elegance, surprise, economy. These are aesthetic categories. The idea that mathematics is purely formal and objective misses something important about how it's actually practiced." },
   { id: "notation-design", label: "Notation as Design", cluster: "math-language", note: "Mathematical notation is design. Leibniz's notation for calculus was better than Newton's and that's partly why we use it. The way you write a problem shapes how you think about it. Good notation makes the right moves feel natural and the wrong moves feel awkward. This is exactly what good API design does." },
@@ -98,13 +97,11 @@ const CHILD_LINKS = [
   // New cross-cluster connections
   { source: "skin-interface", target: "on-body-design" },
   { source: "on-body-design", target: "embodiment" },
-  { source: "health-tech-politics", target: "algo-colonialism" },
   { source: "physio-consent", target: "who-builds" },
   { source: "models-forget", target: "unknown-unknowns" },
   { source: "attention-memory", target: "hallucinations" },
   { source: "memory-reconstruction", target: "confabulation" },
   { source: "archiving-remembering", target: "borges" },
-  { source: "algo-colonialism", target: "morocco-infra" },
   { source: "who-builds", target: "alignment-design" },
   { source: "open-closed", target: "agentic-trust" },
   { source: "compute-geopolitics", target: "who-builds" },
