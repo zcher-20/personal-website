@@ -106,7 +106,7 @@ posts.splice(3)
     "Devotions": "/devotions.jpg",
   };
 
-  const track = document.getElementById('home-marquee-track');
+  const track = document.getElementById('home-marquee-track');if (!track) throw new Error('no track');
   const all = [...FAVORITES, ...FAVORITES];
 
   all.forEach(({ title, author }) => {
