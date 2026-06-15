@@ -227,7 +227,7 @@ const CHILD_LINKS = [
     .force("charge", d3.forceManyBody().strength(-50))
     .force("radial", d3.forceRadial((d: any) => (d as any).isHub ? R_HUB : R_CHILD, cx, cy).strength(1.2))
     .force("collision", d3.forceCollide((d: any) => (d as any).isHub ? 42 : 46))
-    .alphaDecay(0.04)
+    .alphaDecay(0.015)
     .velocityDecay(0.65);
 
   const linkSel = zoomG.append("g").selectAll("line").data(allLinks).join("line")
@@ -365,7 +365,10 @@ const CHILD_LINKS = [
     resetAll();
     panel.style.display = "none";
   });
-
+// Pre-settle simulation
+for (let i = 0; i < 200; i++) sim.tick();
+svg.style("opacity", "0");
+setTimeout(() => svg.style("opacity", "1"), 50);
 sim.on("tick", () => {
     linkSel
       .attr("x1", (d: any) => d.source.x).attr("y1", (d: any) => d.source.y)
