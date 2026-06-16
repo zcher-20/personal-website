@@ -87,7 +87,6 @@ export type Project = {
   venue?: string;
   featured?: boolean;
   isPublication?: boolean;
-  pdfUrl?: string;
 };
 
 export type ProjectPageContent = {

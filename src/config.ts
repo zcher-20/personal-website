@@ -89,10 +89,6 @@ export const homePageContent: HomePageContent = {
       title: "Mind",
       url: "/mind",
     },
-    {
-      title: "Photography",
-      url: "/photography",
-    },
   ],
   currentlyReading: [
     {
@@ -210,6 +206,7 @@ projects: [
       tags: ["Neural Architecture Search", "Medical Imaging", "Survey", "IBM Research"],
     },
   ],
+};
 
 // Work (/work)
 export const workPageContent: WorkPageContent = {
