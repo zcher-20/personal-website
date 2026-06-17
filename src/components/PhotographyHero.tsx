@@ -107,7 +107,7 @@ export default function PhotographyHero() {
       style={{
         position: "relative",
         width: "100%",
-        height: "90vh",
+        height: "60vh",
         overflow: "hidden",
         cursor: "crosshair",
         background: "#fff",
@@ -119,7 +119,7 @@ export default function PhotographyHero() {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          fontSize: "clamp(3rem, 10vw, 7rem)",
+          fontSize: "clamp(2rem, 6vw, 4rem)",
           fontWeight: 700,
           letterSpacing: "-0.03em",
           color: "#111",
