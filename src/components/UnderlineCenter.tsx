@@ -54,20 +54,26 @@ const CenterUnderline = ({
   }, [underlineHeightRatio, underlinePaddingRatio])
 
   const underlineVariants = {
-    hidden: {
-      width: 0,
+    rest: {
+      width: "100%",
       originX: 0.5,
     },
-    visible: {
-      width: "100%",
-      transition: transition,
+    hover: {
+      width: [
+        "100%",
+        "0%",
+        "0%",
+        "100%",
+      ],
+      transition: { ...transition, duration: 0.5 },
     },
   }
 
   return (
     <MotionComponent
       className={cn("relative inline-block cursor-pointer", className)}
-      whileHover="visible"
+      initial="rest"
+      whileHover="hover"
       ref={textRef}
       {...props}
     >
@@ -77,6 +83,7 @@ const CenterUnderline = ({
         style={{
           height: "var(--underline-height)",
           bottom: "calc(-1 * var(--underline-padding))",
+          width: "100%",
         }}
         variants={underlineVariants}
         aria-hidden="true"
