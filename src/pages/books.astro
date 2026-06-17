@@ -203,4 +203,6 @@ const BOOKS = [
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(render, 200);
   });
+
+  new MutationObserver(() => render()).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 </script>
