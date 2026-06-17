@@ -87,6 +87,10 @@ export type Project = {
   venue?: string;
   featured?: boolean;
   isPublication?: boolean;
+  skills?: string[];
+  outcomes?: string;
+  learnings?: string;
+  links?: { label: string; url: string }[];
 };
 
 export type ProjectPageContent = {
