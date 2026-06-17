@@ -108,7 +108,8 @@ export const projectsPageContent: ProjectPageContent = {
       venue: "Microsoft Agents League Hackathon",
       tags: ["Multi-Agent", "Azure AI Foundry", "LLMs", "Python"],
       skills: ["Multi-Agent Systems", "Azure AI Foundry", "LLMs", "Python"],
-      learnings: "Learned to orchestrate five autonomous agents that collaborate to produce coherent investment analysis from a single input.",
+      learnings: "Built the agent workflow, committee logic, and final synthesis layer.",
+      focus: ["Agent orchestration", "Financial reasoning", "Evaluation + synthesis"],
     },
     {
       title: "RICER — AI Forest Fire Risk Prediction",
@@ -119,7 +120,8 @@ export const projectsPageContent: ProjectPageContent = {
       venue: "Al Akhawayn University Digital Innovation Lab",
       tags: ["Computer Vision", "Earth Observation", "GIS", "Python"],
       skills: ["Computer Vision", "GIS", "Remote Sensing", "Python"],
-      learnings: "Learned to fuse satellite imagery with geospatial data for environmental risk prediction at scale.",
+      learnings: "Built the satellite fusion pipeline and risk prediction models from scratch.",
+      focus: ["Satellite data pipelines", "Risk modeling", "GIS integration"],
     },
     {
       title: "Hybrid Quantum-Classical Medical Image Segmentation",
@@ -130,7 +132,8 @@ export const projectsPageContent: ProjectPageContent = {
       venue: "NYU Abu Dhabi Hackathon — Quantum Track",
       tags: ["Quantum ML", "PennyLane", "Medical Imaging", "PyTorch"],
       skills: ["Quantum ML", "PennyLane", "PyTorch", "U-Net"],
-      learnings: "Learned that hybrid quantum circuits can match classical accuracy at 60% fewer parameters.",
+      learnings: "Designed the quantum bottleneck circuit and ran all parameter-efficiency experiments.",
+      focus: ["Quantum circuit design", "Model compression", "Medical segmentation"],
     },
     {
       title: "Analog In-Memory Computing with Uncertainty Quantification for Edge Medical Imaging",
@@ -142,7 +145,8 @@ export const projectsPageContent: ProjectPageContent = {
       venue: "ICLR 2024 · Notable Paper",
       tags: ["IBM Research", "Analog Computing", "Medical Imaging", "Uncertainty Quantification"],
       skills: ["Analog Hardware", "Deep Learning", "Edge AI", "Uncertainty Quantification"],
-      learnings: "Learned to benchmark ML inference on non-traditional hardware and quantify prediction reliability at the edge.",
+      learnings: "Ran all hardware benchmarks and implemented the uncertainty quantification pipeline.",
+      focus: ["Hardware benchmarking", "Uncertainty methods", "Edge deployment"],
     },
     {
       title: "Medical Neural Architecture Search: Survey and Taxonomy",
@@ -154,7 +158,8 @@ export const projectsPageContent: ProjectPageContent = {
       venue: "IJCAI 2024 · pp. 7932–7940",
       tags: ["Neural Architecture Search", "Medical Imaging", "Survey", "IBM Research"],
       skills: ["Neural Architecture Search", "Systematic Review", "Medical Imaging"],
-      learnings: "Learned to systematically categorize 100+ papers into a coherent taxonomy for an emerging field.",
+      learnings: "Categorized 100+ papers and designed the full taxonomy structure.",
+      focus: ["Literature synthesis", "Taxonomy design", "Cross-paper analysis"],
     },
   ],
 };

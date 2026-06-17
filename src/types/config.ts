@@ -90,6 +90,7 @@ export type Project = {
   skills?: string[];
   outcomes?: string;
   learnings?: string;
+  focus?: string[];
   links?: { label: string; url: string }[];
 };
 
