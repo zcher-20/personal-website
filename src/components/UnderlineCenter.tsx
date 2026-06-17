@@ -78,8 +78,8 @@ const CenterUnderline = ({
       {...props}
     >
       <span>{children}</span>
-      <motion.div
-        className="absolute left-1/2 bg-current -translate-x-1/2"
+      <motion.span
+        className="absolute left-1/2 bg-current -translate-x-1/2 block"
         style={{
           height: "var(--underline-height)",
           bottom: "calc(-1 * var(--underline-padding))",
