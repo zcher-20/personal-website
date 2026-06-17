@@ -71,7 +71,7 @@ const CenterUnderline = ({
 
   return (
     <MotionComponent
-      className={cn("relative inline-block cursor-pointer", className)}
+      className={cn("relative inline cursor-pointer", className)}
       initial="rest"
       whileHover="hover"
       ref={textRef}
