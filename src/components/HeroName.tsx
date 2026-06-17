@@ -5,8 +5,8 @@ export default function HeroName({ name }: { name: string }) {
     <Letter3DSwap
       as="span"
       mainClassName="justify-center"
-      frontFaceClassName="bg-white"
-      secondFaceClassName="bg-white"
+      frontFaceClassName="bg-white dark:bg-gray-900 dark:text-white"
+      secondFaceClassName="bg-white dark:bg-gray-900 dark:text-white"
       rotateDirection="top"
       staggerDuration={0.05}
       staggerFrom="first"
