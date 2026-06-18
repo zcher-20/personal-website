@@ -51,8 +51,69 @@ import { identity } from "../config";
         </div>
       </div>
     </div>
+
+    <div class="mb-16" style="position:relative;">
+      <a href="https://github.com/zcher-20/Film-Album" target="_blank" rel="noopener noreferrer" class="block overflow-hidden rounded-lg hover:opacity-95 transition-opacity">
+        <img
+          src="/design-film-album.png"
+          alt="Film Album"
+          class="w-full h-auto"
+        />
+      </a>
+
+      <div class="mt-6">
+        <span
+          id="film-album-title"
+          class="text-xl font-semibold mb-2 inline-block cursor-default"
+          style="text-decoration-color:rgba(0,0,0,0.25);"
+        >Film Album</span>
+        <p class="text-sm opacity-55 leading-relaxed mb-4 mt-2">An interactive, scroll-driven photo gallery built with vanilla JavaScript. A single self-contained HTML file featuring a continuous depth-based carousel, real-time caption editing, and full client-side persistence.</p>
+
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <span class="skill-box">Vanilla JavaScript</span>
+          <span class="skill-box">IndexedDB</span>
+          <span class="skill-box">File API</span>
+          <span class="skill-box">CSS Transforms</span>
+          <span class="skill-box">Scroll Architecture</span>
+        </div>
+
+        <div class="flex gap-4">
+          <a
+            href="https://github.com/zcher-20/Film-Album"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm opacity-60 hover:opacity-100 transition-opacity underline underline-offset-2"
+          >GitHub &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Engineering Note hovercard -->
+      <div
+        id="film-album-hovercard"
+        class="design-hovercard"
+        style="display:none;"
+      >
+        <p style="font-size:12px; color:#111; margin:0 0 8px; font-weight:700;">Engineering Note</p>
+        <p style="font-size:11px; color:#555; margin:0; line-height:1.6;">The interface maps a tall scroll container to a sticky viewport, translating scroll offset into a continuous progress value that drives the entire visual state. Keeping the animation in a single rAF loop (rather than CSS transitions) allows every visual property to track scroll velocity smoothly and avoids the jank of competing transitions. The entire app ships as one portable HTML file with zero external requests.</p>
+      </div>
+    </div>
   </section>
 </Layout>
+
+<script is:inline>
+  (function() {
+    var trigger = document.getElementById('film-album-title');
+    var card = document.getElementById('film-album-hovercard');
+    if (!trigger || !card) return;
+    var timer = null;
+    function show() { clearTimeout(timer); if (window.innerWidth > 768) card.style.display = 'block'; }
+    function hide() { timer = setTimeout(function() { card.style.display = 'none'; }, 150); }
+    trigger.addEventListener('mouseenter', show);
+    trigger.addEventListener('mouseleave', hide);
+    card.addEventListener('mouseenter', show);
+    card.addEventListener('mouseleave', hide);
+  })();
+</script>
 
 <style>
   .skill-box {
@@ -66,5 +127,19 @@ import { identity } from "../config";
     color: #6b7280;
     font-family: inherit;
     line-height: 1.4;
+  }
+
+  .design-hovercard {
+    position: absolute;
+    left: calc(100% + 16px);
+    top: 0;
+    width: 260px;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 18px;
+    z-index: 100;
+    pointer-events: auto;
   }
 </style>
