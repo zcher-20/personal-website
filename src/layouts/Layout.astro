@@ -112,17 +112,17 @@ const fullImageURL = seo.image?.startsWith("http")
   <body class="bg-white dark:bg-black text-black dark:text-white transition-colors">
     <header>
       <div
-        class="px-6 py-6 max-w-2xl mx-auto flex items-center justify-between"
+        class="px-6 py-6 max-w-4xl mx-auto flex items-center justify-center relative"
       >
         <button
           id="theme-toggle"
-          class="p-2 rounded-lg hover:bg-gray-bg-light dark:hover:bg-gray-bg opacity-60 hover:opacity-100 transition-all"
+          class="absolute left-6 p-2 rounded-lg hover:bg-gray-bg-light dark:hover:bg-gray-bg opacity-60 hover:opacity-100 transition-all"
           aria-label="Toggle theme"
         >
           <Icon name="mdi:weather-sunny" class="w-5 h-5 hidden dark:block" />
           <Icon name="mdi:weather-night" class="w-5 h-5 block dark:hidden" />
         </button>
-        <nav class="ml-auto mr-0 sm:mr-4">
+        <nav>
           <ul class="hidden sm:flex sm:items-center sm:gap-2">
             {
               navBarLinks.map((link) => (
