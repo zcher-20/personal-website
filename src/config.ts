@@ -20,10 +20,10 @@ export const navBarLinks: NavBarLink[] = [
   { title: "About", url: "/" },
   { title: "Experience", url: "/work" },
   { title: "Projects", url: "/projects" },
+  { title: "Design", url: "/design" },
   { title: "Mind", url: "/mind" },
   { title: "Bookshelf", url: "/books" },
   { title: "Photography", url: "/photography" },
-  { title: "Design", url: "/design" },
 ];
 
 export const socialLinks: SocialLink[] = [
