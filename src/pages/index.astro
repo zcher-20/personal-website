@@ -44,8 +44,9 @@ posts.splice(3)
   </div>
 </section>
 
-<script>
-  const FAVORITES = [
+<script is:inline>
+  document.addEventListener('astro:page-load', function() {
+  var FAVORITES = [
     { title: "Never Let Me Go", author: "Kazuo Ishiguro" },
     { title: "The Picture of Dorian Gray", author: "Oscar Wilde" },
     { title: "East of Eden", author: "John Steinbeck" },
@@ -66,7 +67,7 @@ posts.splice(3)
     { title: "Devotions", author: "Mary Oliver" },
   ];
 
-  const COVERS = new Map([
+  var COVERS = new Map([
     ["Never Let Me Go", "https://covers.openlibrary.org/b/isbn/1400043395-M.jpg"],
     ["The Picture of Dorian Gray", "https://covers.openlibrary.org/b/isbn/0141439572-M.jpg"],
     ["East of Eden", "https://covers.openlibrary.org/b/isbn/0142004235-M.jpg"],
@@ -87,41 +88,39 @@ posts.splice(3)
     ["Devotions", "https://covers.openlibrary.org/b/isbn/9780399563263-M.jpg"],
   ]);
 
-  (function() {
-    const el = document.getElementById('home-marquee-track');
-    if (!el) return;
-    const t = el;
+  var el = document.getElementById('home-marquee-track');
+    if (!el || el.children.length > 0) return;
 
-    const all = [...FAVORITES, ...FAVORITES];
-    all.forEach(({ title, author }) => {
-      const cover = COVERS.get(title) ?? '';
-      const item = document.createElement('div');
+    var all = FAVORITES.concat(FAVORITES);
+    all.forEach(function(book) {
+      var cover = COVERS.get(book.title) || '';
+      var item = document.createElement('div');
       item.style.cssText = 'flex-shrink:0; width:90px; cursor:default;';
-      item.innerHTML = `
-        <div style="width:90px; height:130px; border-radius:4px; overflow:hidden; background:#f3f4f6; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-          ${cover ? `<img src="${cover}" alt="${title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background='#e5e7eb'" />` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:9px;text-align:center;color:#9ca3af;">${title}</div>`}
-        </div>
-        <p style="font-size:10px; font-weight:500; line-height:1.3; margin:0; opacity:0.8;">${title}</p>
-        <p style="font-size:9px; opacity:0.45; margin:2px 0 0;">${author}</p>
-      `;
-      t.appendChild(item);
+      var imgHtml = cover
+        ? '<img src="' + cover + '" alt="' + book.title + '" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background=\'#e5e7eb\'" />'
+        : '<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:9px;text-align:center;color:#9ca3af;">' + book.title + '</div>';
+      item.innerHTML =
+        '<div style="width:90px; height:130px; border-radius:4px; overflow:hidden; background:#f3f4f6; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">' + imgHtml + '</div>' +
+        '<p style="font-size:10px; font-weight:500; line-height:1.3; margin:0; opacity:0.8;">' + book.title + '</p>' +
+        '<p style="font-size:9px; opacity:0.45; margin:2px 0 0;">' + book.author + '</p>';
+      el.appendChild(item);
     });
 
-    let x = 0;
-    let paused = false;
-    t.addEventListener('mouseenter', () => { paused = true; });
-    t.addEventListener('mouseleave', () => { paused = false; });
+    var x = 0;
+    var paused = false;
+    el.addEventListener('mouseenter', function() { paused = true; });
+    el.addEventListener('mouseleave', function() { paused = false; });
 
     function animate() {
       if (!paused) {
         x -= 0.5;
-        const half = t.scrollWidth / 2;
+        var half = el.scrollWidth / 2;
         if (Math.abs(x) >= half) x = 0;
-        t.style.transform = `translateX(${x}px)`;
+        el.style.transform = 'translateX(' + x + 'px)';
       }
       requestAnimationFrame(animate);
     }
     animate();
-  })();
+  });
 </script>
 </Layout>
