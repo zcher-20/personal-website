@@ -39,8 +39,95 @@ const { title, company, date, description } = Astro.props;
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-color: rgba(0, 0, 0, 0.25);
+    position: relative;
   }
   :global(.dark) .resume-desc :global(a) {
     text-decoration-color: rgba(255, 255, 255, 0.3);
   }
 </style>
+
+<style is:global>
+  .link-preview {
+    position: fixed;
+    z-index: 1000;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    padding: 10px 14px;
+    pointer-events: none;
+    max-width: 260px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .link-preview.visible { opacity: 1; }
+  .dark .link-preview {
+    background: #1a1a1a;
+    border-color: #333;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+  .link-preview-domain {
+    font-size: 10px;
+    opacity: 0.4;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .link-preview-title {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .link-preview-url {
+    font-size: 10px;
+    opacity: 0.35;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    if (document.getElementById('link-preview-el')) return;
+
+    var preview = document.createElement('div');
+    preview.id = 'link-preview-el';
+    preview.className = 'link-preview';
+    preview.innerHTML = '<div class="link-preview-domain"></div><div class="link-preview-title"></div><div class="link-preview-url"></div>';
+    document.body.appendChild(preview);
+
+    var timer = null;
+
+    document.addEventListener('mouseenter', function(e) {
+      var link = e.target.closest('.resume-desc a');
+      if (!link) return;
+
+      clearTimeout(timer);
+      try {
+        var url = new URL(link.href);
+        var domain = url.hostname.replace('www.', '');
+        var text = link.textContent.trim();
+        var path = url.pathname.length > 1 ? url.pathname : '';
+
+        preview.querySelector('.link-preview-domain').textContent = domain;
+        preview.querySelector('.link-preview-title').textContent = text;
+        preview.querySelector('.link-preview-url').textContent = path ? domain + path : domain;
+
+        var rect = link.getBoundingClientRect();
+        preview.style.left = Math.min(rect.left, window.innerWidth - 280) + 'px';
+        preview.style.top = (rect.bottom + 8) + 'px';
+        preview.classList.add('visible');
+      } catch(err) {}
+    }, true);
+
+    document.addEventListener('mouseleave', function(e) {
+      var link = e.target.closest('.resume-desc a');
+      if (!link) return;
+      timer = setTimeout(function() {
+        preview.classList.remove('visible');
+      }, 100);
+    }, true);
+  })();
+</script>
