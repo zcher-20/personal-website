@@ -195,7 +195,7 @@ export const workPageContent: WorkPageContent = {
     },
     {
       title: "Advanced AI Extern",
-      company: { name: "Pfizer", image: "/pfizer.svg", url: "https://pfizer.com" },
+      company: { name: "Pfizer", image: "/pfizer.svg", url: "https://www.extern.com/externships/pfizer-advanced-ai-powered-document-intelligence-externship-jun-2026-2" },
       date: "Jun 2026 - Present",
       description: "Building intelligent document processing pipelines with Python and layout-aware OCR; developing RAG systems for enterprise document search; prototyping an internal AI chatbot using Gradio.",
     },
@@ -227,7 +227,7 @@ export const workPageContent: WorkPageContent = {
       title: "Student Researcher — HCI & Wearable Systems",
       company: { name: "Cornell University — Hybrid Body Lab", image: "/cornell.webp", url: "https://www.hybridbody.human.cornell.edu/#/skinkit/" },
       date: "Mar 2026",
-      description: "Prototyped modular flexible PCB wearables for continuous physiological monitoring, applying embedded hardware and HCI design principles to on-body interaction applications.",
+      description: "Prototyped modular flexible PCB wearables for continuous physiological monitoring, applying embedded hardware and HCI design principles to <a href=\"https://www.linkedin.com/posts/zayneb-cherif-830294251_recently-i-had-the-opportunity-to-work-with-ugcPost-7439764313671749633-hyFd/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">on-body interaction applications</a>.",
     },
     {
       title: "Data Analytics Research Intern",
@@ -239,7 +239,7 @@ export const workPageContent: WorkPageContent = {
       title: "AI Analytics Researcher",
       company: { name: "IBM Research", image: "/ibm.webp", url: "https://research.ibm.com" },
       date: "Sep 2023 - May 2024",
-      description: "Co-authored 2 peer-reviewed papers (ICLR 2024 Notable, IJCAI 2024); benchmarked ResNet and U-Net inference on IBM analog in-memory computing chips across 6 hardware configurations.",
+      description: "Co-authored 2 peer-reviewed papers (<a href=\"https://openreview.net/forum?id=hvp5I4dDya\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">ICLR 2024 Notable</a>, <a href=\"https://www.ijcai.org/proceedings/2024/878\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">IJCAI 2024</a>); benchmarked ResNet and U-Net inference on IBM analog in-memory computing chips across 6 hardware configurations.",
     },
     {
       title: "Mind Brain Behavior Mentorship",
