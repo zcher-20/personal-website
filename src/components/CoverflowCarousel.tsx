@@ -38,7 +38,7 @@ export default function CoverflowCarousel({ images }: Props) {
             <motion.div
               key={i}
               animate={{ x: translateX, scale, opacity }}
-              transition={{ type: "spring", stiffness: 200, damping: 30 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
               style={{
                 position: "absolute",
                 width: "480px",
