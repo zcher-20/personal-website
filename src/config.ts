@@ -116,7 +116,7 @@ export const projectsPageContent: ProjectPageContent = {
       title: "RICER — AI Forest Fire Risk Prediction",
       description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Built with Al Akhawayn University Digital Innovation Lab.",
       image: "/project-ricer.jpg",
-      url: "https://github.com/zcher-20",
+      url: "https://github.com/zcher-20/wildfire_data_pipeline",
       featured: true,
       venue: "Al Akhawayn University Digital Innovation Lab",
       tags: ["Computer Vision", "Earth Observation", "GIS", "Python"],
