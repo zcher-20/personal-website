@@ -8,26 +8,39 @@ const { title, company, date, description } = Astro.props;
 ---
 
 <div class="py-4 border-b border-gray-200 dark:border-gray-900 last:border-b-0">
-  <a
-    href={company.url}
-    class="flex items-start justify-between group hover:opacity-80 transition-opacity"
-  >
+  <div class="flex items-start justify-between">
     <div class="flex items-start gap-4 flex-1">
-      <Image
-        src={company.image}
-        alt={company.name}
-        width={40}
-        height={40}
-        class="rounded-full w-[40px] h-[40px] object-cover mt-1"
-      />
+      <a href={company.url} target="_blank" rel="noopener noreferrer" class="shrink-0">
+        <Image
+          src={company.image}
+          alt={company.name}
+          width={40}
+          height={40}
+          class="rounded-full w-[40px] h-[40px] object-cover mt-1 hover:opacity-80 transition-opacity"
+        />
+      </a>
       <div class="flex-1">
-        <h3 class="font-medium text-lg">{title}</h3>
-        <p class="text-sm opacity-60 mb-2">{company.name}</p>
+        <a href={company.url} target="_blank" rel="noopener noreferrer" class="hover:opacity-80 transition-opacity">
+          <h3 class="font-medium text-lg">{title}</h3>
+          <p class="text-sm opacity-60 mb-2">{company.name}</p>
+        </a>
         {description && (
-          <p class="text-sm opacity-80 leading-relaxed" set:html={description} />
+          <p class="text-sm opacity-80 leading-relaxed resume-desc" set:html={description} />
         )}
       </div>
     </div>
     <p class="text-sm opacity-60 ml-4 mt-1">{date}</p>
-  </a>
+  </div>
 </div>
+
+<style>
+  .resume-desc :global(a) {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(0, 0, 0, 0.25);
+  }
+  :global(.dark) .resume-desc :global(a) {
+    text-decoration-color: rgba(255, 255, 255, 0.3);
+  }
+</style>
