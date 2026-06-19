@@ -125,6 +125,18 @@ export const projectsPageContent: ProjectPageContent = {
       focus: ["Satellite data pipelines", "Risk modeling", "GIS integration"],
     },
     {
+      title: "SkinKit — On-Skin Interface Prototyping",
+      description: "Modular toolkit for prototyping on-skin interfaces using flexible PCB modules assembled directly on the body. Built with Cornell University's Hybrid Body Lab, spanning applications from health monitoring to expressive on-body fashion.",
+      image: "/project-skinkit.png",
+      url: "https://www.hybridbody.human.cornell.edu/#/skinkit/",
+      featured: true,
+      venue: "Cornell University — Hybrid Body Lab",
+      tags: ["Wearables", "HCI", "Flexible PCB", "On-Skin Design"],
+      skills: ["Wearable Systems", "HCI", "Flexible PCB", "Prototyping"],
+      learnings: "Transformed miniaturized circuit boards into customizable, body-integrated wearables through hands-on prototyping.",
+      focus: ["On-skin interaction", "Modular hardware", "Body-integrated design"],
+    },
+    {
       title: "Hybrid Quantum-Classical Medical Image Segmentation",
       description: "Hybrid quantum-classical U-Net replacing the CNN bottleneck with a 4-qubit PennyLane variational circuit. 95% IoU at 60% fewer parameters (2M vs 5M). NYU Abu Dhabi Hackathon — Quantum Track.",
       image: "/project-quantum.jpg",
