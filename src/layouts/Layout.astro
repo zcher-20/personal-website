@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
+import { ViewTransitions } from "astro:transitions";
 import { navBarLinks, identity, socialLinks } from "../config";
 import type { SEOInfo } from "../types/config";
 import HeroName from "../components/HeroName";
@@ -18,48 +19,49 @@ const fullImageURL = seo.image?.startsWith("http")
 ---
 
 <script>
-  // Mobile menu toggle
-  const linkMenuButton = document.getElementById(
-    "link-menu-button"
-  ) as HTMLButtonElement;
-  const linkMenu = document.getElementById("link-menu") as HTMLDivElement;
-  const openIndicator = document.getElementById(
-    "open-indicator"
-  ) as HTMLSpanElement;
+  function initLayout() {
+    const linkMenuButton = document.getElementById("link-menu-button");
+    const linkMenu = document.getElementById("link-menu");
+    const openIndicator = document.getElementById("open-indicator");
 
-  linkMenuButton.addEventListener("click", () => {
-    if (linkMenu.classList.contains("opacity-0")) {
-      linkMenu.classList.remove("pointer-events-none");
-      linkMenu.classList.remove("opacity-0");
-      openIndicator.innerText = "-";
-    } else {
-      linkMenu.classList.add("pointer-events-none");
-      linkMenu.classList.add("opacity-0");
-      openIndicator.innerText = "+";
+    if (linkMenuButton && linkMenu && openIndicator) {
+      linkMenuButton.addEventListener("click", () => {
+        if (linkMenu.classList.contains("opacity-0")) {
+          linkMenu.classList.remove("pointer-events-none");
+          linkMenu.classList.remove("opacity-0");
+          openIndicator.innerText = "-";
+        } else {
+          linkMenu.classList.add("pointer-events-none");
+          linkMenu.classList.add("opacity-0");
+          openIndicator.innerText = "+";
+        }
+      });
     }
-  });
 
-  document.addEventListener("click", (event) => {
-    const isLinkMenuButtonClicked =
-      event.target === linkMenuButton ||
-      linkMenuButton.contains(event.target as Node);
-    const isLinkMenuClicked =
-      event.target === linkMenu || linkMenu.contains(event.target as Node);
+    document.addEventListener("click", (event) => {
+      if (!linkMenuButton || !linkMenu || !openIndicator) return;
+      const isLinkMenuButtonClicked =
+        event.target === linkMenuButton ||
+        linkMenuButton.contains(event.target as Node);
+      const isLinkMenuClicked =
+        event.target === linkMenu || linkMenu.contains(event.target as Node);
 
-    if (!isLinkMenuButtonClicked && !isLinkMenuClicked) {
-      linkMenu.classList.add("pointer-events-none");
-      linkMenu.classList.add("opacity-0");
-      openIndicator.innerText = "+";
-    }
-  });
-
-  // Theme toggle
-  document.querySelectorAll("#theme-toggle, #theme-toggle-mobile").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const isDark = document.documentElement.classList.toggle("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
+      if (!isLinkMenuButtonClicked && !isLinkMenuClicked) {
+        linkMenu.classList.add("pointer-events-none");
+        linkMenu.classList.add("opacity-0");
+        openIndicator.innerText = "+";
+      }
     });
-  });
+
+    document.querySelectorAll("#theme-toggle, #theme-toggle-mobile").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initLayout);
 </script>
 
 <html lang="en">
@@ -105,12 +107,16 @@ const fullImageURL = seo.image?.startsWith("http")
       }
     })} />
 
+    <!-- Preload sidebar profile image -->
+    <link rel="preload" href={identity.logo} as="image" />
+
     <!-- Theme initialization (prevents flash) -->
     <script is:inline>
       const theme = localStorage.getItem("theme") ||
         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.classList.toggle("dark", theme === "dark");
     </script>
+    <ViewTransitions />
   </head>
   <body class="bg-white dark:bg-black text-black dark:text-white transition-colors">
     <!-- Mobile header -->
@@ -157,19 +163,21 @@ const fullImageURL = seo.image?.startsWith("http")
 
     <div class="md:flex md:min-h-screen">
       <!-- Sidebar (desktop only) -->
-      <aside class="hidden md:flex md:flex-col md:items-center md:justify-between md:w-72 lg:w-80 md:shrink-0 md:sticky md:top-0 md:h-screen md:px-8 md:py-12 md:border-r md:border-gray-200 dark:md:border-gray-800">
+      <aside transition:persist="sidebar" class="hidden md:flex md:flex-col md:items-center md:justify-between md:w-72 lg:w-80 md:shrink-0 md:sticky md:top-0 md:h-screen md:px-8 md:py-12 md:border-r md:border-gray-200 dark:md:border-gray-800">
         <div class="flex flex-col items-center">
-          <Image
+          <img
             src={identity.logo}
             alt={identity.name}
-            width={120}
-            height={120}
+            width="120"
+            height="120"
             class="rounded-full mb-5"
+            loading="eager"
+            fetchpriority="high"
           />
 
           <a href="/" class="block mb-1">
             <h1 class="font-bold text-xl tracking-tight">
-              <HeroName name={identity.name} client:idle />
+              <HeroName name={identity.name} client:load />
             </h1>
           </a>
           <p class="text-sm opacity-40">CS & Design · AI Research</p>
@@ -248,15 +256,17 @@ const fullImageURL = seo.image?.startsWith("http")
       </div>
     </div>
     <script is:inline>
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-      document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+      document.addEventListener('astro:page-load', function() {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-reveal').forEach(function(el) { observer.observe(el); });
+      });
     </script>
   </body>
 </html>
