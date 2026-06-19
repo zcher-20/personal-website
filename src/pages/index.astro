@@ -19,108 +19,28 @@ posts.splice(3)
 ---
 
 <Layout seo={homePageContent.seo}>
-  <section class="mt-10 max-w-3xl mx-auto px-6 scroll-reveal">
-    <h1 class="font-bold text-3xl mb-10 text-center">About</h1>
-    <div class="text-base leading-relaxed mb-8 space-y-4">
+  <section class="pt-20 pl-3 pr-10 scroll-reveal">
+    <h1 class="font-normal text-sm mb-6 uppercase">ABOUT ZAYNEB CHERIF</h1>
+    <div class="text-sm leading-relaxed mb-8 space-y-4">
   <p>Welcome! I'm a junior at Columbia University studying Computer Science & Design, previously at NYU.</p>
   <p>I work on LLM's and agents with <AnimatedLink href="https://openai.com" client:idle>OpenAI</AnimatedLink> and <AnimatedLink href="https://pfizer.com" client:idle>Pfizer</AnimatedLink>, and have published research at <AnimatedLink href="https://openreview.net/forum?id=hvp5I4dDya" client:idle>ICLR 2024</AnimatedLink> and <AnimatedLink href="https://www.ijcai.org/proceedings/2024/878" client:idle>IJCAI 2024</AnimatedLink> from my time at <AnimatedLink href="https://research.ibm.com" client:idle>IBM Research</AnimatedLink>. I'm currently building AI agents at an MIT-incubated startup and collaborating with Al Akhawayn University to extend <AnimatedLink href="https://huggingface.co/ibm-nasa-geospatial/Prithvi-100M" client:idle>NASA's Prithvi foundation model</AnimatedLink> for wildfire prediction in Morocco.</p>
   <p>My passions are at the intersection of AI research, full-stack engineering, and human-centered design. Outside of work you'll find me hosting dinner parties, traveling the world, and experimenting with film photography!</p>
   <p>Recognized for research excellence through ICLR 2024, the <AnimatedLink href="https://www.zurich.ibm.com/thinklab/AIcomputesymposium.html" client:idle>IBM/IEEE AICS 2023</AnimatedLink> competition, the Best Research Award at the University of Sharjah, and finalist selections at both the Genius Olympiad and WESEF.</p>
 </div>
-    <div class="flex items-center gap-4 group w-fit mb-8">
-      {
-        homePageContent.links.map((link) => (
-          <Link text={link.title} href={link.url} external={link.external} />
-        ))
-      }
+
+    <div class="mt-16" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:start;">
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <img src="/design-arena-vis-v2.png" alt="" style="width:100%; height:auto; display:block;" />
+        <img src="/design-margiela.png" alt="" style="width:100%; height:auto; display:block;" />
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <img src="/design-film-album.png" alt="" style="width:100%; height:auto; display:block;" />
+        <img src="/project-quantum.jpg" alt="" style="width:100%; height:auto; display:block;" />
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <img src="/project-investment.jpg" alt="" style="width:100%; height:auto; display:block;" />
+        <img src="/project-ricer.jpg" alt="" style="width:100%; height:auto; display:block;" />
+      </div>
     </div>
   </section>
-  <section class="mt-20 mb-20 scroll-reveal">
-  <h2 class="max-w-3xl mx-auto px-6 mb-6">Favorite Books</h2>
-  <div style="overflow:hidden; width:100%; position:relative;">
-    <div style="position:absolute; left:0; top:0; bottom:0; width:80px; background:linear-gradient(to right, white, transparent); z-index:2; pointer-events:none;"></div>
-    <div style="position:absolute; right:0; top:0; bottom:0; width:80px; background:linear-gradient(to left, white, transparent); z-index:2; pointer-events:none;"></div>
-    <div id="home-marquee-track" style="display:flex; gap:20px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
-  </div>
-</section>
-
-<script is:inline>
-  document.addEventListener('astro:page-load', function() {
-  var FAVORITES = [
-    { title: "Never Let Me Go", author: "Kazuo Ishiguro" },
-    { title: "The Picture of Dorian Gray", author: "Oscar Wilde" },
-    { title: "East of Eden", author: "John Steinbeck" },
-    { title: "Giovanni's Room", author: "James Baldwin" },
-    { title: "The Year of Magical Thinking", author: "Joan Didion" },
-    { title: "Thinking, Fast and Slow", author: "Daniel Kahneman" },
-    { title: "Just Kids", author: "Patti Smith" },
-    { title: "Circe", author: "Madeline Miller" },
-    { title: "Sula", author: "Toni Morrison" },
-    { title: "The Invisible Life of Addie LaRue", author: "V. E. Schwab" },
-    { title: "Normal People", author: "Sally Rooney" },
-    { title: "The Book Thief", author: "Markus Zusak" },
-    { title: "All About Love", author: "bell hooks" },
-    { title: "White Nights", author: "Fyodor Dostoyevsky" },
-    { title: "The Secret History", author: "Donna Tartt" },
-    { title: "Walden", author: "Henry David Thoreau" },
-    { title: "Atonement", author: "Ian McEwan" },
-    { title: "Devotions", author: "Mary Oliver" },
-  ];
-
-  var COVERS = new Map([
-    ["Never Let Me Go", "https://covers.openlibrary.org/b/isbn/1400043395-M.jpg"],
-    ["The Picture of Dorian Gray", "https://covers.openlibrary.org/b/isbn/0141439572-M.jpg"],
-    ["East of Eden", "https://covers.openlibrary.org/b/isbn/0142004235-M.jpg"],
-    ["Giovanni's Room", "https://covers.openlibrary.org/b/isbn/0375701877-M.jpg"],
-    ["The Year of Magical Thinking", "/magical-thinking.jpg"],
-    ["Thinking, Fast and Slow", "https://covers.openlibrary.org/b/isbn/9780374533557-M.jpg"],
-    ["Just Kids", "https://covers.openlibrary.org/b/isbn/9780060936228-M.jpg"],
-    ["Circe", "https://covers.openlibrary.org/b/isbn/0316556343-M.jpg"],
-    ["Sula", "https://covers.openlibrary.org/b/isbn/1400033438-M.jpg"],
-    ["The Invisible Life of Addie LaRue", "https://covers.openlibrary.org/b/isbn/0765387565-M.jpg"],
-    ["Normal People", "https://covers.openlibrary.org/b/isbn/9781984822178-M.jpg"],
-    ["The Book Thief", "https://covers.openlibrary.org/b/isbn/0375842209-M.jpg"],
-    ["All About Love", "https://covers.openlibrary.org/b/isbn/0060959479-M.jpg"],
-    ["White Nights", "https://covers.openlibrary.org/b/isbn/9780140449266-M.jpg"],
-    ["The Secret History", "https://covers.openlibrary.org/b/isbn/1400031702-M.jpg"],
-    ["Walden", "https://covers.openlibrary.org/b/isbn/9780691096124-M.jpg"],
-    ["Atonement", "https://covers.openlibrary.org/b/isbn/9780385721394-M.jpg"],
-    ["Devotions", "https://covers.openlibrary.org/b/isbn/9780399563263-M.jpg"],
-  ]);
-
-  var el = document.getElementById('home-marquee-track');
-    if (!el || el.children.length > 0) return;
-
-    var all = FAVORITES.concat(FAVORITES);
-    all.forEach(function(book) {
-      var cover = COVERS.get(book.title) || '';
-      var item = document.createElement('div');
-      item.style.cssText = 'flex-shrink:0; width:90px; cursor:default;';
-      var imgHtml = cover
-        ? '<img src="' + cover + '" alt="' + book.title + '" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background=\'#e5e7eb\'" />'
-        : '<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:9px;text-align:center;color:#9ca3af;">' + book.title + '</div>';
-      item.innerHTML =
-        '<div style="width:90px; height:130px; border-radius:4px; overflow:hidden; background:#f3f4f6; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">' + imgHtml + '</div>' +
-        '<p style="font-size:10px; font-weight:500; line-height:1.3; margin:0; opacity:0.8;">' + book.title + '</p>' +
-        '<p style="font-size:9px; opacity:0.45; margin:2px 0 0;">' + book.author + '</p>';
-      el.appendChild(item);
-    });
-
-    var x = 0;
-    var paused = false;
-    el.addEventListener('mouseenter', function() { paused = true; });
-    el.addEventListener('mouseleave', function() { paused = false; });
-
-    function animate() {
-      if (!paused) {
-        x -= 0.5;
-        var half = el.scrollWidth / 2;
-        if (Math.abs(x) >= half) x = 0;
-        el.style.transform = 'translateX(' + x + 'px)';
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-  });
-</script>
 </Layout>
