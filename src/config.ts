@@ -227,7 +227,7 @@ export const workPageContent: WorkPageContent = {
       title: "Student Researcher — HCI & Wearable Systems",
       company: { name: "Cornell University — Hybrid Body Lab", image: "/cornell.webp", url: "https://www.hybridbody.human.cornell.edu/#/skinkit/" },
       date: "Mar 2026",
-      description: "Prototyped modular flexible PCB wearables for continuous physiological monitoring, applying embedded hardware and HCI design principles to <a href=\"https://www.linkedin.com/posts/zayneb-cherif-830294251_recently-i-had-the-opportunity-to-work-with-ugcPost-7439764313671749633-hyFd/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">on-body interaction applications</a>.",
+      description: "Prototyped modular flexible PCB wearables for continuous physiological monitoring, applying embedded hardware and HCI design principles to on-body <a href=\"https://www.linkedin.com/posts/zayneb-cherif-830294251_recently-i-had-the-opportunity-to-work-with-ugcPost-7439764313671749633-hyFd/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">interaction applications</a>.",
     },
     {
       title: "Data Analytics Research Intern",
