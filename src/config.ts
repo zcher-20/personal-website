@@ -233,7 +233,7 @@ export const workPageContent: WorkPageContent = {
       title: "Data Analytics Research Intern",
       company: { name: "New York University", image: "/nyu.webp", url: "https://nyu.edu" },
       date: "Oct - Dec 2025",
-      description: "Built end-to-end ML classification pipelines in scikit-learn processing 500K+ records; applied STL time-series decomposition to denoise sensor signals and improve downstream model F1 score.",
+      description: "Built end-to-end ML classification pipelines in scikit-learn processing 500K+ records; researched orbital time periods for astrophysics professor <a href=\"https://ilc.fyi/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Dr. Isabel Colman</a>; applied STL time-series decomposition to denoise sensor signals and improve downstream model F1 score.",
     },
     {
       title: "AI Analytics Researcher",
@@ -245,13 +245,13 @@ export const workPageContent: WorkPageContent = {
       title: "Mind Brain Behavior Mentorship",
       company: { name: "Harvard University", image: "/harvard.svg", url: "https://mbb.harvard.edu" },
       date: "Sep 2021 - Jun 2023",
-      description: "Apprenticeship under the Mind Brain Behavior Interfaculty Initiative; conducted research bridging neuroscience and behavioral science under faculty mentorship.",
+      description: "Apprenticeship under the <a href=\"https://mbb.harvard.edu/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Mind Brain Behavior Interfaculty Initiative</a>; conducted research on neurodevelopmental disorders under faculty mentorship <a href=\"https://mbb.harvard.edu/people/anne-arnett\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Dr. Anne Arnett</a>.",
     },
     {
       title: "Research Analyst",
       company: { name: "Boston Children's Hospital", image: "/bch.webp", url: "https://research.childrenshospital.org" },
       date: "Sep 2021 - May 2023",
-      description: "Analyzed behavioral and clinical datasets at the Arnett Lab; cleaned and validated study records; independently authored a research paper under faculty mentorship.",
+      description: "Analyzed behavioral and clinical datasets at the <a href=\"https://mbb.harvard.edu/people/anne-arnett\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Arnett Lab</a>; hosted and conducted an in person study at <a href=\"https://research.childrenshospital.org/research-units/arnett-lab-research/research-projects\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Boston Museum of Science</a>; independently authored a research paper under faculty mentorship.",
     },
   ],
 };
