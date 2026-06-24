@@ -69,6 +69,13 @@ export type AboutPageContent = {
       link?: string;
     };
   };
+  currentWork?: {
+    title: string;
+    description: string;
+    image: string;
+    url: string;
+    linkLabel: string;
+  };
   connect: {
     description: string;
     links: SocialLink[];

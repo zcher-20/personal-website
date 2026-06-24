@@ -57,6 +57,32 @@ const connectDescription = marked.parse(aboutPageContent.connect.description)
       )}
     </div>
   </section>
+  {aboutPageContent.currentWork && (
+    <section class="mt-32 max-w-2xl mx-auto px-6 sm:flex sm:gap-16 scroll-reveal">
+      <h2 class="mb-8 sm:mb-0 opacity-60 shrink-0">Currently<br class="hidden sm:block" /> Working On</h2>
+      <a
+        href={aboutPageContent.currentWork.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group block flex-1 min-w-0 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors"
+      >
+        <Image
+          src={aboutPageContent.currentWork.image}
+          alt={aboutPageContent.currentWork.title}
+          width={600}
+          height={300}
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-5">
+          <h3 class="font-semibold text-lg mb-1">{aboutPageContent.currentWork.title}</h3>
+          <p class="opacity-60 text-sm mb-3">{aboutPageContent.currentWork.description}</p>
+          <span class="text-sm font-medium group-hover:underline">
+            {aboutPageContent.currentWork.linkLabel} →
+          </span>
+        </div>
+      </a>
+    </section>
+  )}
   <section class="mt-32 max-w-2xl mx-auto px-6 sm:flex sm:gap-16 scroll-reveal">
     <h2 class="mb-8 sm:mb-0 opacity-60">Connect</h2>
     <div>

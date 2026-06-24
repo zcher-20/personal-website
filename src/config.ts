@@ -85,6 +85,13 @@ Recognized at ICLR 2024 (Notable), IBM/IEEE AICS 2023, Best Research Award at th
     image_l: { url: "/openai.webp", alt: "OpenAI", link: "https://openai.com" },
     image_r: { url: "/ibm.webp", alt: "IBM Research", link: "https://research.ibm.com" },
   },
+  currentWork: {
+    title: "AI Wildfire Risk Prediction with Foundation Models",
+    description: "Building an AI-powered wildfire risk prediction framework for Morocco's Middle Atlas region, integrating GIS, Earth Observation data, and IBM/NASA Prithvi foundation models.",
+    image: "/ricer-notion.png",
+    url: "https://app.notion.com/p/RICER-Research-Project-3755af7700d680ec8b62dbebac966897?pvs=18",
+    linkLabel: "View Research Database",
+  },
   connect: {
     description: `You can reach out to me at <a href="mailto:zaynebcheriff@gmail.com" style="font-weight: bold; text-decoration: none; color: inherit;">zaynebcheriff@gmail.com</a>.`,
     links: [],
@@ -115,7 +122,7 @@ export const projectsPageContent: ProjectPageContent = {
     {
       title: "RICER — AI Forest Fire Risk Prediction",
       description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Built with Al Akhawayn University Digital Innovation Lab.",
-      image: "/project-ricer.jpg",
+      image: "/ricer-notion.png",
       url: "https://github.com/zcher-20/wildfire_data_pipeline",
       featured: true,
       venue: "Al Akhawayn University Digital Innovation Lab",

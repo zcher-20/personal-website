@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import { homePageContent, identity } from "../config";
+import { homePageContent, aboutPageContent, identity } from "../config";
 import SocialLink from "../components/SocialLink.astro";
 import Link from "../components/Link.astro";
 import HeroName from "../components/HeroName";
@@ -35,6 +35,32 @@ posts.splice(3)
       }
     </div>
   </section>
+  {aboutPageContent.currentWork && (
+    <section class="mt-16 max-w-3xl mx-auto px-6 scroll-reveal">
+      <h2 class="mb-6">Currently Working On</h2>
+      <a
+        href={aboutPageContent.currentWork.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex flex-col sm:flex-row gap-5 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors"
+      >
+        <Image
+          src={aboutPageContent.currentWork.image}
+          alt={aboutPageContent.currentWork.title}
+          width={320}
+          height={200}
+          class="sm:w-56 h-44 sm:h-auto object-cover shrink-0"
+        />
+        <div class="p-5 sm:pl-0 flex flex-col justify-center">
+          <h3 class="font-semibold text-lg mb-1">{aboutPageContent.currentWork.title}</h3>
+          <p class="opacity-60 text-sm mb-3">{aboutPageContent.currentWork.description}</p>
+          <span class="text-sm font-medium group-hover:underline">
+            {aboutPageContent.currentWork.linkLabel} →
+          </span>
+        </div>
+      </a>
+    </section>
+  )}
   <section class="mt-20 mb-20 scroll-reveal">
   <h2 class="max-w-3xl mx-auto px-6 mb-6">Favorite Books</h2>
   <div style="overflow:hidden; width:100%; position:relative;">
