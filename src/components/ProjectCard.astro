@@ -13,34 +13,82 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
 ---
 
 <div class="py-6 sm:py-8 flex flex-col sm:flex-row gap-5 sm:gap-8 group-hover:opacity-60 hover:!opacity-100 transition-opacity project-card-wrap" style="position:relative;">
-  <div
-    id={`trigger-${cardId}`}
-    class="w-full sm:w-[38%] flex-shrink-0 rounded-lg aspect-video sm:aspect-[4/3] overflow-hidden cursor-zoom-in"
-    style="background:#f5f5f7;"
-  >
-    {pdfUrl ? (
-      <div class="w-full h-full flex items-center justify-center rounded-lg" style="background:#fafafa;">
-        <div class="text-center" style="opacity:0.35;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <p style="font-size:10px; margin-top:4px;">PDF</p>
+  <div class="w-full sm:w-[38%] flex-shrink-0">
+    <div class="rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800" style="background:#f5f5f7;">
+      <div
+        id={`panel-img-${cardId}`}
+        class="aspect-video sm:aspect-[4/3] cursor-zoom-in"
+      >
+        {pdfUrl ? (
+          <div class="w-full h-full flex items-center justify-center" style="background:#fafafa;">
+            <div class="text-center" style="opacity:0.35;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <p style="font-size:10px; margin-top:4px;">PDF</p>
+            </div>
+          </div>
+        ) : (
+          <Image
+            width={1920}
+            height={1080}
+            src={image}
+            alt={title}
+            class="w-full h-full object-cover"
+          />
+        )}
+      </div>
+      <div
+        id={`panel-info-${cardId}`}
+        class="aspect-video sm:aspect-[4/3] p-4 flex flex-col justify-center"
+        style="display:none;"
+      >
+        {learnings && (
+          <p style="font-size:12px; color:#333; margin:0 0 12px; line-height:1.5;" class="dark:text-neutral-300">{learnings}</p>
+        )}
+        {focus && focus.length > 0 && (
+          <div style="margin-bottom:12px;">
+            <p style="font-size:11px; margin:0 0 6px; font-weight:700;" class="opacity-70">Focus</p>
+            <ul style="margin:0; padding:0; list-style:none;">
+              {focus.map((f) => (
+                <li style="font-size:11px; padding:2px 0;" class="opacity-60">&ndash; {f}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:auto;">
+          {url === "#" ? (
+            <span class="hovercard-link-primary" style="cursor:default; opacity:0.6;">{linkLabel}</span>
+          ) : (
+            <a
+              href={url}
+              target="_blank"
+              class="hovercard-link-primary"
+            >{linkLabel} &rarr;</a>
+          )}
+          {demoUrl && (
+            <a
+              href={demoUrl}
+              target="_blank"
+              class="hovercard-link-secondary"
+            >Demo &rarr;</a>
+          )}
         </div>
       </div>
-    ) : (
-      <Image
-        width={1920}
-        height={1080}
-        src={image}
-        alt={title}
-        class="w-full h-full object-cover rounded-lg"
-      />
-    )}
+    </div>
+    <div class="flex justify-center mt-2">
+      <button
+        id={`flip-${cardId}`}
+        class="project-flip-btn"
+        aria-label="Flip card"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+    </div>
   </div>
 
   <div class="flex-1 flex flex-col justify-center min-w-0">
     <div class="flex items-baseline gap-2 mb-1">
       <span
-        id={`hover-trigger-${cardId}`}
-        class="font-semibold cursor-default"
+        class="font-semibold"
         style="font-size:15px;"
       >{title}</span>
       {year && <span style="font-size:12px; opacity:0.4;">{year}</span>}
@@ -61,46 +109,6 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
         ))}
       </div>
     )}
-  </div>
-
-  <!-- Hovercard -->
-  <div
-    id={`hovercard-${cardId}`}
-    class="project-hovercard"
-    style="display:none;"
-  >
-    <p style="font-size:12px; color:#111; margin:0 0 8px; font-weight:700;">Behind the project</p>
-    {learnings && (
-      <p style="font-size:12px; color:#333; margin:0 0 12px; line-height:1.5;">{learnings}</p>
-    )}
-    {focus && focus.length > 0 && (
-      <div style="margin-bottom:12px;">
-        <p style="font-size:12px; color:#111; margin:0 0 6px; font-weight:700;">Focus</p>
-        <ul style="margin:0; padding:0; list-style:none;">
-          {focus.map((f) => (
-            <li style="font-size:11px; color:#555; padding:2px 0;">&ndash; {f}</li>
-          ))}
-        </ul>
-      </div>
-    )}
-    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-      {url === "#" ? (
-        <span class="hovercard-link-primary" style="cursor:default; opacity:0.6;">{linkLabel}</span>
-      ) : (
-        <a
-          href={url}
-          target="_blank"
-          class="hovercard-link-primary"
-        >{linkLabel} &rarr;</a>
-      )}
-      {demoUrl && (
-        <a
-          href={demoUrl}
-          target="_blank"
-          class="hovercard-link-secondary"
-        >Demo &rarr;</a>
-      )}
-    </div>
   </div>
 </div>
 
@@ -154,18 +162,29 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
     line-height: 1.4;
   }
 
-  .project-hovercard {
-    position: absolute;
-    left: calc(100% + 16px);
-    top: 0;
-    width: 260px;
+  .project-flip-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.12);
     background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    padding: 18px;
-    z-index: 100;
-    pointer-events: auto;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+    transition: opacity 0.15s, transform 0.3s;
+    color: inherit;
+  }
+
+  .project-flip-btn:hover {
+    opacity: 0.8;
+    transform: rotate(180deg);
+  }
+
+  :global(.dark) .project-flip-btn {
+    background: #1a1a1a;
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .hovercard-link-primary {
@@ -244,9 +263,16 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
 </style>
 
 <script define:vars={{ cardId, pdfUrl }}>
-  const trigger     = document.getElementById('trigger-' + cardId);
-  const hoverTrig   = document.getElementById('hover-trigger-' + cardId);
-  const hovercard   = document.getElementById('hovercard-' + cardId);
+  const flipBtn   = document.getElementById('flip-' + cardId);
+  const panelImg  = document.getElementById('panel-img-' + cardId);
+  const panelInfo = document.getElementById('panel-info-' + cardId);
+  let showingInfo = false;
+
+  flipBtn?.addEventListener('click', () => {
+    showingInfo = !showingInfo;
+    panelImg.style.display = showingInfo ? 'none' : '';
+    panelInfo.style.display = showingInfo ? '' : 'none';
+  });
 
   // Move lightbox out of scroll-reveal to document.body so position:fixed works
   const tpl = document.getElementById('lightbox-tpl-' + cardId);
@@ -258,25 +284,6 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
 
   const lightbox    = document.getElementById('lightbox-' + cardId);
   const closeBtn    = document.getElementById('close-' + cardId);
-
-  // Hovercard logic
-  let hideTimer = null;
-
-  function showHover() {
-    clearTimeout(hideTimer);
-    if (hovercard && window.innerWidth > 768) hovercard.style.display = 'block';
-  }
-
-  function hideHover() {
-    hideTimer = setTimeout(() => {
-      if (hovercard) hovercard.style.display = 'none';
-    }, 150);
-  }
-
-  hoverTrig?.addEventListener('mouseenter', showHover);
-  hoverTrig?.addEventListener('mouseleave', hideHover);
-  hovercard?.addEventListener('mouseenter', showHover);
-  hovercard?.addEventListener('mouseleave', hideHover);
 
   // Lightbox logic
   function openLightbox() {
@@ -290,7 +297,7 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
     document.body.style.overflow = '';
   }
 
-  trigger?.addEventListener('click', openLightbox);
+  panelImg?.addEventListener('click', openLightbox);
   lightbox?.addEventListener('click', closeLightbox);
   closeBtn?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
 

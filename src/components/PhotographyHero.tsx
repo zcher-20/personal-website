@@ -45,7 +45,7 @@ export default function PhotographyHero() {
     const w = 110 + Math.random() * 70
     const h = w * (0.65 + Math.random() * 0.5)
     const rotate = (Math.random() - 0.5) * 18
-    img.style.cssText = `position:absolute;left:${x - w / 2}px;top:${y - h / 2}px;width:${w}px;height:${h}px;object-fit:cover;border-radius:2px;pointer-events:none;transform:rotate(${rotate}deg) scale(0.85);opacity:0;transition:opacity 0.15s ease,transform 0.15s ease;z-index:5;`
+    img.style.cssText = `position:absolute;left:${x - w / 2}px;top:${y - h / 2}px;width:${w}px;height:${h}px;object-fit:cover;image-orientation:none;border-radius:2px;pointer-events:none;transform:rotate(${rotate}deg) scale(0.85);opacity:0;transition:opacity 0.15s ease,transform 0.15s ease;z-index:5;`
     sectionRef.current.appendChild(img)
     requestAnimationFrame(() => {
       img.style.opacity = "1"
