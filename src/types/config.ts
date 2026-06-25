@@ -99,6 +99,7 @@ export type Project = {
   learnings?: string;
   focus?: string[];
   links?: { label: string; url: string }[];
+  linkLabel?: string;
 };
 
 export type ProjectPageContent = {
