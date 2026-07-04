@@ -20,9 +20,24 @@ export const resources: ResourceLink[] = [
     note: "Learn SQL by solving an actual murder mystery — great interactive intro.",
   },
   {
+    url: "https://distill.pub",
+    title: "Distill — Latest Articles About Machine Learning",
+    note: "Peer-reviewed journal for clear, interactive explanations of ML research.",
+  },
+  {
     url: "https://distill.pub/2021/gnn-intro/",
     title: "A Gentle Introduction to Graph Neural Networks",
     note: "Beautifully interactive visual explainer of GNNs from Distill.",
+  },
+  {
+    url: "https://playground.tensorflow.org",
+    title: "TensorFlow — Neural Network Playground",
+    note: "Interactive neural net in the browser by Daniel Smilkov and Shan Carter.",
+  },
+  {
+    url: "https://developer.apple.com/documentation/accelerate",
+    title: "Accelerate | Apple Developer Documentation",
+    note: "Apple's high-performance math and ML framework for CPU/GPU acceleration.",
   },
   {
     url: "https://gumloop.com",
