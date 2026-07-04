@@ -99,4 +99,34 @@ export const resources: ResourceLink[] = [
     title: "Index Space — Happenings",
     note: "Curated design events, talks, and creative industry happenings.",
   },
+  {
+    url: "https://fabric.so",
+    title: "Fabric: AI Workspace for Designers",
+    note: "One home for everything — files, links, notes, and AI in one canvas.",
+  },
+  {
+    url: "https://fuser.io",
+    title: "Fuser — Every AI Model. Every Medium. One Canvas.",
+    note: "Creative AI canvas: text, image, and video generation in one place.",
+  },
+  {
+    url: "https://help.figma.com/hc/en-us",
+    title: "Figma Learn — Help Center",
+    note: "Official Figma documentation, tutorials, and learning resources.",
+  },
+  {
+    url: "https://research.google/resources/",
+    title: "Resources — Google Research",
+    note: "Papers, datasets, and tools published by Google Research.",
+  },
+  {
+    url: "https://aigoodies.design",
+    title: "ai goodies ✨",
+    note: "Curated collection of AI tools and resources for designers.",
+  },
+  {
+    url: "https://designsystems.surf",
+    title: "Design Systems Database & Gallery",
+    note: "Browse top-notch design systems from companies worldwide.",
+  },
 ];
