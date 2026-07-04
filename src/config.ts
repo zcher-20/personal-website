@@ -110,7 +110,7 @@ export const projectsPageContent: ProjectPageContent = {
     {
       title: "Enterprise AI Document Processing Agent",
       description: "Building an intelligent document processing agent for a stealth startup that connects to enterprise data sources (emails, attachments, SharePoint, databases) to read, search, summarize, and reason over fragmented information. Follows a read-reason-draft-approve-act model with human oversight.",
-      image: "/project-agent.png",
+      image: "/project-agent-new.png",
       url: "#",
       featured: true,
       venue: "MIT-Incubated Stealth AI Startup",
