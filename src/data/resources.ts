@@ -85,7 +85,7 @@ export const resources: ResourceLink[] = [
     note: "Technical discussion of AI safety and alignment research.",
   },
   {
-    url: "https://make.com",
+    url: "https://www.make.com/en",
     title: "Make — Business Automation",
     note: "Visual workflow builder for connecting apps and automating business processes.",
   },
@@ -104,11 +104,8 @@ export const resources: ResourceLink[] = [
     title: "Fabric: AI Workspace for Designers",
     note: "One home for everything — files, links, notes, and AI in one canvas.",
   },
-  {
-    url: "https://fuser.io",
-    title: "Fuser — Every AI Model. Every Medium. One Canvas.",
-    note: "Creative AI canvas: text, image, and video generation in one place.",
-  },
+  // TODO: add correct URL for "Fuser — Every AI Model. Every Medium. One Canvas." (fuser.io redirects to a gaming site)
+
   {
     url: "https://help.figma.com/hc/en-us",
     title: "Figma Learn — Help Center",
