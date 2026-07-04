@@ -9,9 +9,10 @@ import SocialLink from "../components/SocialLink.astro";
 
 interface Props {
   seo: SEOInfo;
+  canvasPage?: boolean;
 }
 
-const { seo } = Astro.props;
+const { seo, canvasPage = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const fullImageURL = seo.image?.startsWith("http")
   ? seo.image
@@ -248,18 +249,20 @@ const fullImageURL = seo.image?.startsWith("http")
       </aside>
 
       <!-- Main content -->
-      <div class="flex-1 min-w-0">
-        <main class="mb-32">
+      <div class={`flex-1 min-w-0${canvasPage ? " overflow-hidden" : ""}`}>
+        <main class={canvasPage ? "" : "mb-32"}>
           <slot />
         </main>
-        <footer class="border-t border-gray-200 dark:border-gray-800 md:hidden">
-          <div class="px-6 py-8">
-            <div class="text-center text-sm opacity-60 space-y-2">
-              <p>© 2026 Zayneb Cherif</p>
-              <p>zc2913@columbia.edu</p>
+        {!canvasPage && (
+          <footer class="border-t border-gray-200 dark:border-gray-800 md:hidden">
+            <div class="px-6 py-8">
+              <div class="text-center text-sm opacity-60 space-y-2">
+                <p>© 2026 Zayneb Cherif</p>
+                <p>zc2913@columbia.edu</p>
+              </div>
             </div>
-          </div>
-        </footer>
+          </footer>
+        )}
       </div>
     </div>
     <script is:inline>
