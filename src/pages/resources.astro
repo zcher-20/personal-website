@@ -279,7 +279,7 @@ const canvasH = Math.ceil(resources.length / COLS) * ROW_H + JITTER_Y + 100;
   .resources-root {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - var(--nav-h, 49px));
     overflow: hidden;
   }
 

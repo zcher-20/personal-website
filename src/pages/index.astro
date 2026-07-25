@@ -1,124 +1,118 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import { homePageContent, aboutPageContent, identity } from "../config";
-import SocialLink from "../components/SocialLink.astro";
-import Link from "../components/Link.astro";
-import HeroName from "../components/HeroName";
-import AnimatedLink from "../components/AnimatedLink";
-import { getCollection } from "astro:content";
+import { homePageContent, workPageContent, projectsPageContent } from "../config";
 
-let posts = await getCollection("posts");
-posts = posts.filter((p) => !p.data?.draft);
-posts.sort((a, b) => {
-  const dateA = new Date(a.data.pubDate).getTime();
-  const dateB = new Date(b.data.pubDate).getTime();
-  return dateB - dateA;
-});
-posts.splice(3)
+const expItems = workPageContent.items.slice(0, 6).map((item) => ({
+  year: item.date.match(/(\d{4})/)?.[1] ?? "",
+  company: item.company.name,
+  role: item.title.split(" — ")[0],
+  url: item.company.url,
+}));
+
+const featuredProjects = projectsPageContent.projects.filter((p) => p.featured);
 ---
 
 <Layout seo={homePageContent.seo}>
-  <section class="mt-10 max-w-3xl mx-auto px-6 scroll-reveal">
-    <h1 class="font-bold text-3xl mb-10 text-center">About</h1>
-    <div class="text-base leading-relaxed mb-8 space-y-4">
-  <p>Welcome! I'm a junior at Columbia University studying Computer Science & Design, previously at NYU.</p>
-  <p>I work on LLM's and agents with <AnimatedLink href="https://openai.com" client:idle>OpenAI</AnimatedLink> and <AnimatedLink href="https://pfizer.com" client:idle>Pfizer</AnimatedLink>, and have published research at <AnimatedLink href="https://openreview.net/forum?id=hvp5I4dDya" client:idle>ICLR 2024</AnimatedLink> and <AnimatedLink href="https://www.ijcai.org/proceedings/2024/878" client:idle>IJCAI 2024</AnimatedLink> from my time at <AnimatedLink href="https://research.ibm.com" client:idle>IBM Research</AnimatedLink>. I'm currently building AI agents at an MIT-incubated startup and collaborating with Al Akhawayn University to extend <AnimatedLink href="https://huggingface.co/ibm-nasa-geospatial/Prithvi-100M" client:idle>NASA's Prithvi foundation model</AnimatedLink> for wildfire prediction in Morocco.</p>
-  <p>My passions are at the intersection of AI research, full-stack engineering, and human-centered design. Outside of work you'll find me hosting dinner parties, traveling the world, and experimenting with film photography!</p>
-  <p>Recognized for research excellence through ICLR 2024, the <AnimatedLink href="https://www.zurich.ibm.com/thinklab/AIcomputesymposium.html" client:idle>IBM/IEEE AICS 2023</AnimatedLink> competition, the Best Research Award at the University of Sharjah, and finalist selections at both the Genius Olympiad and WESEF.</p>
-</div>
-    <div class="flex items-center gap-4 group w-fit mb-8">
-      {
-        homePageContent.links.map((link) => (
-          <Link text={link.title} href={link.url} external={link.external} />
-        ))
-      }
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <h1 class="headline">
+          I'm Zayneb, a researcher who <em>designs</em>.
+        </h1>
+      </div>
+
+      <div class="hero-right">
+        {expItems.map((item) => (
+          <div class="exp-row">
+            <span class="exp-year">{item.year}</span>
+            <span class="exp-company">{item.company}</span>
+            <span class="exp-role">{item.role}</span>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
-  {aboutPageContent.currentWork && (
-    <section class="mt-16 max-w-3xl mx-auto px-6 scroll-reveal">
-      <h2 class="mb-6">Currently Working On</h2>
-      <a
-        href={aboutPageContent.currentWork.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group flex flex-col sm:flex-row gap-5 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors"
-      >
-        <Image
-          src={aboutPageContent.currentWork.image}
-          alt={aboutPageContent.currentWork.title}
-          width={320}
-          height={200}
-          class="sm:w-56 h-44 sm:h-auto object-cover shrink-0"
-        />
-        <div class="p-5 sm:pl-0 flex flex-col justify-center">
-          <h3 class="font-semibold text-lg mb-1">{aboutPageContent.currentWork.title}</h3>
-          <p class="opacity-60 text-sm mb-3">{aboutPageContent.currentWork.description}</p>
-          <span class="text-sm font-medium group-hover:underline">
-            {aboutPageContent.currentWork.linkLabel} →
-          </span>
-        </div>
-      </a>
-    </section>
-  )}
-  <section class="mt-20 mb-20 scroll-reveal">
-  <h2 class="max-w-3xl mx-auto px-6 mb-6">Favorite Books</h2>
-  <div style="overflow:hidden; width:100%; position:relative;">
-    <div style="position:absolute; left:0; top:0; bottom:0; width:80px; background:linear-gradient(to right, white, transparent); z-index:2; pointer-events:none;"></div>
-    <div style="position:absolute; right:0; top:0; bottom:0; width:80px; background:linear-gradient(to left, white, transparent); z-index:2; pointer-events:none;"></div>
-    <div id="home-marquee-track" style="display:flex; gap:20px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
-  </div>
-</section>
+
+  <!-- Project cards -->
+  <section class="projects-section">
+    <div class="projects-grid">
+      {featuredProjects.map((project) => (
+        <a
+          href={project.url !== "#" ? project.url : undefined}
+          target={project.url !== "#" ? "_blank" : undefined}
+          rel="noopener noreferrer"
+          class="project-card"
+        >
+          <div class="project-img-wrap">
+            <img src={project.image} alt={project.title} class="project-img" loading="lazy" />
+          </div>
+          <div class="project-meta">
+            <span class="project-name">{project.title}</span>
+            {project.venue && <span class="project-venue">{project.venue}</span>}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Books marquee -->
+  <section class="marquee-section scroll-reveal">
+    <p class="marquee-label">Favorite Books</p>
+    <div style="overflow:hidden; width:100%; position:relative;">
+      <div class="marquee-fade-l"></div>
+      <div class="marquee-fade-r"></div>
+      <div id="home-marquee-track" style="display:flex; gap:20px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
+    </div>
+  </section>
+</Layout>
 
 <script is:inline>
-  document.addEventListener('astro:page-load', function() {
-  var FAVORITES = [
-    { title: "Never Let Me Go", author: "Kazuo Ishiguro" },
-    { title: "The Picture of Dorian Gray", author: "Oscar Wilde" },
-    { title: "East of Eden", author: "John Steinbeck" },
-    { title: "Giovanni's Room", author: "James Baldwin" },
-    { title: "The Year of Magical Thinking", author: "Joan Didion" },
-    { title: "Thinking, Fast and Slow", author: "Daniel Kahneman" },
-    { title: "Just Kids", author: "Patti Smith" },
-    { title: "Circe", author: "Madeline Miller" },
-    { title: "Sula", author: "Toni Morrison" },
-    { title: "The Invisible Life of Addie LaRue", author: "V. E. Schwab" },
-    { title: "Normal People", author: "Sally Rooney" },
-    { title: "The Book Thief", author: "Markus Zusak" },
-    { title: "All About Love", author: "bell hooks" },
-    { title: "White Nights", author: "Fyodor Dostoyevsky" },
-    { title: "The Secret History", author: "Donna Tartt" },
-    { title: "Walden", author: "Henry David Thoreau" },
-    { title: "Atonement", author: "Ian McEwan" },
-    { title: "Devotions", author: "Mary Oliver" },
-  ];
-
-  var COVERS = new Map([
-    ["Never Let Me Go", "https://covers.openlibrary.org/b/isbn/1400043395-M.jpg"],
-    ["The Picture of Dorian Gray", "https://covers.openlibrary.org/b/isbn/0141439572-M.jpg"],
-    ["East of Eden", "https://covers.openlibrary.org/b/isbn/0142004235-M.jpg"],
-    ["Giovanni's Room", "https://covers.openlibrary.org/b/isbn/0375701877-M.jpg"],
-    ["The Year of Magical Thinking", "/magical-thinking.jpg"],
-    ["Thinking, Fast and Slow", "https://covers.openlibrary.org/b/isbn/9780374533557-M.jpg"],
-    ["Just Kids", "https://covers.openlibrary.org/b/isbn/9780060936228-M.jpg"],
-    ["Circe", "https://covers.openlibrary.org/b/isbn/0316556343-M.jpg"],
-    ["Sula", "https://covers.openlibrary.org/b/isbn/1400033438-M.jpg"],
-    ["The Invisible Life of Addie LaRue", "https://covers.openlibrary.org/b/isbn/0765387565-M.jpg"],
-    ["Normal People", "https://covers.openlibrary.org/b/isbn/9781984822178-M.jpg"],
-    ["The Book Thief", "https://covers.openlibrary.org/b/isbn/0375842209-M.jpg"],
-    ["All About Love", "https://covers.openlibrary.org/b/isbn/0060959479-M.jpg"],
-    ["White Nights", "https://covers.openlibrary.org/b/isbn/9780140449266-M.jpg"],
-    ["The Secret History", "https://covers.openlibrary.org/b/isbn/1400031702-M.jpg"],
-    ["Walden", "https://covers.openlibrary.org/b/isbn/9780691096124-M.jpg"],
-    ["Atonement", "https://covers.openlibrary.org/b/isbn/9780385721394-M.jpg"],
-    ["Devotions", "https://covers.openlibrary.org/b/isbn/9780399563263-M.jpg"],
-  ]);
-
-  var el = document.getElementById('home-marquee-track');
+  document.addEventListener('astro:page-load', function () {
+    var FAVORITES = [
+      { title: "Never Let Me Go", author: "Kazuo Ishiguro" },
+      { title: "The Picture of Dorian Gray", author: "Oscar Wilde" },
+      { title: "East of Eden", author: "John Steinbeck" },
+      { title: "Giovanni's Room", author: "James Baldwin" },
+      { title: "The Year of Magical Thinking", author: "Joan Didion" },
+      { title: "Thinking, Fast and Slow", author: "Daniel Kahneman" },
+      { title: "Just Kids", author: "Patti Smith" },
+      { title: "Circe", author: "Madeline Miller" },
+      { title: "Sula", author: "Toni Morrison" },
+      { title: "The Invisible Life of Addie LaRue", author: "V. E. Schwab" },
+      { title: "Normal People", author: "Sally Rooney" },
+      { title: "The Book Thief", author: "Markus Zusak" },
+      { title: "All About Love", author: "bell hooks" },
+      { title: "White Nights", author: "Fyodor Dostoyevsky" },
+      { title: "The Secret History", author: "Donna Tartt" },
+      { title: "Walden", author: "Henry David Thoreau" },
+      { title: "Atonement", author: "Ian McEwan" },
+      { title: "Devotions", author: "Mary Oliver" },
+    ];
+    var COVERS = new Map([
+      ["Never Let Me Go", "https://covers.openlibrary.org/b/isbn/1400043395-M.jpg"],
+      ["The Picture of Dorian Gray", "https://covers.openlibrary.org/b/isbn/0141439572-M.jpg"],
+      ["East of Eden", "https://covers.openlibrary.org/b/isbn/0142004235-M.jpg"],
+      ["Giovanni's Room", "https://covers.openlibrary.org/b/isbn/0375701877-M.jpg"],
+      ["The Year of Magical Thinking", "/magical-thinking.jpg"],
+      ["Thinking, Fast and Slow", "https://covers.openlibrary.org/b/isbn/9780374533557-M.jpg"],
+      ["Just Kids", "https://covers.openlibrary.org/b/isbn/9780060936228-M.jpg"],
+      ["Circe", "https://covers.openlibrary.org/b/isbn/0316556343-M.jpg"],
+      ["Sula", "https://covers.openlibrary.org/b/isbn/1400033438-M.jpg"],
+      ["The Invisible Life of Addie LaRue", "https://covers.openlibrary.org/b/isbn/0765387565-M.jpg"],
+      ["Normal People", "https://covers.openlibrary.org/b/isbn/9781984822178-M.jpg"],
+      ["The Book Thief", "https://covers.openlibrary.org/b/isbn/0375842209-M.jpg"],
+      ["All About Love", "https://covers.openlibrary.org/b/isbn/0060959479-M.jpg"],
+      ["White Nights", "https://covers.openlibrary.org/b/isbn/9780140449266-M.jpg"],
+      ["The Secret History", "https://covers.openlibrary.org/b/isbn/1400031702-M.jpg"],
+      ["Walden", "https://covers.openlibrary.org/b/isbn/9780691096124-M.jpg"],
+      ["Atonement", "https://covers.openlibrary.org/b/isbn/9780385721394-M.jpg"],
+      ["Devotions", "https://covers.openlibrary.org/b/isbn/9780399563263-M.jpg"],
+    ]);
+    var el = document.getElementById('home-marquee-track');
     if (!el || el.children.length > 0) return;
-
     var all = FAVORITES.concat(FAVORITES);
-    all.forEach(function(book) {
+    all.forEach(function (book) {
       var cover = COVERS.get(book.title) || '';
       var item = document.createElement('div');
       item.style.cssText = 'flex-shrink:0; width:90px; cursor:default;';
@@ -131,12 +125,9 @@ posts.splice(3)
         '<p style="font-size:9px; opacity:0.45; margin:2px 0 0;">' + book.author + '</p>';
       el.appendChild(item);
     });
-
-    var x = 0;
-    var paused = false;
-    el.addEventListener('mouseenter', function() { paused = true; });
-    el.addEventListener('mouseleave', function() { paused = false; });
-
+    var x = 0, paused = false;
+    el.addEventListener('mouseenter', function () { paused = true; });
+    el.addEventListener('mouseleave', function () { paused = false; });
     function animate() {
       if (!paused) {
         x -= 0.5;
@@ -149,4 +140,214 @@ posts.splice(3)
     animate();
   });
 </script>
-</Layout>
+
+<style>
+  .hero-section {
+    padding: 72px 0 56px;
+  }
+
+  .hero-inner {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  .headline {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(2.2rem, 3.6vw, 4.2rem);
+    line-height: 1.08;
+    font-weight: 400;
+    color: #161616;
+    letter-spacing: -0.01em;
+  }
+
+  :global(.dark) .headline {
+    color: #efefef;
+  }
+
+  .headline em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Experience table */
+  .exp-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr;
+    padding: 12px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+    align-items: center;
+    gap: 8px;
+  }
+
+  :global(.dark) .exp-row {
+    border-top-color: rgba(255, 255, 255, 0.07);
+  }
+
+  .exp-row:last-child {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+
+  :global(.dark) .exp-row:last-child {
+    border-bottom-color: rgba(255, 255, 255, 0.07);
+  }
+
+  .exp-year {
+    font-size: 12px;
+    color: #aaa;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .exp-company {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+
+  :global(.dark) .exp-company {
+    color: #e8e8e8;
+  }
+
+  .exp-role {
+    font-size: 12px;
+    color: #aaa;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Projects */
+  .projects-section {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .project-card {
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .project-img-wrap {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+
+  :global(.dark) .project-img-wrap {
+    background: #1c1c1c;
+  }
+
+  .project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.45s ease;
+  }
+
+  .project-card:hover .project-img {
+    transform: scale(1.025);
+  }
+
+  .project-meta {
+    padding: 11px 2px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .project-name {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .project-venue {
+    font-size: 11.5px;
+    opacity: 0.4;
+  }
+
+  /* Books marquee */
+  .marquee-section {
+    margin-top: 60px;
+    margin-bottom: 20px;
+  }
+
+  .marquee-label {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 40px;
+    margin-bottom: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.35;
+  }
+
+  .marquee-fade-l {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: linear-gradient(to right, white, transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .marquee-fade-r {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: linear-gradient(to left, white, transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  :global(.dark) .marquee-fade-l {
+    background: linear-gradient(to right, #0c0c0c, transparent);
+  }
+
+  :global(.dark) .marquee-fade-r {
+    background: linear-gradient(to left, #0c0c0c, transparent);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 0 20px;
+    }
+    .hero-section {
+      padding: 48px 0 40px;
+    }
+    .projects-section {
+      padding: 0 20px 60px;
+    }
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .marquee-label {
+      padding: 0 20px;
+    }
+  }
+</style>
