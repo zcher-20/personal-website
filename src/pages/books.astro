@@ -1,211 +1,697 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/WorkspaceLayout.astro";
 import { identity } from "../config";
 
 const BOOKS = [
-  { country: "Japan", title: "Norwegian Wood", author: "Haruki Murakami", favorite: true },
-  { country: "Pakistan", title: "Exit West", author: "Mohsin Hamid", favorite: true },
-  { country: "Afghanistan", title: "The Kite Runner", author: "Khaled Hosseini", favorite: false },
-  { country: "Turkey", title: "The Forty Rules of Love", author: "Elif Shafak", favorite: false },
-  { country: "France", title: "No Exit", author: "Jean-Paul Sartre", favorite: true },
-  { country: "England", title: "A Room of One's Own", author: "Virginia Woolf", favorite: true },
-  { country: "Russia", title: "White Nights", author: "Fyodor Dostoyevsky", favorite: false },
-  { country: "Italy", title: "The Lying Life of Adults", author: "Elena Ferrante", favorite: false },
-  { country: "USA", title: "Giovanni's Room", author: "James Baldwin", favorite: true },
-  { country: "Mexico", title: "The Alchemist", author: "Paulo Coelho", favorite: false },
-  { country: "Brazil", title: "The Hour of the Star", author: "Clarice Lispector", favorite: true },
-  { country: "Argentina", title: "The Invention of Morel", author: "Adolfo Bioy Casares", favorite: true },
-  { country: "Chile", title: "The House of the Spirits", author: "Isabel Allende", favorite: false },
-  { country: "Australia", title: "The Book Thief", author: "Markus Zusak", favorite: false },
+  {
+    id: 0, country: "Japan",
+    title: "Norwegian Wood", author: "Haruki Murakami",
+    year: "1987", isbn: "9780375704024", color: "#c8b89a", favorite: true,
+    spineW: 32, spineH: 226,
+    publisher: "Vintage International", format: "Paperback", pages: "293 pages",
+    desc: "A nostalgic story of loss and coming-of-age set against Tokyo's 1960s student movement. Toru Watanabe looks back on his youth and the two very different women who shaped it.",
+  },
+  {
+    id: 1, country: "Pakistan",
+    title: "Exit West", author: "Mohsin Hamid",
+    year: "2017", isbn: "9780735212176", color: "#9eb0be", favorite: true,
+    spineW: 28, spineH: 212,
+    publisher: "Riverhead Books", format: "Hardcover", pages: "240 pages",
+    desc: "In a city teetering on the brink of civil war, two young people fall in love and flee through mysterious doors that transport migrants across the world.",
+  },
+  {
+    id: 2, country: "Afghanistan",
+    title: "The Kite Runner", author: "Khaled Hosseini",
+    year: "2003", isbn: "9781594631931", color: "#c8a87c", favorite: false,
+    spineW: 26, spineH: 230,
+    publisher: "Riverhead Books", format: "Paperback", pages: "371 pages",
+    desc: "A sweeping story of friendship, betrayal, and redemption spanning decades of Afghanistan's history — from the last days of the monarchy to the Taliban's brutal rise.",
+  },
+  {
+    id: 3, country: "Turkey",
+    title: "The Forty Rules of Love", author: "Elif Shafak",
+    year: "2009", isbn: "9780143118527", color: "#b89ab8", favorite: false,
+    spineW: 24, spineH: 222,
+    publisher: "Viking", format: "Paperback", pages: "368 pages",
+    desc: "Two love stories intertwined across eight centuries — a modern American marriage falling apart, and the legendary encounter of the poet Rumi and the dervish Shams of Tabriz.",
+  },
+  {
+    id: 4, country: "France",
+    title: "No Exit", author: "Jean-Paul Sartre",
+    year: "1944", isbn: "9780679725169", color: "#8a9e8a", favorite: true,
+    spineW: 22, spineH: 192,
+    publisher: "Gallimard", format: "Paperback", pages: "67 pages",
+    desc: "Three strangers locked in a single room for eternity. Sartre's existentialist masterwork distilled into one unforgettable line: Hell is other people.",
+  },
+  {
+    id: 5, country: "England",
+    title: "A Room of One's Own", author: "Virginia Woolf",
+    year: "1929", isbn: "9780156787338", color: "#ccc8ae", favorite: true,
+    spineW: 24, spineH: 200,
+    publisher: "Hogarth Press", format: "Paperback", pages: "112 pages",
+    desc: "Woolf argues that a woman must have financial independence and a private space if she is to write fiction — a landmark essay of feminist literary criticism.",
+  },
+  {
+    id: 6, country: "Russia",
+    title: "White Nights", author: "Fyodor Dostoyevsky",
+    year: "1848", isbn: "9780140449266", color: "#9eb0c8", favorite: false,
+    spineW: 11, spineH: 190,
+    publisher: "Penguin Classics", format: "Paperback", pages: "64 pages",
+    desc: "A lonely dreamer encounters a young woman on the canals of St. Petersburg during the city's magical white nights. A tender study of longing and fleeting human connection.",
+  },
+  {
+    id: 7, country: "Italy",
+    title: "The Lying Life of Adults", author: "Elena Ferrante",
+    year: "2019", isbn: "9781609455910", color: "#c4a0a0", favorite: false,
+    spineW: 24, spineH: 224,
+    publisher: "Europa Editions", format: "Hardcover", pages: "324 pages",
+    desc: "Growing up in 1990s Naples, Giovanna discovers a disreputable aunt and begins to question everything — her class, her body, and her family's carefully maintained façade.",
+  },
+  {
+    id: 8, country: "USA",
+    title: "Giovanni's Room", author: "James Baldwin",
+    year: "1956", isbn: "9780345806567", color: "#aeaaa0", favorite: true,
+    spineW: 26, spineH: 206,
+    publisher: "Dial Press", format: "Paperback", pages: "159 pages",
+    desc: "An American in 1950s Paris falls in love with an Italian bartender. A devastating exploration of desire, shame, and the violence of self-denial that still resonates today.",
+  },
+  {
+    id: 9, country: "Mexico",
+    title: "The Alchemist", author: "Paulo Coelho",
+    year: "1988", isbn: "9780061339257", color: "#c8bc80", favorite: false,
+    spineW: 17, spineH: 212,
+    publisher: "HarperCollins", format: "Paperback", pages: "197 pages",
+    desc: "A shepherd boy travels from Andalusia to Egypt in search of treasure, discovering that the universe conspires in favor of those who pursue their personal legend.",
+  },
+  {
+    id: 10, country: "Brazil",
+    title: "The Hour of the Star", author: "Clarice Lispector",
+    year: "1977", isbn: "9780811211765", color: "#a8c0b0", favorite: true,
+    spineW: 22, spineH: 196,
+    publisher: "New Directions", format: "Paperback", pages: "96 pages",
+    desc: "A poor girl from the Northeast lives invisibly in Rio de Janeiro. Lispector's final novel, narrated by a male writer who struggles to tell her story without consuming it.",
+  },
+  {
+    id: 11, country: "Argentina",
+    title: "The Invention of Morel", author: "Adolfo Bioy Casares",
+    year: "1940", isbn: "9781590170571", color: "#b8b0cc", favorite: true,
+    spineW: 24, spineH: 198,
+    publisher: "New York Review Books", format: "Paperback", pages: "103 pages",
+    desc: "A fugitive on a mysterious island discovers a machine that creates immortal projections of the dead. A founding text of speculative Latin American fiction, precursor to Lost.",
+  },
+  {
+    id: 12, country: "Chile",
+    title: "The House of the Spirits", author: "Isabel Allende",
+    year: "1982", isbn: "9781501117015", color: "#c8a0b0", favorite: false,
+    spineW: 30, spineH: 234,
+    publisher: "Plaza & Janés", format: "Paperback", pages: "433 pages",
+    desc: "Three generations of the Trueba family navigate love, political turmoil, and magic in an unnamed Latin American country. Allende's sweeping, magical-realist debut.",
+  },
+  {
+    id: 13, country: "Australia",
+    title: "The Book Thief", author: "Markus Zusak",
+    year: "2005", isbn: "9780375842207", color: "#b0be9e", favorite: false,
+    spineW: 34, spineH: 240,
+    publisher: "Picador", format: "Paperback", pages: "552 pages",
+    desc: "Narrated by Death during World War II Germany, the story of Liesel Meminger, who steals books and shares them with her neighbors while bombs fall on their street.",
+  },
 ];
+
+/* Books shown on the physical spine shelf */
+const FAVORITES = [
+  { id:"f00", title:"Chess Story",                              author:"Stefan Zweig",          isbn:"9780241337547", cover:"https://books.google.com/books/content?vid=ISBN9780241337547&printsec=frontcover&img=1&zoom=1", spineW:14, spineH:200,
+    year:"1942", publisher:"NYRB Classics",        format:"Paperback", pages:"120 pages",
+    desc:"Travelers on a ship discover the world chess champion on board and challenge him. A mysterious passenger steps in — and how he gained his extraordinary skill lies at the heart of Zweig's final work." },
+  { id:"f01", title:"Astrophysics for People in a Hurry",      author:"Neil deGrasse Tyson",   isbn:"9780393609394", spineW:20, spineH:212,
+    year:"2017", publisher:"W. W. Norton",         format:"Hardcover", pages:"208 pages",
+    desc:"Tyson brings the universe down to Earth — from the Big Bang to black holes, from quarks to quantum mechanics — in short, consumable chapters for the curious and time-pressed." },
+  { id:"f02", title:"Kafka on the Shore",                      author:"Haruki Murakami",        isbn:"9781400079278", spineW:30, spineH:232,
+    year:"2002", publisher:"Knopf",                format:"Hardcover", pages:"436 pages",
+    desc:"A teenage runaway and an elderly man who makes fish fall from the sky find their paths mysteriously converging. Murakami at his most metaphysical." },
+  { id:"f03", title:"The Untethered Soul",                     author:"Michael A. Singer",      isbn:"9781572245372", spineW:18, spineH:210,
+    year:"2007", publisher:"New Harbinger",        format:"Paperback", pages:"200 pages",
+    desc:"A guide to freeing yourself from habitual thoughts and emotions by stepping back and observing the inner voice — a practical map to genuine self-liberation." },
+  { id:"f04", title:"Walden",                                  author:"Henry David Thoreau",    isbn:"9780691096124", spineW:26, spineH:224,
+    year:"1854", publisher:"Princeton UP",         format:"Paperback", pages:"350 pages",
+    desc:"Thoreau's account of two years alone in a cabin at Walden Pond — a foundational American text on self-reliance, nature, and the examined life." },
+  { id:"f05", title:"A Room of One's Own",                     author:"Virginia Woolf",         isbn:"9780156787338", spineW:14, spineH:198,
+    year:"1929", publisher:"Hogarth Press",        format:"Paperback", pages:"112 pages",
+    desc:"Woolf argues that a woman must have financial independence and a private space if she is to write fiction. A landmark essay of feminist literary criticism." },
+  { id:"f06", title:"The Miracle of Mindfulness",             author:"Thich Nhat Hanh",        isbn:"9780807012390", spineW:16, spineH:200,
+    year:"1975", publisher:"Beacon Press",         format:"Paperback", pages:"140 pages",
+    desc:"A gentle, eloquent introduction to the practice of meditation and mindfulness, cherished by generations of readers for its clarity and quiet wisdom." },
+  { id:"f07", title:"The Anthropocene Reviewed",              author:"John Green",             isbn:"9780525555360", spineW:26, spineH:224,
+    year:"2021", publisher:"Dutton",               format:"Hardcover", pages:"295 pages",
+    desc:"Personal essays reviewing different facets of the human-centered planet on a five-star scale — funny, complex, and rich with detail. An open-hearted celebration of the world." },
+  { id:"f08", title:"Civilization and Its Discontents",       author:"Sigmund Freud",          isbn:"9780393304510", spineW:16, spineH:200,
+    year:"1930", publisher:"W. W. Norton",         format:"Paperback", pages:"145 pages",
+    desc:"Freud examines why civilization causes suffering on such a vast scale and whether human drives for pleasure and aggression can ever be reconciled." },
+  { id:"f09", title:"Devotions",                              author:"Mary Oliver",            isbn:"9780399563263", spineW:30, spineH:230,
+    year:"2017", publisher:"Penguin Press",        format:"Hardcover", pages:"432 pages",
+    desc:"A definitive collection spanning more than fifty years of Oliver's poetry — luminous, mindful writing about the natural world and the art of paying attention." },
+  { id:"f10", title:"Never Let Me Go",                        author:"Kazuo Ishiguro",         isbn:"1400043395",    spineW:24, spineH:226,
+    year:"2005", publisher:"Vintage",              format:"Paperback", pages:"288 pages",
+    desc:"Students at Hailsham boarding school slowly learn the disturbing truth of their existence. A quietly devastating meditation on memory, love, and mortality." },
+  { id:"f11", title:"Small Things Like These",                author:"Claire Keegan",          isbn:"9780802158024", spineW:14, spineH:196,
+    year:"2021", publisher:"Grove Press",          format:"Paperback", pages:"116 pages",
+    desc:"In 1985 Ireland, a coal merchant faces the coming Christmas and the rising past — encountering the complicit silences of a people controlled by the Church." },
+  { id:"f12", title:"How to Win Friends & Influence People",  author:"Dale Carnegie",          isbn:"9780671027032", spineW:22, spineH:220,
+    year:"1936", publisher:"Simon & Schuster",     format:"Paperback", pages:"288 pages",
+    desc:"Carnegie's timeless guide to human relations — becoming a better listener, making people feel valued, and changing the way you handle every relationship." },
+  { id:"f13", title:"The Post-Office Girl",                   author:"Stefan Zweig",           isbn:"9781847490834", spineW:20, spineH:216,
+    year:"1930s", publisher:"NYRB Classics",       format:"Paperback", pages:"240 pages",
+    desc:"Christine toils in a provincial Austrian post office until a telegram from a rich American aunt sweeps her briefly into a world of wealth and desire — then drops her back." },
+  { id:"f14", title:"East of Eden",                           author:"John Steinbeck",         isbn:"0142004235",    spineW:38, spineH:240,
+    year:"1952", publisher:"Penguin Books",        format:"Paperback", pages:"601 pages",
+    desc:"Two families in California's Salinas Valley helplessly reenact the fall of Adam and Eve across generations. Steinbeck called it his magnum opus." },
+  { id:"f16", title:"My Grandmother Asked Me to Tell You She's Sorry", author:"Fredrik Backman", isbn:"9781476789354", spineW:26, spineH:224,
+    year:"2015", publisher:"Atria Books",          format:"Paperback", pages:"352 pages",
+    desc:"Elsa, seven and different, and her crazy grandmother share a world of fairy tales and kingdoms. When Grandmother dies, Elsa must deliver her letters of apology — and discover the truth beneath the stories." },
+  { id:"f17", title:"The Secret Garden",                      author:"Frances Hodgson Burnett", isbn:"9780141321066", spineW:22, spineH:220,
+    year:"1911", publisher:"Penguin Classics",     format:"Paperback", pages:"288 pages",
+    desc:"Mary, transplanted from India to a strange English manor, discovers a long-neglected garden and hears strange sobbing at night. A children's classic about renewal and transformation." },
+  { id:"f18", title:"The Chronicles of Narnia",               author:"C. S. Lewis",            isbn:"9780066238500", spineW:42, spineH:248,
+    year:"1950", publisher:"HarperCollins",        format:"Paperback", pages:"767 pages",
+    desc:"Seven novels of imagination and instruction: the land behind the wardrobe, the Lion who is not tame, and the sea at the edge of the world. Lewis at his mythic best." },
+  { id:"f19", title:"Beloved",                                author:"Toni Morrison",          isbn:"9781400033416", spineW:24, spineH:222,
+    year:"1987", publisher:"Knopf",                format:"Paperback", pages:"324 pages",
+    desc:"Sethe escaped slavery to Ohio but is still haunted — literally — by a ghost. Morrison's unflinching look into the abyss of slavery, winner of the Pulitzer Prize." },
+  { id:"f21", title:"Água Viva",                              author:"Clarice Lispector",      isbn:"9780811220889", cover:"https://books.google.com/books/content?vid=ISBN9780811220889&printsec=frontcover&img=1&zoom=1", spineW:12, spineH:194,
+    year:"1973", publisher:"New Directions",       format:"Paperback", pages:"96 pages",
+    desc:"A painter-narrator launches into infinite reflections on time, death, the natural world, and the art of creation — Lispector's most pure and radically beautiful work." },
+  { id:"f22", title:"The Devil Finds Work",                   author:"James Baldwin",          isbn:"9780385334112", spineW:16, spineH:204,
+    year:"1976", publisher:"Dial Press",           format:"Paperback", pages:"160 pages",
+    desc:"Baldwin's book-length essay on racism in American cinema — our loves, hates, and fears reflected in film, from In the Heat of the Night to The Exorcist." },
+  { id:"f24", title:"The Four Agreements",                    author:"Miguel Ruiz",            isbn:"9781878424310", spineW:16, spineH:204,
+    year:"1997", publisher:"Amber-Allen",          format:"Paperback", pages:"160 pages",
+    desc:"Four ancient Toltec agreements that, if adopted, can transform your life: Be impeccable with your word. Don't take anything personally. Don't make assumptions. Always do your best." },
+  { id:"f25", title:"The Lover",                              author:"Marguerite Duras",       isbn:"9780006541660", spineW:14, spineH:200,
+    year:"1984", publisher:"Éditions de Minuit",   format:"Paperback", pages:"117 pages",
+    desc:"A haunting tale of a tumultuous affair between an adolescent French girl and her Chinese lover in prewar Indochina. Winner of France's Prix Goncourt." },
+  { id:"f26", title:"Exit West",                              author:"Mohsin Hamid",           isbn:"9780735212176", spineW:20, spineH:212,
+    year:"2017", publisher:"Riverhead Books",      format:"Hardcover", pages:"240 pages",
+    desc:"In a city on the brink of civil war, Nadia and Saeed fall in love and flee through mysterious doors that transport migrants across the world. A visionary love story." },
+  { id:"f27", title:"The Hour of the Star",                   author:"Clarice Lispector",      isbn:"9780811211765", spineW:12, spineH:196,
+    year:"1977", publisher:"New Directions",       format:"Paperback", pages:"96 pages",
+    desc:"Macabéa lives invisibly in Rio's slums, eking out a living as a typist. Lispector's final novel, narrated by a male writer who struggles to tell her story without consuming it." },
+  { id:"f28", title:"A Breath of Life",                       author:"Clarice Lispector",      isbn:"9780811221207", cover:"https://books.google.com/books/content?vid=ISBN9780811221207&printsec=frontcover&img=1&zoom=1", spineW:18, spineH:210,
+    year:"1978", publisher:"New Directions",       format:"Paperback", pages:"200 pages",
+    desc:"A posthumous mystical dialogue between a god-like author and his creation, Angela — if Angela dies, Clarice must die too. Assembled from fragments after her death in 1977." },
+  { id:"f29", title:"Giovanni's Room",                        author:"James Baldwin",          isbn:"9780345806567", spineW:18, spineH:206,
+    year:"1956", publisher:"Dial Press",           format:"Paperback", pages:"159 pages",
+    desc:"An American in 1950s Paris falls in love with an Italian bartender. A devastating exploration of desire, shame, and the violence of self-denial that still resonates today." },
+  { id:"f30", title:"The Crucible",                           author:"Arthur Miller",          isbn:"9780142437056", spineW:16, spineH:202,
+    year:"1953", publisher:"Penguin Books",        format:"Paperback", pages:"152 pages",
+    desc:"Salem, 1692: a vengeful teenager's accusation of witchcraft multiplies to consume an entire village. Miller's masterpiece on mass hysteria, written in the shadow of McCarthyism." },
+  { id:"f31", title:"No Exit",                                author:"Jean-Paul Sartre",       isbn:"9780679725169", spineW:12, spineH:192,
+    year:"1944", publisher:"Gallimard",            format:"Paperback", pages:"67 pages",
+    desc:"Three strangers locked in a room for eternity. Sartre's existentialist masterwork distilled into one unforgettable line: Hell is other people." },
+  { id:"f32", title:"The Invention of Morel",                 author:"Adolfo Bioy Casares",    isbn:"9781590170571", spineW:14, spineH:196,
+    year:"1940", publisher:"NYRB Classics",        format:"Paperback", pages:"103 pages",
+    desc:"A fugitive on a mysterious island discovers a machine that creates immortal projections of the dead. Borges called it a masterpiece of plotting — the model for Last Year at Marienbad." },
+  { id:"f33", title:"Norwegian Wood",                         author:"Haruki Murakami",        isbn:"9780375704024", spineW:22, spineH:220,
+    year:"1987", publisher:"Vintage International", format:"Paperback", pages:"293 pages",
+    desc:"A young college student in Tokyo is devoted to a beautiful, introspective woman whose grief pulls her further away. A nostalgic elegy for youth and lost love." },
+  { id:"f35", title:"Circe",                                  author:"Madeline Miller",        isbn:"9780316556347", spineW:28, spineH:228,
+    year:"2018", publisher:"Little, Brown",        format:"Hardcover", pages:"393 pages",
+    desc:"The witch of The Odyssey gets her own story: born powerless among the Titans, Circe discovers her gifts, defies the gods, and forges her identity alone on a deserted island." },
+  { id:"f36", title:"Barn Burning",                           author:"Haruki Murakami",        isbn:"9780679750536", spineW:24, spineH:222,
+    year:"1993", publisher:"Vintage",              format:"Paperback", pages:"336 pages",
+    desc:"A collection of short stories marked by Murakami's signature blend of the everyday and the uncanny — loneliness, jazz, women, cats, and the strange doorways between worlds." },
+  { id:"f37", title:"101 Essays That Will Change the Way You Think", author:"Brianna Wiest",  isbn:"9781945796371", spineW:28, spineH:228,
+    year:"2018", publisher:"Thought Catalog",      format:"Paperback", pages:"400 pages",
+    desc:"Essays on why you should pursue purpose over passion, embrace negative thinking, and become aware of the cognitive biases quietly shaping your life." },
+  { id:"f38", title:"The Bell Jar",                           author:"Sylvia Plath",           isbn:"9780061148514", spineW:20, spineH:216,
+    year:"1963", publisher:"Harper Perennial",     format:"Paperback", pages:"244 pages",
+    desc:"Esther Greenwood, bright and ambitious, unravels under the pressure of 1950s American womanhood. Plath's masterwork of psychological fiction — raw, funny, and unflinching." },
+  { id:"f39", title:"Tomorrow, and Tomorrow, and Tomorrow",   author:"Gabrielle Zevin",        isbn:"9780593321201", spineW:32, spineH:234,
+    year:"2022", publisher:"Knopf",                format:"Hardcover", pages:"480 pages",
+    desc:"Sam and Sadie — college friends, often in love, never lovers — build a legendary video game together across thirty years. A love story unlike any you have read before." },
+  { id:"f40", title:"The Hunger Games",                       author:"Suzanne Collins",        isbn:"9780439023481", spineW:26, spineH:226,
+    year:"2008", publisher:"Scholastic",           format:"Paperback", pages:"374 pages",
+    desc:"In a dystopian future, sixteen-year-old Katniss volunteers for the annual televised death match to save her sister — and becomes the spark of a revolution." },
+  { id:"f41", title:"Daisy Jones & The Six",                  author:"Taylor Jenkins Reid",    isbn:"9781524798659", spineW:26, spineH:224,
+    year:"2019", publisher:"Ballantine Books",     format:"Hardcover", pages:"368 pages",
+    desc:"Told in oral history format, the rise and sudden breakup of a legendary 1970s rock band — Daisy Jones's raw charisma, Billy Dunne's demons, and the music that defined an era." },
+  { id:"f42", title:"Tuesdays with Morrie",                   author:"Mitch Albom",            isbn:"9780767905923", spineW:18, spineH:208,
+    year:"1997", publisher:"Doubleday",            format:"Hardcover", pages:"192 pages",
+    desc:"A journalist reconnects with his dying college professor every Tuesday — a final class on love, work, aging, family, and how to live. Tender, wise, and enduring." },
+  { id:"f43", title:"The Five People You Meet in Heaven",     author:"Mitch Albom",            isbn:"9781401308582", spineW:18, spineH:208,
+    year:"2003", publisher:"Hyperion",             format:"Hardcover", pages:"196 pages",
+    desc:"On his 83rd birthday, Eddie dies saving a girl's life and wakes in an afterlife where five strangers explain the meaning of the life he lived." },
+  { id:"f44", title:"Fahrenheit 451",                         author:"Ray Bradbury",           isbn:"9781451673319", spineW:20, spineH:216,
+    year:"1953", publisher:"Simon & Schuster",     format:"Paperback", pages:"256 pages",
+    desc:"In a future America where books are burned, fireman Guy Montag starts to question the society he serves. Bradbury's incendiary classic of censorship and rebellion." },
+  { id:"f45", title:"Fences",                                 author:"August Wilson",          isbn:"9780452264014", spineW:14, spineH:196,
+    year:"1985", publisher:"Plume",                format:"Paperback", pages:"101 pages",
+    desc:"Troy Maxson, a proud and difficult Black man in 1950s Pittsburgh, struggles with his own fences — the ones he builds and the ones built around him. Wilson's Pulitzer-winning play." },
+  { id:"f46", title:"Flowers for Algernon",                   author:"Daniel Keyes",           isbn:"9780156030304", spineW:24, spineH:222,
+    year:"1966", publisher:"Harcourt",             format:"Paperback", pages:"311 pages",
+    desc:"Charlie Gordon has an unusually low IQ and is chosen for an experimental surgery that makes him a genius — until the lab mouse Algernon begins to deteriorate." },
+  { id:"f47", title:"Uglies",                                 author:"Scott Westerfeld",       isbn:"9780689865381", spineW:28, spineH:228,
+    year:"2005", publisher:"Simon Pulse",          format:"Paperback", pages:"425 pages",
+    desc:"In a future where everyone gets an operation at sixteen to become 'pretty,' Tally's new friend Shay refuses — and Tally must choose between conformity and freedom." },
+  { id:"f48", title:"Genuine Fraud",                          author:"E. Lockhart",            isbn:"9780385744775", spineW:22, spineH:220,
+    year:"2017", publisher:"Delacorte Press",      format:"Hardcover", pages:"272 pages",
+    desc:"A compulsively readable thriller told in reverse — a brilliant, ruthless young woman, a missing heiress, and a friendship defined by obsession and betrayal." },
+  { id:"f49", title:"The Song of Achilles",                   author:"Madeline Miller",        isbn:"9780062060624", spineW:26, spineH:226,
+    year:"2011", publisher:"Ecco",                 format:"Paperback", pages:"378 pages",
+    desc:"A dazzling retelling of the Iliad through the eyes of Patroclus — his love for Achilles, the brutality of Troy, and the cost of immortal glory." },
+  { id:"f50", title:"The Catcher in the Rye",                 author:"J. D. Salinger",         isbn:"9780316769174", spineW:22, spineH:220,
+    year:"1951", publisher:"Little, Brown",        format:"Paperback", pages:"277 pages",
+    desc:"Holden Caulfield, expelled from prep school, drifts through New York for three days — searching for something genuine in a world that feels insincere and superficial." },
+  { id:"f51", title:"Paper Towns",                            author:"John Green",             isbn:"9780142414897", cover:"https://books.google.com/books/content?vid=ISBN9780142414897&printsec=frontcover&img=1&zoom=1", spineW:24, spineH:222,
+    year:"2008", publisher:"Dutton",               format:"Hardcover", pages:"305 pages",
+    desc:"Quentin follows the enigmatic Margo on a night of revenge, then wakes to find her gone — leaving only cryptic clues he must chase across the country to find her." },
+  { id:"f52", title:"The Great Gatsby",                       author:"F. Scott Fitzgerald",    isbn:"9780743273565", spineW:18, spineH:208,
+    year:"1925", publisher:"Scribner",             format:"Paperback", pages:"180 pages",
+    desc:"Nick Carraway moves to Long Island and is drawn into the orbit of the wealthy, mysterious Jay Gatsby — a Jazz Age examination of the American Dream and its corruption." },
+  { id:"f53", title:"Crying in H Mart",                       author:"Michelle Zauner",        isbn:"9780525657743", spineW:22, spineH:218,
+    year:"2021", publisher:"Knopf",                format:"Hardcover", pages:"256 pages",
+    desc:"Japanese Breakfast's Michelle Zauner on growing up Korean American, her mother's terminal cancer, and reclaiming her identity through food, language, and memory." },
+  { id:"f54", title:"One Flew Over the Cuckoo's Nest",        author:"Ken Kesey",              isbn:"9780143056980", spineW:24, spineH:222,
+    year:"1962", publisher:"Viking Press",         format:"Paperback", pages:"320 pages",
+    desc:"Randle McMurphy brings chaos and life to a psychiatric ward ruled by the iron will of Nurse Ratched. Kesey's classic of rebellion against conformity and institutional power." },
+];
+
+const PANEL_W = 340;
 ---
 
 <Layout
   seo={{
-    title: "Books | " + identity.name,
+    title: "Bookshelf | " + identity.name,
     description: "One book per country — reading the world.",
     image: identity.logo,
   }}
 >
-  <section class="mt-10 max-w-2xl mx-auto px-6 scroll-reveal text-center">
-    <h1 class="font-bold text-3xl mb-10">Bookshelf</h1>
-  </section>
-
-  <section id="map-container" class="books-map"></section>
-  <div id="tooltip" class="books-tooltip"></div>
   <script id="books-data" type="application/json" set:html={JSON.stringify(BOOKS)} />
+  <div id="tooltip" class="books-tooltip"></div>
 
-  <section class="max-w-2xl mx-auto px-6 text-center mt-4">
-    <p class="opacity-40">Tracking my progress as I read a book from every country in the world.</p>
-  </section>
+  <div class="bs-page">
 
-  <section class="mt-16 mb-4 scroll-reveal">
-    <div class="max-w-2xl mx-auto px-6 mb-6 text-center">
-      <h1 class="font-bold text-3xl mb-1">Favorites</h1>
+    <!-- ══ HERO ══ -->
+    <div class="bs-header">
+      <hr class="bs-rule" />
+      <div class="bs-header-row">
+        <h1 class="bs-title">Bookshelf</h1>
+      </div>
+      <hr class="bs-rule" />
     </div>
-    <div style="overflow:hidden; width:100%; position:relative;">
-      <div style="position:absolute; left:0; top:0; bottom:0; width:80px; background:linear-gradient(to right, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div style="position:absolute; right:0; top:0; bottom:0; width:80px; background:linear-gradient(to left, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div id="marquee-track" style="display:flex; gap:20px; width:max-content; will-change:transform; padding: 8px 0 16px;"></div>
-    </div>
-  </section>
 
-  <section class="mt-8 max-w-4xl mx-auto px-6 mb-20 scroll-reveal">
-    <h1 class="font-bold text-3xl mb-6 text-center">Reading the World</h1>
-    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-2 text-sm">
-      {BOOKS.map((book) => (
-        <li class="flex items-baseline whitespace-nowrap">
-          <span class="opacity-60 shrink-0">{book.country}</span>
-          <span class="opacity-30 mx-2">–</span>
-          <span class="font-medium">{book.title}</span>
-          <span class="opacity-60 ml-2">{book.author}{book.favorite ? " *" : ""}</span>
-        </li>
-      ))}
-    </ul>
-    <p class="text-xs opacity-40 mt-8">* personal favourite</p>
-  </section>
+    <!-- ══ SHELF (favourites) ══ -->
+    <div class="shelf-area">
+      <div class="shelf" id="shelf">
+        {FAVORITES.map((b) => (
+          <div
+            class="book"
+            data-id={b.id}
+            data-sw={String(b.spineW)}
+            style={`width:${b.spineW}px; --sh:${b.spineH}px`}
+            title={b.title}
+          >
+            <!-- ── Spine (closed state) ── -->
+            <div class="spine" style={`width:${b.spineW}px;height:${b.spineH}px;`}>
+              <img
+                class="spine-img"
+                src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
+                alt={b.title}
+                loading="eager"
+              />
+            </div>
+
+            <!-- ── Panel (open state) ── -->
+            <div class="book-panel">
+              <div class="b-cover">
+                <img
+                  src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
+                  alt={b.title}
+                  onerror="this.style.opacity='0'"
+                  loading="lazy"
+                />
+              </div>
+              <div class="b-info">
+                <h2 class="bi-title">{b.title}</h2>
+                <p class="bi-desc">{b.desc}</p>
+                <div class="bi-meta">
+                  <div class="meta-row">
+                    <span class="ml">PUBLISHED</span>
+                    <span class="mv">{b.year}</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="ml">PUBLISHER</span>
+                    <span class="mv">{b.publisher}</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="ml">FORMAT</span>
+                    <span class="mv">{b.format}</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="ml">PAGES</span>
+                    <span class="mv">{b.pages}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ══ MAP + READING LIST ══ -->
+    <div class="bs-lower">
+      <div class="bs-map-col">
+        <h2 class="bs-list-title">Reading the World</h2>
+        <p class="bs-list-sub">Tracking my progress as I read a book from every country in the world!</p>
+        <section id="map-container" class="bs-map"></section>
+      </div>
+      <div class="bs-list-col">
+        <ul class="bs-list">
+          {BOOKS.map((b) => (
+            <li class="bs-li">
+              <span class="bl-country">{b.country}</span>
+              <span class="bl-sep">—</span>
+              <span class="bl-title">{b.title}</span>
+              <span class="bl-author">{b.author}{b.favorite ? " *" : ""}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="bs-footnote">* personal favourite</p>
+      </div>
+    </div>
+
+    <div style="height:80px;"></div>
+  </div>
 </Layout>
 
+<!-- ══ GLOBAL (for tooltip + map SVG) ══ -->
 <style is:global>
-  .books-map { max-width: 1100px; margin: 0 auto; background: #fff; overflow: hidden; aspect-ratio: 2 / 1; }
-  .dark .books-map { background: #000; }
-  .books-map svg { display: block; width: 100%; height: auto; }
   .books-tooltip {
     display: none; position: fixed; font-size: 11px;
     background: #fff; color: #000; padding: 8px 12px;
-    pointer-events: none; z-index: 100; line-height: 1.5; border-radius: 0;
+    pointer-events: none; z-index: 100; line-height: 1.5;
+    border: 1px solid #e8e8e8;
   }
+  .bs-map svg { display: block; width: 100%; height: auto; }
 </style>
 
+<style>
+  /* ── Page ── */
+  .bs-page {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #fff;
+  }
+
+  /* ── Hero ── */
+  .bs-header {
+    padding: 52px 52px 0;
+  }
+  .bs-rule {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 0;
+  }
+  .bs-header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+  .bs-title {
+    font-size: 28px;
+    font-weight: 300;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0;
+  }
+
+  /* ── Shelf area: vertically centers the shelf with lots of white space ── */
+  .shelf-area {
+    display: flex;
+    align-items: center;
+    min-height: 44vh;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding: 56px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #d8d8d8 transparent;
+  }
+  .shelf-area::-webkit-scrollbar { height: 3px; }
+  .shelf-area::-webkit-scrollbar-track { background: transparent; }
+  .shelf-area::-webkit-scrollbar-thumb { background: #d8d8d8; border-radius: 2px; }
+
+  .shelf {
+    display: flex;
+    align-items: flex-end;      /* books share a common baseline */
+    padding: 0 52px;
+    gap: 2px;
+    flex-shrink: 0;
+    zoom: 1.25;
+  }
+
+  /* ── Book wrapper ── */
+  .book {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    flex-shrink: 0;
+    cursor: pointer;
+    /* width transitions from spineW → PANEL_W */
+    transition: width 430ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* ── Spine ── */
+  .spine {
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition:
+      width 430ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity 200ms ease;
+  }
+
+  .book.selected .spine {
+    width: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .spine-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: saturate(70%);
+  }
+
+  /* ── Expanded panel (cover + info) ── */
+  .book-panel {
+    display: flex;
+    align-items: flex-end;
+    flex-shrink: 0;
+    width: 340px;
+    height: var(--sh, 192px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 320ms 180ms ease;
+  }
+
+  .book.selected .book-panel {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Cover */
+  .b-cover {
+    height: var(--sh, 192px);
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+  .b-cover img {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+
+  /* Info panel */
+  .b-info {
+    flex: 1;
+    padding: 0 12px 0 14px;
+    align-self: flex-start;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .bi-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #111;
+    margin: 0 0 7px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .bi-desc {
+    font-size: 9px;
+    color: #888;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Metadata table */
+  .bi-meta {
+    margin-top: 10px;
+    border-top: 1px solid #e5e5e5;
+    padding: 0 2px;
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    align-items: baseline;
+    padding: 4px 0;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .ml {
+    font-size: 7px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c0c0c0;
+    font-weight: 400;
+  }
+
+  .mv {
+    font-size: 8.5px;
+    color: #666;
+  }
+
+  /* ── Lower: map + reading list ── */
+  .bs-lower {
+    display: flex;
+    gap: 48px;
+    padding: 56px 52px 0;
+    align-items: flex-start;
+  }
+
+  .bs-map-col { flex: 0 0 600px; }
+  .bs-list-col { flex: 1; min-width: 0; }
+
+  .bs-list-title {
+    font-size: 28px;
+    font-weight: 300;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0 0 8px;
+    text-align: center;
+  }
+  .bs-list-sub {
+    font-size: 13px;
+    color: #aaa;
+    margin: 0 0 28px;
+    text-align: center;
+  }
+
+  .bs-label {
+    font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase;
+    color: #b0b0b0; margin: 0 0 14px;
+  }
+
+  .bs-map {
+    width: 100%; aspect-ratio: 2/1;
+    background: #fff; overflow: hidden;
+  }
+
+  .bs-note { font-size: 10px; color: #ccc; margin: 8px 0 0; }
+
+  .bs-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .bs-li { display: flex; align-items: baseline; font-size: 12px; flex-wrap: wrap; }
+  .bl-country { color: #9a9a9a; min-width: 108px; flex-shrink: 0; }
+  .bl-sep { color: #ddd; margin: 0 8px; }
+  .bl-title { font-weight: 500; color: #1d1d1f; margin-right: 6px; }
+  .bl-author { color: #aaa; font-size: 11px; }
+  .bs-footnote { font-size: 10px; color: #ccc; margin-top: 20px; }
+</style>
+
+<!-- ══ INTERACTION ══ -->
 <script is:inline>
-  (function () {
-    var FAVORITES = [
-      { title: "Never Let Me Go", author: "Kazuo Ishiguro" },
-      { title: "The Picture of Dorian Gray", author: "Oscar Wilde" },
-      { title: "East of Eden", author: "John Steinbeck" },
-      { title: "The Year of Magical Thinking", author: "Joan Didion" },
-      { title: "Giovanni's Room", author: "James Baldwin" },
-      { title: "Thinking, Fast and Slow", author: "Daniel Kahneman" },
-      { title: "Just Kids", author: "Patti Smith" },
-      { title: "Sula", author: "Toni Morrison" },
-      { title: "The Invisible Life of Addie LaRue", author: "V. E. Schwab" },
-      { title: "Normal People", author: "Sally Rooney" },
-      { title: "Devotions", author: "Mary Oliver" },
-      { title: "Walden", author: "Henry David Thoreau" },
-      { title: "The Book Thief", author: "Markus Zusak" },
-      { title: "All About Love", author: "bell hooks" },
-      { title: "White Nights", author: "Fyodor Dostoyevsky" },
-      { title: "Atonement", author: "Ian McEwan" },
-      { title: "The Secret History", author: "Donna Tartt" },
-    ];
+(function () {
+  var PANEL_W = 340;
+  var shelf   = document.getElementById("shelf");
+  var active  = null;
 
-    var COVERS = {
-      "Never Let Me Go": "https://covers.openlibrary.org/b/isbn/1400043395-M.jpg",
-      "The Picture of Dorian Gray": "https://covers.openlibrary.org/b/isbn/0141439572-M.jpg",
-      "East of Eden": "https://covers.openlibrary.org/b/isbn/0142004235-M.jpg",
-      "Giovanni's Room": "https://covers.openlibrary.org/b/isbn/0375701877-M.jpg",
-      "Thinking, Fast and Slow": "https://covers.openlibrary.org/b/isbn/9780374533557-M.jpg",
-      "Just Kids": "https://covers.openlibrary.org/b/isbn/9780060936228-M.jpg",
-      "Sula": "https://covers.openlibrary.org/b/isbn/1400033438-M.jpg",
-      "The Invisible Life of Addie LaRue": "https://covers.openlibrary.org/b/isbn/0765387565-M.jpg",
-      "Normal People": "https://covers.openlibrary.org/b/isbn/9781984822178-M.jpg",
-      "Devotions": "https://covers.openlibrary.org/b/isbn/9780399563263-M.jpg",
-      "Walden": "https://covers.openlibrary.org/b/isbn/9780691096124-M.jpg",
-      "The Year of Magical Thinking": "/magical-thinking.jpg",
-      "The Book Thief": "https://covers.openlibrary.org/b/isbn/0375842209-M.jpg",
-      "All About Love": "https://covers.openlibrary.org/b/isbn/0060959479-M.jpg",
-      "White Nights": "https://covers.openlibrary.org/b/isbn/9780140449266-M.jpg",
-      "Atonement": "https://covers.openlibrary.org/b/isbn/9780385721790-M.jpg",
-      "The Secret History": "https://covers.openlibrary.org/b/isbn/1400031702-M.jpg"
-    };
+  if (!shelf) return;
 
-    var track = document.getElementById('marquee-track');
-    if (!track) return;
+  shelf.addEventListener("click", function (e) {
+    /* ignore clicks inside the text panel so user can select/read */
+    if (e.target.closest(".b-info")) return;
 
-    var all = FAVORITES.concat(FAVORITES);
-    all.forEach(function (book) {
-      var cover = COVERS[book.title] || '';
-      var item = document.createElement('div');
-      item.style.cssText = 'flex-shrink:0; width:90px; cursor:default;';
-      var imgHtml = cover
-        ? '<img src="' + cover + '" alt="' + book.title + '" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background=\'#e5e7eb\'" />'
-        : '<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:9px;text-align:center;color:#9ca3af;">' + book.title + '</div>';
-      item.innerHTML =
-        '<div style="width:90px; height:130px; border-radius:4px; overflow:hidden; background:#f3f4f6; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">' + imgHtml + '</div>' +
-        '<p style="font-size:10px; font-weight:500; line-height:1.3; margin:0; opacity:0.8;">' + book.title + '</p>' +
-        '<p style="font-size:9px; opacity:0.45; margin:2px 0 0;">' + book.author + '</p>';
-      track.appendChild(item);
-    });
+    var book = e.target.closest(".book");
+    if (!book) return;
 
-    var x = 0;
-    var paused = false;
-    track.addEventListener('mouseenter', function () { paused = true; });
-    track.addEventListener('mouseleave', function () { paused = false; });
-
-    function animate() {
-      if (!paused) {
-        x -= 0.5;
-        var half = track.scrollWidth / 2;
-        if (Math.abs(x) >= half) x = 0;
-        track.style.transform = 'translateX(' + x + 'px)';
+    if (active === book) {
+      /* collapse */
+      book.classList.remove("selected");
+      book.style.width = book.dataset.sw + "px";
+      active = null;
+    } else {
+      /* close previous */
+      if (active) {
+        active.classList.remove("selected");
+        active.style.width = active.dataset.sw + "px";
       }
-      requestAnimationFrame(animate);
+      /* open new */
+      book.classList.add("selected");
+      book.style.width = PANEL_W + "px";
+      active = book;
     }
-    animate();
-  })();
+  });
+})();
 </script>
 
+<!-- ══ D3 WORLD MAP ══ -->
 <script>
   import * as d3 from "d3";
 
-  interface Book { country: string; title: string; author: string; favorite: boolean; }
+  interface Book { country: string; title: string; author: string; }
   const BOOKS: Book[] = JSON.parse(document.getElementById("books-data")!.textContent!);
   const bookMap = new Map(BOOKS.map((b) => [b.country, b]));
   const container = document.getElementById("map-container") as HTMLDivElement;
-  const tooltip = document.getElementById("tooltip") as HTMLDivElement;
+  const tooltip   = document.getElementById("tooltip") as HTMLDivElement;
   let geoData: any = null;
 
   async function render() {
-    const width = container.clientWidth;
-    const height = width * 0.5;
+    const w = container.clientWidth;
+    const h = w * 0.5;
     container.innerHTML = "";
-    const svg = d3.select(container).append("svg").attr("width", width).attr("height", height);
-    if (!geoData) {
-      const response = await fetch("/world.geojson");
-      geoData = await response.json();
-    }
-    const projection = d3.geoNaturalEarth1().fitSize([width, height], geoData);
-    const path = d3.geoPath().projection(projection);
-    const isDark = document.documentElement.classList.contains("dark");
-    const readColor = isDark ? "#ffffff" : "#B89EA9";
-    const unreadColor = isDark ? "#1a1a1a" : "#e5e7eb";
-    const glowFilter = isDark ? "drop-shadow(0 0 6px rgba(255,255,255,0.4))" : "drop-shadow(0 0 6px rgba(184,158,169,0.5))";
-
+    const svg = d3.select(container).append("svg").attr("width", w).attr("height", h);
+    if (!geoData) { const r = await fetch("/world.geojson"); geoData = await r.json(); }
+    const proj = d3.geoNaturalEarth1().fitSize([w, h], geoData);
+    const path = d3.geoPath().projection(proj);
     svg.selectAll("path").data(geoData.features).join("path")
       .attr("d", path as any)
-      .attr("fill", (d: any) => bookMap.has(d.properties.name) ? readColor : unreadColor)
+      .attr("fill", (d: any) => bookMap.has(d.properties.name) ? "#B89EA9" : "#e5e7eb")
       .attr("stroke", "none")
-      .style("filter", (d: any) => bookMap.has(d.properties.name) ? glowFilter : "none")
+      .style("filter", (d: any) => bookMap.has(d.properties.name) ? "drop-shadow(0 0 4px rgba(184,158,169,0.5))" : "none")
       .style("cursor", (d: any) => bookMap.has(d.properties.name) ? "pointer" : "default")
-      .on("mouseenter", function (_event: MouseEvent, d: any) {
-        const book = bookMap.get(d.properties.name);
-        if (!book) return;
+      .on("mouseenter", (_e: MouseEvent, d: any) => {
+        const b = bookMap.get(d.properties.name);
+        if (!b) return;
         tooltip.style.display = "block";
-        tooltip.innerHTML = "<strong>" + book.country + "</strong><br/>" + book.title + "<br/><em>" + book.author + "</em>";
+        tooltip.innerHTML = "<strong>" + b.country + "</strong><br/>" + b.title + "<br/><em>" + b.author + "</em>";
       })
-      .on("mousemove", function (event: MouseEvent) {
-        tooltip.style.left = event.clientX + 12 + "px";
-        tooltip.style.top = event.clientY + 12 + "px";
-      })
-      .on("mouseleave", function () { tooltip.style.display = "none"; });
+      .on("mousemove", (e: MouseEvent) => { tooltip.style.left = e.clientX + 12 + "px"; tooltip.style.top = e.clientY + 12 + "px"; })
+      .on("mouseleave", () => { tooltip.style.display = "none"; });
   }
 
   render();
-  let resizeTimer: ReturnType<typeof setTimeout>;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(render, 200);
-  });
-
+  let t: ReturnType<typeof setTimeout>;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(render, 200); });
   new MutationObserver(() => render()).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 </script>

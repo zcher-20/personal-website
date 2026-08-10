@@ -1,353 +1,533 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { homePageContent, workPageContent, projectsPageContent } from "../config";
+import { Icon } from "astro-icon/components";
+import { homePageContent, workPageContent } from "../config";
 
-const expItems = workPageContent.items.slice(0, 6).map((item) => ({
-  year: item.date.match(/(\d{4})/)?.[1] ?? "",
-  company: item.company.name,
-  role: item.title.split(" — ")[0],
-  url: item.company.url,
+const now = new Date();
+const dateStr = now.toLocaleDateString("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+
+const SECTIONS = [
+  { num: "001", label: "About",       image: "/about-cover.png",               href: "#about" },
+  { num: "002", label: "Experience",  image: "/experience-cover.png",          href: "#experience" },
+  { num: "003", label: "Projects",    image: "/projects-canvas-cover.png",     href: "/projects" },
+  { num: "004", label: "Mind",        image: "/ws-network.png",                 href: "/mind" },
+  { num: "005", label: "Bookshelf",   image: "/books-cover.png",                href: "/books" },
+  { num: "006", label: "Photography", image: "/photography-cover.png",           href: "/photography" },
+];
+
+const APP_NAV = [
+  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
+  { label: "About",       icon: "mdi:account-outline",     href: "#about" },
+  { label: "Experience",  icon: "mdi:briefcase-outline",   href: "#experience" },
+  { label: "Projects",    icon: "mdi:folder-open-outline", href: "/projects" },
+  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photography", icon: "mdi:camera-outline",      href: "/photography" },
+];
+
+const EXPERIENCE = workPageContent.items.map((job) => ({
+  ...job,
+  cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
 }));
 
-const featuredProjects = projectsPageContent.projects.filter((p) => p.featured);
+const SKILLS = [
+  {
+    label: "Design & Creative",
+    desc: "Building visual systems and interfaces that make complex ideas feel clear and natural.",
+    tags: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Editorial Design", "CSS Animations", "Vanilla JS"],
+  },
+  {
+    label: "AI & Engineering",
+    desc: "Building intelligent systems — from RAG pipelines to multi-agent workflows and LLM applications.",
+    tags: ["Agentic AI", "RAG", "LLMs", "Python", "Multi-Agent", "LangGraph", "FastAPI", "Azure AI"],
+  },
+  {
+    label: "Research & Publication",
+    desc: "Publishing peer-reviewed research across machine learning, hardware, and medical imaging.",
+    tags: ["IBM Research", "Medical Imaging", "Computer Vision", "Quantum ML", "Earth Observation", "GIS"],
+  },
+];
 ---
 
-<Layout seo={homePageContent.seo}>
-  <!-- Hero -->
-  <section class="hero-section">
-    <div class="hero-inner">
-      <div class="hero-left">
-        <h1 class="headline">
-          I'm Zayneb, a researcher who <em>designs</em>.
-        </h1>
+<Layout seo={homePageContent.seo} canvasPage={true} noNav={true}>
+  <div class="ws-root">
+
+    <!-- ── App sidebar ── -->
+    <aside id="app-sidebar" class="app-sidebar open">
+
+      <div class="app-sidebar-header">
+        <button id="sidebar-toggle-btn" class="sidebar-icon-btn" title="Toggle sidebar">
+          <Icon name="mdi:chevron-left" id="toggle-icon-close" class="w-[15px] h-[15px]" />
+          <Icon name="mdi:chevron-right" id="toggle-icon-open" class="w-[15px] h-[15px] hidden" />
+        </button>
       </div>
 
-      <div class="hero-right">
-        {expItems.map((item) => (
-          <div class="exp-row">
-            <span class="exp-year">{item.year}</span>
-            <span class="exp-company">{item.company}</span>
-            <span class="exp-role">{item.role}</span>
-          </div>
+      <!-- Profile photo -->
+      <div class="sidebar-photo-wrap">
+        <img src="/headshot.jpg" alt="Zayneb Cherif" class="sidebar-photo" draggable="false" />
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <nav class="app-nav">
+        {APP_NAV.map((item) => (
+          <>
+            <a
+              href={item.href}
+              class={`app-nav-btn${item.href.startsWith("#") ? " section-scroll-link" : ""}`}
+              data-target={item.href.startsWith("#") ? item.href.slice(1) : undefined}
+            >
+              <Icon name={item.icon} class="app-nav-icon" />
+              <span class="app-nav-label">{item.label}</span>
+            </a>
+            {item.label === "Projects" && <div class="nav-divider" />}
+          </>
         ))}
-      </div>
-    </div>
-  </section>
+      </nav>
 
-  <!-- Project cards -->
-  <section class="projects-section">
-    <div class="projects-grid">
-      {featuredProjects.map((project) => (
+    </aside>
+
+    <!-- Flyout (collapsed state) -->
+    <div id="sidebar-flyout" class="sidebar-flyout hidden">
+      {APP_NAV.map((item) => (
         <a
-          href={project.url !== "#" ? project.url : undefined}
-          target={project.url !== "#" ? "_blank" : undefined}
-          rel="noopener noreferrer"
-          class="project-card"
+          href={item.href}
+          class={`flyout-item group${item.href.startsWith("#") ? " section-scroll-link" : ""}`}
+          data-target={item.href.startsWith("#") ? item.href.slice(1) : undefined}
         >
-          <div class="project-img-wrap">
-            <img src={project.image} alt={project.title} class="project-img" loading="lazy" />
-          </div>
-          <div class="project-meta">
-            <span class="project-name">{project.title}</span>
-            {project.venue && <span class="project-venue">{project.venue}</span>}
-          </div>
+          <span class="flyout-dot group-hover:bg-[#1d1d1f] transition-colors"></span>
+          <span class="flyout-label group-hover:text-[#1d1d1f] transition-colors">{item.label}</span>
         </a>
       ))}
     </div>
-  </section>
 
-  <!-- Books marquee -->
-  <section class="marquee-section scroll-reveal">
-    <p class="marquee-label">Favorite Books</p>
-    <div style="overflow:hidden; width:100%; position:relative;">
-      <div class="marquee-fade-l"></div>
-      <div class="marquee-fade-r"></div>
-      <div id="home-marquee-track" style="display:flex; gap:20px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
+    <!-- ── Main scrollable content ── -->
+    <div class="archive-main" id="archive-main">
+      <div class="archive-content">
+
+        <!-- Header -->
+        <div class="archive-header">
+          <p class="archive-date">{dateStr}</p>
+          <div class="archive-identity">
+            <h1 class="archive-name">Zayneb Cherif</h1>
+            <p class="archive-role">Computer Science · Columbia University</p>
+            <div class="archive-socials">
+              <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="social-link">LinkedIn ↗</a>
+              <span class="social-sep">·</span>
+              <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="social-link">GitHub ↗</a>
+              <span class="social-sep">·</span>
+              <a href="mailto:zaynebcheriff@gmail.com" class="social-link">Gmail ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section grid -->
+        <div class="sections-grid">
+          {SECTIONS.map((s) => (
+            <div class="section-card group">
+              <div class="section-card-top">
+                <span class="section-num">{s.num}</span>
+              </div>
+              <a href={s.href} class="section-img group-hover:opacity-90 transition-opacity">
+                <img src={s.image} alt={s.label} loading="lazy" draggable="false" />
+              </a>
+              <a href={s.href} class="section-label hover:underline">{s.label}</a>
+            </div>
+          ))}
+        </div>
+
+        <!-- About section -->
+        <section id="about" class="about-section">
+          <div class="about-layout">
+
+            <div class="about-left">
+              <h2 class="about-heading">About</h2>
+              <div class="about-bio">
+                <p>I'm Zayneb Cherif, a B.A. Computer Science &amp; Design student at Columbia University (Class of 2028). I transferred from NYU in 2025. I'm currently studying at the University of Oxford studying AI &amp; Machine Learning as a part of their summer program. I work at the intersection of AI research, full-stack engineering, and human-centered design.</p>
+                <p>My research spans analog in-memory computing, RAG systems, agentic AI pipelines, and quantum-classical ML — with publications at ICLR 2024 (Notable) and IJCAI 2024. On the engineering side I build everything from FastAPI backends and LLM applications to multimodal AI civic platforms.</p>
+                <p>I speak English, Arabic, Italian, and Spanish, and I'm driven by the belief that the best technology is both rigorous and humane.</p>
+                <p>Recognized as a IEEE WISC Scholar 2026, at ICLR 2024, IBM/IEEE AICS 2023, Best Research Award at the University of Sharjah, Genius Olympiad Finalist, and WESEF Finalist.</p>
+              </div>
+              <div class="about-exp-list">
+                <div class="exp-row">
+                  <div class="exp-logo"><img src="/openai.webp" alt="OpenAI" /></div>
+                  <div class="exp-content">
+                    <p class="exp-title">AI Model Trainer — Codex / Project Vox</p>
+                    <p class="exp-company-name">OpenAI</p>
+                    <p class="exp-desc">Training Codex by crafting targeted prompts and adversarial edge-case sets; providing structured feedback to improve code generation, reasoning, and instruction-following capabilities.</p>
+                  </div>
+                  <div class="exp-date">Jun 2026 – Present</div>
+                </div>
+                <div class="exp-row">
+                  <div class="exp-logo"><img src="/startup.webp" alt="Stealth AI Startup" /></div>
+                  <div class="exp-content">
+                    <p class="exp-title">Agentic AI & ML Intern</p>
+                    <p class="exp-company-name">MIT-Incubated Stealth AI Startup</p>
+                    <p class="exp-desc">Building and evaluating production-facing AI agents with prompt engineering, model evaluation, and workflow design. Running large-scale testing of agentic AI systems and identifying optimization opportunities.</p>
+                  </div>
+                  <div class="exp-date">Jun – Aug 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-right">
+              <h2 class="skills-heading">Skills</h2>
+              {SKILLS.map((cat) => (
+                <div class="skill-category">
+                  <p class="skill-cat-label">{cat.label}</p>
+                  <p class="skill-cat-desc">{cat.desc}</p>
+                  <div class="skill-pills">
+                    {cat.tags.map((tag) => (
+                      <span class="skill-pill">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              <div class="about-projects-preview">
+                <img src="/projects-preview.png" alt="Projects canvas" class="about-projects-img" />
+                <a href="/projects" class="about-projects-link">Projects →</a>
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Experience section -->
+        <section id="experience" class="exp-section">
+          <h2 class="exp-heading">Experience</h2>
+          {EXPERIENCE.map((job) => (
+            <div class="exp-row">
+              <div class="exp-logo">
+                <img src={job.company.image} alt={job.company.name} draggable="false" />
+              </div>
+              <div class="exp-content">
+                <p class="exp-title">{job.title}</p>
+                <p class="exp-company-name">{job.company.name}</p>
+                {job.cleanDesc && <p class="exp-desc">{job.cleanDesc}</p>}
+              </div>
+              <div class="exp-date">{job.date}</div>
+            </div>
+          ))}
+        </section>
+
+      </div>
     </div>
-  </section>
+
+  </div>
 </Layout>
 
 <script is:inline>
-  document.addEventListener('astro:page-load', function () {
-    var FAVORITES = [
-      { title: "Never Let Me Go", author: "Kazuo Ishiguro" },
-      { title: "The Picture of Dorian Gray", author: "Oscar Wilde" },
-      { title: "East of Eden", author: "John Steinbeck" },
-      { title: "Giovanni's Room", author: "James Baldwin" },
-      { title: "The Year of Magical Thinking", author: "Joan Didion" },
-      { title: "Thinking, Fast and Slow", author: "Daniel Kahneman" },
-      { title: "Just Kids", author: "Patti Smith" },
-      { title: "Circe", author: "Madeline Miller" },
-      { title: "Sula", author: "Toni Morrison" },
-      { title: "The Invisible Life of Addie LaRue", author: "V. E. Schwab" },
-      { title: "Normal People", author: "Sally Rooney" },
-      { title: "The Book Thief", author: "Markus Zusak" },
-      { title: "All About Love", author: "bell hooks" },
-      { title: "White Nights", author: "Fyodor Dostoyevsky" },
-      { title: "The Secret History", author: "Donna Tartt" },
-      { title: "Walden", author: "Henry David Thoreau" },
-      { title: "Atonement", author: "Ian McEwan" },
-      { title: "Devotions", author: "Mary Oliver" },
-    ];
-    var COVERS = new Map([
-      ["Never Let Me Go", "https://covers.openlibrary.org/b/isbn/1400043395-M.jpg"],
-      ["The Picture of Dorian Gray", "https://covers.openlibrary.org/b/isbn/0141439572-M.jpg"],
-      ["East of Eden", "https://covers.openlibrary.org/b/isbn/0142004235-M.jpg"],
-      ["Giovanni's Room", "https://covers.openlibrary.org/b/isbn/0375701877-M.jpg"],
-      ["The Year of Magical Thinking", "/magical-thinking.jpg"],
-      ["Thinking, Fast and Slow", "https://covers.openlibrary.org/b/isbn/9780374533557-M.jpg"],
-      ["Just Kids", "https://covers.openlibrary.org/b/isbn/9780060936228-M.jpg"],
-      ["Circe", "https://covers.openlibrary.org/b/isbn/0316556343-M.jpg"],
-      ["Sula", "https://covers.openlibrary.org/b/isbn/1400033438-M.jpg"],
-      ["The Invisible Life of Addie LaRue", "https://covers.openlibrary.org/b/isbn/0765387565-M.jpg"],
-      ["Normal People", "https://covers.openlibrary.org/b/isbn/9781984822178-M.jpg"],
-      ["The Book Thief", "https://covers.openlibrary.org/b/isbn/0375842209-M.jpg"],
-      ["All About Love", "https://covers.openlibrary.org/b/isbn/0060959479-M.jpg"],
-      ["White Nights", "https://covers.openlibrary.org/b/isbn/9780140449266-M.jpg"],
-      ["The Secret History", "https://covers.openlibrary.org/b/isbn/1400031702-M.jpg"],
-      ["Walden", "https://covers.openlibrary.org/b/isbn/9780691096124-M.jpg"],
-      ["Atonement", "https://covers.openlibrary.org/b/isbn/9780385721394-M.jpg"],
-      ["Devotions", "https://covers.openlibrary.org/b/isbn/9780399563263-M.jpg"],
-    ]);
-    var el = document.getElementById('home-marquee-track');
-    if (!el || el.children.length > 0) return;
-    var all = FAVORITES.concat(FAVORITES);
-    all.forEach(function (book) {
-      var cover = COVERS.get(book.title) || '';
-      var item = document.createElement('div');
-      item.style.cssText = 'flex-shrink:0; width:90px; cursor:default;';
-      var imgHtml = cover
-        ? '<img src="' + cover + '" alt="' + book.title + '" loading="lazy" decoding="async" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.style.background=\'#e5e7eb\'" />'
-        : '<div style="display:flex;align-items:center;justify-content:center;height:100%;padding:8px;font-size:9px;text-align:center;color:#9ca3af;">' + book.title + '</div>';
-      item.innerHTML =
-        '<div style="width:90px; height:130px; border-radius:4px; overflow:hidden; background:#f3f4f6; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">' + imgHtml + '</div>' +
-        '<p style="font-size:10px; font-weight:500; line-height:1.3; margin:0; opacity:0.8;">' + book.title + '</p>' +
-        '<p style="font-size:9px; opacity:0.45; margin:2px 0 0;">' + book.author + '</p>';
-      el.appendChild(item);
-    });
-    var x = 0, paused = false;
-    el.addEventListener('mouseenter', function () { paused = true; });
-    el.addEventListener('mouseleave', function () { paused = false; });
-    function animate() {
-      if (!paused) {
-        x -= 0.5;
-        var half = el.scrollWidth / 2;
-        if (Math.abs(x) >= half) x = 0;
-        el.style.transform = 'translateX(' + x + 'px)';
-      }
-      requestAnimationFrame(animate);
+  (function () {
+    var sidebar     = document.getElementById("app-sidebar");
+    var toggleBtn   = document.getElementById("sidebar-toggle-btn");
+    var iconClose   = document.getElementById("toggle-icon-close");
+    var iconOpen    = document.getElementById("toggle-icon-open");
+    var flyout      = document.getElementById("sidebar-flyout");
+    var archiveMain = document.getElementById("archive-main");
+
+    function collapse() {
+      sidebar.classList.remove("open");
+      sidebar.classList.add("collapsed");
+      iconClose.classList.add("hidden");
+      iconOpen.classList.remove("hidden");
     }
-    animate();
-  });
+    function expand() {
+      sidebar.classList.remove("collapsed");
+      sidebar.classList.add("open");
+      iconClose.classList.remove("hidden");
+      iconOpen.classList.add("hidden");
+      flyout.classList.add("hidden");
+    }
+
+    toggleBtn.addEventListener("click", function () {
+      sidebar.classList.contains("open") ? collapse() : expand();
+    });
+
+    var flyoutTimer;
+    sidebar.addEventListener("mouseenter", function () {
+      if (!sidebar.classList.contains("collapsed")) return;
+      clearTimeout(flyoutTimer);
+      flyout.classList.remove("hidden");
+    });
+    sidebar.addEventListener("mouseleave", function () {
+      if (!sidebar.classList.contains("collapsed")) return;
+      flyoutTimer = setTimeout(function () { flyout.classList.add("hidden"); }, 150);
+    });
+    flyout.addEventListener("mouseenter", function () { clearTimeout(flyoutTimer); });
+    flyout.addEventListener("mouseleave", function () {
+      flyoutTimer = setTimeout(function () { flyout.classList.add("hidden"); }, 150);
+    });
+
+    // Smooth scroll to anchored sections
+    document.querySelectorAll(".section-scroll-link").forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        var targetId = link.getAttribute("data-target");
+        var section = document.getElementById(targetId);
+        if (section && archiveMain) {
+          e.preventDefault();
+          var target = section.getBoundingClientRect().top
+            - archiveMain.getBoundingClientRect().top
+            + archiveMain.scrollTop;
+          archiveMain.scrollTo({ top: target, behavior: "smooth" });
+        }
+        if (flyout) flyout.classList.add("hidden");
+      });
+    });
+  })();
 </script>
 
 <style>
-  .hero-section {
-    padding: 72px 0 56px;
-  }
-
-  .hero-inner {
-    max-width: 1380px;
-    margin: 0 auto;
-    padding: 0 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: center;
-  }
-
-  .headline {
-    font-family: "Playfair Display", serif;
-    font-size: clamp(2.2rem, 3.6vw, 4.2rem);
-    line-height: 1.08;
-    font-weight: 400;
-    color: #161616;
-    letter-spacing: -0.01em;
-  }
-
-  :global(.dark) .headline {
-    color: #efefef;
-  }
-
-  .headline em {
-    font-style: italic;
-    font-weight: 400;
-  }
-
-  /* Experience table */
-  .exp-row {
-    display: grid;
-    grid-template-columns: 50px 1fr 1fr;
-    padding: 12px 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.07);
-    align-items: center;
-    gap: 8px;
-  }
-
-  :global(.dark) .exp-row {
-    border-top-color: rgba(255, 255, 255, 0.07);
-  }
-
-  .exp-row:last-child {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  }
-
-  :global(.dark) .exp-row:last-child {
-    border-bottom-color: rgba(255, 255, 255, 0.07);
-  }
-
-  .exp-year {
-    font-size: 12px;
-    color: #aaa;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .exp-company {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #1a1a1a;
-  }
-
-  :global(.dark) .exp-company {
-    color: #e8e8e8;
-  }
-
-  .exp-role {
-    font-size: 12px;
-    color: #aaa;
+  .ws-root {
+    display: flex;
+    height: 100vh;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    background: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
   }
 
-  /* Projects */
-  .projects-section {
-    max-width: 1380px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
-
-  .project-card {
-    display: block;
-    border-radius: 10px;
-    overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  .project-img-wrap {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background: #f0f0f0;
-  }
-
-  :global(.dark) .project-img-wrap {
-    background: #1c1c1c;
-  }
-
-  .project-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.45s ease;
-  }
-
-  .project-card:hover .project-img {
-    transform: scale(1.025);
-  }
-
-  .project-meta {
-    padding: 11px 2px 6px;
+  /* ── App Sidebar ── */
+  .app-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    background: #fff;
+    overflow: hidden;
+    transition: width 0.2s ease;
+    flex-shrink: 0;
+    padding-bottom: 24px;
+  }
+  .app-sidebar.open      { width: 220px; padding-top: 8px; align-items: stretch; }
+  .app-sidebar.collapsed { width: 48px;  padding-top: 8px; align-items: center; }
+
+  .app-sidebar-header {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 16px 6px; flex-shrink: 0;
   }
 
-  .project-name {
-    font-size: 13.5px;
-    font-weight: 500;
-    line-height: 1.3;
+  .sidebar-icon-btn {
+    background: none; border: none; cursor: pointer;
+    color: #c0c0c0; padding: 2px;
+    display: flex; align-items: center; transition: color 0.15s;
+  }
+  .sidebar-icon-btn:hover { color: #5a5a5a; }
+
+  /* Profile photo in sidebar */
+  .sidebar-photo-wrap {
+    width: calc(100% - 48px);
+    margin: 0 24px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f5f5f7;
+  }
+  .sidebar-photo {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .app-sidebar.collapsed .sidebar-photo-wrap { display: none; }
+
+  .sidebar-divider {
+    height: 1px; background: #f0f0f0;
+    margin: 10px 16px 14px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .sidebar-divider { display: none; }
+
+  .app-nav {
+    display: flex; flex-direction: column;
+    gap: 2px; padding: 0 4px 0 12px; flex: 1;
+  }
+  .app-sidebar.collapsed .app-nav { padding: 0; align-items: center; gap: 4px; }
+
+  .app-nav-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; color: #7a7a7a;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap; width: 100%;
+  }
+  .app-nav-btn:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .app-sidebar.collapsed .app-nav-btn { padding: 8px; width: auto; }
+
+  .app-nav-icon { width: 15px; height: 15px; flex-shrink: 0; }
+  .app-nav-label { flex: 1; }
+  .app-sidebar.collapsed .app-nav-label { display: none; }
+
+  /* Flyout */
+  .sidebar-flyout {
+    position: absolute; left: 48px; top: 0; z-index: 50;
+    background: #fff; border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column; min-width: 160px;
+  }
+  .sidebar-flyout.hidden { display: none; }
+
+  .flyout-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 6px 0; text-decoration: none;
+  }
+  .flyout-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #d0d0d0; flex-shrink: 0;
+  }
+  .flyout-label { font-size: 12px; color: #7a7a7a; }
+
+  /* ── Main content ── */
+  .archive-main { flex: 1; min-width: 0; overflow-y: auto; }
+  .archive-content { padding: 40px 40px 80px; }
+
+  .archive-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 48px;
+  }
+  .archive-date { font-size: 11px; color: #b0b0b0; font-weight: 300; padding-top: 4px; }
+  .archive-identity { text-align: right; }
+  .archive-name {
+    font-size: 28px; font-weight: 300; letter-spacing: -0.02em;
+    color: #1d1d1f; line-height: 1;
+  }
+  .archive-role { font-size: 12px; color: #7a7a7a; margin-top: 10px; }
+  .archive-socials {
+    display: flex; align-items: center; gap: 6px;
+    justify-content: flex-end; margin-top: 8px;
+  }
+  .social-link { font-size: 13px; color: #7a7a7a; text-decoration: none; transition: color 0.15s; }
+  .social-link:hover { color: #1d1d1f; }
+  .social-sep { font-size: 13px; color: #c0c0c0; }
+
+  /* Grid */
+  .sections-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    column-gap: 32px; row-gap: 48px;
+    margin-bottom: 80px;
+  }
+  .section-card { display: flex; flex-direction: column; gap: 12px; }
+  .section-card-top { border-top: 1px solid #e8e8e8; padding-top: 12px; }
+  .section-num { font-size: 11px; color: #b0b0b0; font-weight: 300; }
+  .section-img {
+    display: block; aspect-ratio: 4/3;
+    overflow: hidden; border-radius: 12px; background: #f5f5f7;
+  }
+  .section-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .section-card:nth-child(1) .section-img img { object-position: 60% center; }
+  .section-card:nth-child(2) .section-img { background: #ffffff; }
+  .section-card:nth-child(2) .section-img img { object-fit: contain; object-position: center center; }
+  .section-card:nth-child(3) .section-img img { object-position: 35% center; }
+  .section-card:nth-child(5) .section-img { background: #ffffff; }
+  .section-card:nth-child(5) .section-img img { object-fit: contain; object-position: left center; filter: saturate(70%); }
+  .section-card:nth-child(6) .section-img img { object-position: center top; transform: scale(1.18); transform-origin: center 20%; }
+  .section-label {
+    font-size: 13px; font-weight: 600; color: #1d1d1f;
+    text-decoration: none; letter-spacing: -0.01em;
   }
 
-  .project-venue {
-    font-size: 11.5px;
-    opacity: 0.4;
+  /* ── About section ── */
+  .about-section {
+    margin-top: 0;
+    padding-top: 48px;
+    padding-bottom: 50px;
+    border-top: 1px solid #e8e8e8;
+  }
+  .about-layout {
+    display: flex; gap: 56px; align-items: flex-start;
+  }
+  .about-left { flex: 0 0 54%; }
+
+  .about-heading {
+    font-size: 28px; font-weight: 300; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 40px;
   }
 
-  /* Books marquee */
-  .marquee-section {
-    margin-top: 60px;
-    margin-bottom: 20px;
+  .about-bio { display: flex; flex-direction: column; gap: 13px; margin-bottom: 32px; }
+  .about-bio p { font-size: 13px; color: #3a3a3a; line-height: 1.7; margin: 0; }
+  .about-exp-list { margin-bottom: 32px; }
+
+  .nav-divider {
+    height: 1px; background: #f0f0f0;
+    margin: 6px 8px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .nav-divider { margin: 6px 4px; }
+
+  .about-exp-list { margin-top: 24px; }
+  .about-exp-list .exp-row { border-bottom: none; border-top: 1px solid #efefef; }
+  .about-exp-list .exp-row:first-child { border-top: none; }
+
+  .about-right { flex: 1; }
+
+  .about-projects-preview {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .about-projects-img {
+    width: 70%;
+    border-radius: 6px;
+    border: 1px solid #efefef;
+    display: block;
+  }
+  .about-projects-link {
+    font-size: 12px;
+    color: #7a7a7a;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .about-projects-link:hover { color: #1d1d1f; }
+  .skills-heading {
+    font-size: 28px; font-weight: 300; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px;
+  }
+  .skill-category { margin-bottom: 22px; }
+  .skill-cat-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #7a3060; margin: 0 0 5px;
+  }
+  .skill-cat-desc { font-size: 12px; color: #8a8a8a; line-height: 1.5; margin: 0 0 10px; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-pill {
+    font-size: 11px; padding: 4px 11px;
+    border: 1px solid #d8d8d8; border-radius: 4px;
+    color: #3a3a3a; background: #fafafa; white-space: nowrap;
   }
 
-  .marquee-label {
-    max-width: 1380px;
-    margin: 0 auto;
-    padding: 0 40px;
-    margin-bottom: 20px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    opacity: 0.35;
+  /* ── Experience section ── */
+  .exp-section {
+    padding-top: 56px;
+    padding-bottom: 100px;
+    border-top: 1px solid #e8e8e8;
   }
-
-  .marquee-fade-l {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    background: linear-gradient(to right, white, transparent);
-    z-index: 2;
-    pointer-events: none;
+  .exp-heading {
+    font-size: 28px; font-weight: 300; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px;
   }
-
-  .marquee-fade-r {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 80px;
-    background: linear-gradient(to left, white, transparent);
-    z-index: 2;
-    pointer-events: none;
+  .exp-row {
+    display: flex; align-items: flex-start; gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #efefef;
   }
-
-  :global(.dark) .marquee-fade-l {
-    background: linear-gradient(to right, #0c0c0c, transparent);
+  .exp-logo {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid #efefef; background: #f5f5f7;
+    display: flex; align-items: center; justify-content: center;
   }
-
-  :global(.dark) .marquee-fade-r {
-    background: linear-gradient(to left, #0c0c0c, transparent);
-  }
-
-  /* Mobile */
-  @media (max-width: 768px) {
-    .hero-inner {
-      grid-template-columns: 1fr;
-      gap: 36px;
-      padding: 0 20px;
-    }
-    .hero-section {
-      padding: 48px 0 40px;
-    }
-    .projects-section {
-      padding: 0 20px 60px;
-    }
-    .projects-grid {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    .marquee-label {
-      padding: 0 20px;
-    }
+  .exp-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .exp-content { flex: 1; min-width: 0; }
+  .exp-title { font-size: 13.5px; font-weight: 500; color: #1d1d1f; margin: 0 0 2px; }
+  .exp-company-name { font-size: 11.5px; color: #a0a0a0; margin: 0 0 4px; }
+  .exp-desc { font-size: 12px; color: #8a8a8a; line-height: 1.5; margin: 0; }
+  .exp-date {
+    flex-shrink: 0; font-size: 12px; color: #8a8a8a;
+    white-space: nowrap; padding-top: 2px;
   }
 </style>

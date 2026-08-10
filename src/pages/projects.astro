@@ -1,45 +1,666 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { projectsPageContent } from "../config";
-import ProjectCard from "../components/ProjectCard.astro";
+import Layout from "../layouts/WorkspaceLayout.astro";
+import { identity } from "../config";
 
-const featured = projectsPageContent.projects.filter(p => p.featured);
-const publications = projectsPageContent.projects.filter(p => p.isPublication);
-const other = projectsPageContent.projects.filter(p => !p.featured && !p.isPublication);
+const ITEMS = [
+  // ── Design · left-top ─────────────────────────────────────────────────────
+  {
+    id: "arena-vis",
+    title: "Are.na Visualizer",
+    shortTitle: "Are.na Visualizer",
+    description: "A visual explorer for Are.na channels — browse collections across multiple layout modes including grid, canvas, and disk views.",
+    image: "/design-arena-vis-v2.png",
+    venue: "",
+    tags: ["Tailwind CSS", "Are.na API", "TypeScript 5", "React 19", "Next.js 16"],
+    links: [
+      { label: "Live site →", href: "https://arena-vis.vercel.app" },
+      { label: "GitHub →",    href: "https://github.com/zcher-20/arena-vis" },
+    ],
+    left: "32%", top: "54%", width: "128px",
+  },
+  {
+    id: "margiela",
+    title: "Maison Margiela Archive",
+    shortTitle: "Margiela Archive",
+    description: "A visual archive of the Maison Margiela folders — browsable gallery with a scrolling filmstrip, rotated hero image, and editorial layout.",
+    image: "/design-margiela.png",
+    venue: "",
+    tags: ["Next.js", "React", "TypeScript", "Vercel"],
+    links: [
+      { label: "Live site →", href: "https://margiela-archive.vercel.app/" },
+      { label: "GitHub →",    href: "https://github.com/zcher-20/margiela-archive" },
+    ],
+    left: "4%", top: "55%", width: "118px",
+  },
+  {
+    id: "ai-workspace",
+    title: "AI Workspace",
+    shortTitle: "AI Workspace",
+    description: "A multi-agent workspace OS — canvas-based project management with LLM agents for research, writing, and execution.",
+    image: "/ai-workspace-canva.png",
+    venue: "",
+    tags: ["LLM Agents", "Project Canvas", "Python", "React", "LangGraph"],
+    links: [
+      { label: "GitHub →", href: "https://github.com/zcher-20/ai-workspace" },
+    ],
+    left: "32%", top: "26%", width: "124px",
+  },
+
+  // ── UI/UX · right-top ─────────────────────────────────────────────────────
+  {
+    id: "healthcare-ai",
+    title: "Healthcare AI Interface",
+    shortTitle: "Healthcare AI",
+    description: "Patient-visit interface with real-time voice transcription powered by GPT-4o Transcribe. Generates structured clinical notes, health summaries, and visit diagnoses automatically from recorded consultations — with an AI Q&A layer for post-visit review.",
+    image: "/project-healthcare-ai.png",
+    venue: "",
+    tags: ["GPT-4o Transcribe", "OpenAI API", "Voice AI", "React", "Healthcare UX", "Clinical NLP"],
+    links: [],
+    left: "19%", top: "10%", width: "134px",
+  },
+  {
+    id: "cinema-archive",
+    hidden: true,
+    title: "Cinema Archive",
+    shortTitle: "Cinema Archive",
+    description: "A personal film archive — browse a curated collection of films with large typographic titles, scrolling movie stills, and an editorial dark aesthetic.",
+    image: "/design-cinema-archive.png",
+    venue: "",
+    tags: ["Vanilla JavaScript", "CSS Animations", "Editorial Design"],
+    links: [
+      { label: "GitHub →", href: "https://github.com/zcher-20/cinema-archive" },
+    ],
+    left: "61%", top: "7%", width: "132px",
+  },
+  {
+    id: "film-archive",
+    title: "Film Archive",
+    shortTitle: "Film Archive",
+    description: "An interactive, scroll-driven photo gallery — a single self-contained HTML file with depth-based carousel, real-time caption editing, and full client-side persistence.",
+    image: "/design-film-album.png",
+    venue: "",
+    tags: ["Vanilla JavaScript", "IndexedDB", "File API", "CSS Transforms"],
+    links: [
+      { label: "GitHub →", href: "https://github.com/zcher-20/Film-Album" },
+    ],
+    left: "19%", top: "78%", width: "118px",
+  },
+  {
+    id: "skinkit",
+    title: "SkinKit",
+    shortTitle: "SkinKit",
+    description: "Modular toolkit for prototyping on-skin interfaces using flexible PCB modules assembled directly on the body — spanning health monitoring to expressive on-body fashion.",
+    image: "/project-skinkit.jpg",
+    venue: "Cornell University — Hybrid Body Lab",
+    tags: ["Wearables", "HCI", "Flexible PCB", "On-Skin Design"],
+    links: [
+      { label: "View project →", href: "https://www.hybridbody.human.cornell.edu/#/skinkit/" },
+    ],
+    left: "4%", top: "26%", width: "124px",
+  },
+
+  // ── Research · left-bottom ────────────────────────────────────────────────
+  {
+    id: "aimc",
+    title: "Analog In-Memory Computing with Uncertainty Quantification",
+    shortTitle: "Analog Computing",
+    description: "Published at ICLR 2024 (Notable). Benchmarked a deep learning inference pipeline on IBM analog in-memory computing hardware for medical image segmentation at the edge.",
+    image: "/project-aimc.jpg",
+    venue: "ICLR 2024 · Notable Paper",
+    tags: ["IBM Research", "Analog Computing", "Medical Imaging", "Uncertainty Quantification"],
+    links: [
+      { label: "OpenReview →", href: "https://openreview.net/forum?id=hvp5I4dDya" },
+    ],
+    left: "57%", top: "8%", width: "128px",
+  },
+  {
+    id: "nas-survey",
+    title: "Medical NAS: Survey and Taxonomy",
+    shortTitle: "Medical NAS",
+    description: "Published at IJCAI 2024. Co-authored a comprehensive survey of Neural Architecture Search in medical imaging, categorizing 100+ papers. Presented to 200+ researchers at IBM/IEEE AICS 2023.",
+    image: "/project-survey.jpg",
+    venue: "IJCAI 2024 · pp. 7932–7940",
+    tags: ["Neural Architecture Search", "Medical Imaging", "Survey", "IBM Research"],
+    links: [
+      { label: "IJCAI 2024 →", href: "https://www.ijcai.org/proceedings/2024/878" },
+    ],
+    left: "85%", top: "2%", width: "114px",
+  },
+  {
+    id: "ricer",
+    title: "RICER — AI Forest Fire Risk Prediction",
+    shortTitle: "RICER",
+    description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Al Akhawayn University Digital Innovation Lab.",
+    image: "/ricer-notion.png",
+    venue: "Al Akhawayn University Digital Innovation Lab",
+    tags: ["Computer Vision", "Earth Observation", "GIS", "Python"],
+    links: [
+      { label: "GitHub →", href: "https://github.com/zcher-20/wildfire_data_pipeline" },
+    ],
+    left: "78%", top: "21%", width: "118px",
+  },
+
+  // ── Projects · right-bottom ───────────────────────────────────────────────
+  {
+    id: "enterprise-ai",
+    title: "Enterprise AI Document Processing Agent",
+    shortTitle: "Enterprise AI Agent",
+    description: "Intelligent document processing agent connecting to enterprise data sources — emails, SharePoint, databases. Read-reason-draft-approve-act model with human oversight.",
+    image: "/project-agent-new.png",
+    venue: "MIT-Incubated Stealth AI Startup",
+    tags: ["Agentic AI", "RAG", "Document Intelligence", "Python"],
+    links: [],
+    left: "70%", top: "73%", width: "132px",
+  },
+  {
+    id: "investment",
+    title: "Multi-Agent Investment Research System",
+    shortTitle: "Investment Research",
+    description: "5-agent LLM pipeline on Azure AI Foundry — Research, Financial Analysis, Risk, News, and Memo agents producing a full investment thesis from a single stock ticker.",
+    image: "/project-investment.png",
+    venue: "Microsoft Agents League Hackathon",
+    tags: ["Multi-Agent", "Azure AI Foundry", "LLMs", "Python"],
+    links: [
+      { label: "GitHub →", href: "https://github.com/zcher-20/Alpha-Research-Agent-" },
+    ],
+    left: "85%", top: "66%", width: "118px",
+  },
+  {
+    id: "quantum",
+    title: "Hybrid Quantum-Classical Medical Imaging",
+    shortTitle: "Quantum Imaging",
+    description: "Hybrid quantum-classical U-Net replacing the CNN bottleneck with a 4-qubit PennyLane variational circuit. 95% IoU at 60% fewer parameters.",
+    image: "/project-quantum.jpg",
+    venue: "NYU Abu Dhabi Hackathon — Quantum Track",
+    tags: ["Quantum ML", "PennyLane", "Medical Imaging", "PyTorch"],
+    links: [
+      { label: "GitHub →", href: "https://github.com/zcher-20/SihaSansFrontieres" },
+    ],
+    left: "53%", top: "60%", width: "118px",
+  },
+];
 ---
 
-<Layout seo={projectsPageContent.seo}>
-  <section class="mt-10 max-w-4xl mx-auto px-6 scroll-reveal">
-    <h1 class="font-bold text-3xl mb-10 text-center">Projects</h1>
+<Layout
+  seo={{
+    title: "Projects | " + identity.name,
+    description: "Design, UI/UX, Research, and Engineering projects by Zayneb Cherif.",
+    image: identity.logo,
+  }}
+>
+  <script id="items-data" type="application/json" set:html={JSON.stringify(ITEMS)} />
 
-    <div class="mb-2">
-      <div class="grid grid-cols-1 group">
-        {featured.map((project) => (
-          <ProjectCard {...project} />
-        ))}
+  <div class="proj-shell">
+
+    <!-- Static header -->
+    <div class="proj-header">
+      <span class="wordmark-title">Projects</span>
+      <span class="wordmark-sub">Computer Science · Design</span>
+      <div class="wordmark-socials">
+        <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="wordmark-social-link">LinkedIn ↗</a>
+        <span class="wordmark-social-sep">·</span>
+        <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="wordmark-social-link">GitHub ↗</a>
+        <span class="wordmark-social-sep">·</span>
+        <a href="mailto:zaynebcheriff@gmail.com" class="wordmark-social-link">Gmail ↗</a>
       </div>
     </div>
 
-    <!-- Other Projects -->
-    {other.length > 0 && (
-      <div class="mb-2 mt-10">
-        <h2 class="text-xs uppercase tracking-widest opacity-40 mb-6">More Projects</h2>
-        <div class="grid grid-cols-1 group">
-          {other.map((project) => (
-            <ProjectCard {...project} />
-          ))}
+  <div class="canvas" id="proj-canvas">
+
+    <!-- Axes -->
+    <div class="axis axis-h"></div>
+    <div class="axis axis-v"></div>
+
+    <!-- Axis labels -->
+    <span class="al al-top">Technical</span>
+    <span class="al al-bottom">Creative</span>
+    <span class="al al-left">Design</span>
+    <span class="al al-right">Research</span>
+
+    <!-- Project items (hidden:true entries are excluded) -->
+    {ITEMS.filter((item) => !item.hidden).map((item) => (
+      <div
+        class="item"
+        data-id={item.id}
+        style={`left:${item.left};top:${item.top};width:${item.width}`}
+      >
+        <div class="item-img-wrap">
+          <img
+            src={item.image}
+            alt={item.title}
+            class="item-img"
+            loading="lazy"
+            draggable="false"
+          />
+          <div class="resize-handle"></div>
+        </div>
+        <p class="item-label">{item.shortTitle}</p>
+      </div>
+    ))}
+
+    <!-- Detail modal -->
+    <div id="proj-modal" class="modal" role="dialog" aria-modal="true">
+      <div class="modal-card" id="proj-modal-card">
+        <button id="proj-modal-close" class="modal-close" aria-label="Close">&#x2715;</button>
+        <div class="modal-left">
+          <h2 id="pm-title" class="pm-title"></h2>
+          <p id="pm-venue" class="pm-venue"></p>
+          <p id="pm-desc" class="pm-desc"></p>
+          <div id="pm-tags" class="pm-tags"></div>
+          <div id="pm-links" class="pm-links"></div>
+        </div>
+        <div class="modal-right">
+          <img id="pm-image" class="pm-image" src="" alt="" />
         </div>
       </div>
-    )}
-
-    <div class="mt-10 mb-20">
-      <h2 class="font-bold text-2xl mb-2 text-center">Research Projects + Papers</h2>
-      <div class="grid grid-cols-1 group">
-        {publications.map((project) => (
-          <ProjectCard {...project} />
-        ))}
-      </div>
     </div>
 
-  </section>
+  </div><!-- end canvas -->
+  <div class="proj-footer"></div>
+  </div><!-- end proj-shell -->
 </Layout>
+
+<script is:inline>
+(function () {
+  var STORAGE_KEY = "proj-positions-v4";
+
+  function getPos()     { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { return {}; } }
+  function savePos(pos) { localStorage.setItem(STORAGE_KEY, JSON.stringify(pos)); }
+
+  var rawData = document.getElementById("items-data");
+  if (!rawData) return;
+  var ITEMS = JSON.parse(rawData.textContent);
+  var itemMap = {};
+  ITEMS.forEach(function (d) { itemMap[d.id] = d; });
+
+  var canvas = document.getElementById("proj-canvas");
+  if (!canvas) return;
+
+  // ── Convert initial % → px, restore saved state ─────────────────────────
+  function initPositions() {
+    var pos = getPos();
+    document.querySelectorAll(".item").forEach(function (el) {
+      var id = el.dataset.id;
+      var saved = pos[id];
+      if (saved) {
+        if (saved.left)  el.style.left  = saved.left;
+        if (saved.top)   el.style.top   = saved.top;
+        if (saved.width) el.style.width = saved.width;
+      } else {
+        var cr = canvas.getBoundingClientRect();
+        var er = el.getBoundingClientRect();
+        el.style.left = (er.left - cr.left) + "px";
+        el.style.top  = (er.top  - cr.top)  + "px";
+      }
+    });
+  }
+  requestAnimationFrame(function () { requestAnimationFrame(initPositions); });
+
+  // ── Drag ─────────────────────────────────────────────────────────────────
+  var dragging = null, dragOX = 0, dragOY = 0, smx = 0, smy = 0, didDrag = false;
+  var THRESHOLD = 5;
+
+  document.querySelectorAll(".item").forEach(function (el) {
+    el.addEventListener("mousedown", function (e) {
+      if (e.button !== 0 || e.target.classList.contains("resize-handle")) return;
+      e.preventDefault();
+      dragging = el; didDrag = false; smx = e.clientX; smy = e.clientY;
+      var r = el.getBoundingClientRect();
+      dragOX = e.clientX - r.left; dragOY = e.clientY - r.top;
+      el.style.zIndex = "100";
+    });
+  });
+
+  // ── Resize ───────────────────────────────────────────────────────────────
+  var resizing = null, rsX = 0, rsW = 0;
+
+  document.querySelectorAll(".resize-handle").forEach(function (h) {
+    h.addEventListener("mousedown", function (e) {
+      e.preventDefault(); e.stopPropagation();
+      resizing = h.parentElement;
+      rsX = e.clientX; rsW = resizing.offsetWidth;
+      resizing.style.zIndex = "100";
+    });
+  });
+
+  // ── Shared move/up ────────────────────────────────────────────────────────
+  document.addEventListener("mousemove", function (e) {
+    if (dragging) {
+      var dx = e.clientX - smx, dy = e.clientY - smy;
+      if (!didDrag && (Math.abs(dx) > THRESHOLD || Math.abs(dy) > THRESHOLD)) didDrag = true;
+      if (!didDrag) return;
+      var cr = canvas.getBoundingClientRect();
+      var x = Math.max(0, Math.min(e.clientX - cr.left - dragOX, cr.width  - dragging.offsetWidth));
+      var y = Math.max(0, Math.min(e.clientY - cr.top  - dragOY, cr.height - dragging.offsetHeight));
+      dragging.style.left = x + "px";
+      dragging.style.top  = y + "px";
+    }
+    if (resizing) {
+      var nw = Math.max(80, Math.min(400, rsW + (e.clientX - rsX)));
+      resizing.style.width = nw + "px";
+    }
+  });
+
+  document.addEventListener("mouseup", function () {
+    if (dragging) {
+      dragging.style.zIndex = "";
+      if (didDrag) {
+        var pos = getPos();
+        pos[dragging.dataset.id] = { left: dragging.style.left, top: dragging.style.top, width: dragging.style.width || "" };
+        savePos(pos);
+      }
+      var was = didDrag;
+      dragging = null; didDrag = false;
+      if (was) {
+        document.addEventListener("click", function ab(e) {
+          e.stopImmediatePropagation();
+          document.removeEventListener("click", ab, true);
+        }, true);
+      }
+    }
+    if (resizing) {
+      resizing.style.zIndex = "";
+      var pos2 = getPos();
+      pos2[resizing.dataset.id] = pos2[resizing.dataset.id] || {};
+      pos2[resizing.dataset.id].left  = resizing.style.left;
+      pos2[resizing.dataset.id].top   = resizing.style.top;
+      pos2[resizing.dataset.id].width = resizing.style.width;
+      savePos(pos2);
+      resizing = null;
+    }
+  });
+
+  // ── Modal ─────────────────────────────────────────────────────────────────
+  var modal    = document.getElementById("proj-modal");
+  var card     = document.getElementById("proj-modal-card");
+  var closeBtn = document.getElementById("proj-modal-close");
+  var pmTitle  = document.getElementById("pm-title");
+  var pmVenue  = document.getElementById("pm-venue");
+  var pmDesc   = document.getElementById("pm-desc");
+  var pmTags   = document.getElementById("pm-tags");
+  var pmLinks  = document.getElementById("pm-links");
+  var pmImage  = document.getElementById("pm-image");
+
+  function openModal(id) {
+    var d = itemMap[id]; if (!d) return;
+    pmTitle.textContent = d.title;
+    pmVenue.textContent = d.venue || ""; pmVenue.style.display = d.venue ? "" : "none";
+    pmDesc.textContent  = d.description;
+    pmImage.src = d.image; pmImage.alt = d.title;
+
+    pmTags.innerHTML = "";
+    (d.tags || []).forEach(function (t) {
+      var s = document.createElement("span"); s.className = "pm-tag"; s.textContent = t;
+      pmTags.appendChild(s);
+    });
+
+    pmLinks.innerHTML = "";
+    if (d.links && d.links.length) {
+      d.links.forEach(function (lnk) {
+        var a = document.createElement("a");
+        a.href = lnk.href; a.target = "_blank"; a.rel = "noopener noreferrer";
+        a.className = "pm-link"; a.textContent = lnk.label;
+        pmLinks.appendChild(a);
+      });
+    } else {
+      var s2 = document.createElement("span");
+      s2.className = "pm-link pm-link-muted"; s2.textContent = "Confidential";
+      pmLinks.appendChild(s2);
+    }
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
+
+  document.querySelectorAll(".item").forEach(function (el) {
+    el.addEventListener("click", function () { openModal(el.dataset.id); });
+  });
+  modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
+  closeBtn.addEventListener("click", closeModal);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+})();
+</script>
+
+<style is:global>
+  /* Fill ws-main, suppress padding, use flex so proj-shell can stack */
+  .ws-main {
+    padding-top: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* JS-created modal tag/link elements need global scope */
+  .pm-tag {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 3px 8px; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 3px; color: #6b7280; display: inline-block;
+  }
+  .pm-link {
+    font-size: 11px; padding: 5px 12px; border: 1px solid #1d1d1f;
+    border-radius: 5px; color: #1d1d1f; text-decoration: none; font-weight: 500;
+    letter-spacing: 0.02em; transition: background 0.15s, color 0.15s; display: inline-block;
+  }
+  .pm-link:hover { background: #1d1d1f; color: #fff; }
+  .pm-link-muted { border-color: #ddd; color: #999; cursor: default; }
+  .pm-link-muted:hover { background: transparent !important; color: #999 !important; }
+</style>
+
+<style>
+  .proj-footer { flex-shrink: 0; height: 48px; }
+
+  /* ── Shell: header + canvas stacked ────────────────────────────────────── */
+  .proj-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #fff;
+  }
+
+  /* ── Static header ──────────────────────────────────────────────────────── */
+  .proj-header {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 52px 32px 6px;
+  }
+  .wordmark-title {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    line-height: 1;
+  }
+  .wordmark-sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: #7a7a7a;
+    line-height: 1;
+  }
+  .wordmark-socials { display: flex; align-items: center; gap: 6px; }
+  .wordmark-social-link {
+    font-size: 12px; color: #7a7a7a;
+    text-decoration: none; transition: color 0.15s;
+  }
+  .wordmark-social-link:hover { color: #1d1d1f; }
+  .wordmark-social-sep { font-size: 12px; color: #c0c0c0; }
+
+  /* ── Canvas fills remaining height ─────────────────────────────────────── */
+  .canvas {
+    flex: 1;
+    position: relative;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+
+  /* ── Axes — limited length, centered ───────────────────────────────────── */
+  .axis { position: absolute; pointer-events: none; background: rgba(0,0,0,0.28); }
+
+  /* Horizontal axis: 60% wide, centered horizontally, shifted down */
+  .axis-h {
+    top: 52%; height: 1px;
+    left: 50%; width: 60%;
+    transform: translate(-50%, 0);
+  }
+
+  /* Vertical axis: 60% tall, centered horizontally, shifted down */
+  .axis-v {
+    left: 50%; width: 1px;
+    top: 52%; height: 60%;
+    transform: translate(0, -50%);
+  }
+
+  /* ── Axis labels — 14px gap from each axis endpoint ────────────────────── */
+  .al {
+    position: absolute;
+    font-size: 15px;
+    font-weight: 400;
+    color: #1a1a1a;
+    letter-spacing: -0.01em;
+    pointer-events: none;
+    user-select: none;
+    z-index: 4;
+  }
+  /* Anchor by bottom edge so text grows upward away from the axis */
+  .al-top    { top: calc(52% - 30% - 14px); left: 50%; transform: translate(-50%, -100%); }
+  /* Anchor by top edge so text grows downward away from the axis */
+  .al-bottom { top: calc(52% + 30% + 14px); left: 50%; transform: translateX(-50%); }
+  /* Anchor by right edge so text sits left of the axis endpoint */
+  .al-left   { top: 52%; left: calc(50% - 30% - 14px); transform: translate(-100%, -50%); }
+  /* Anchor by left edge so text sits right of the axis endpoint */
+  .al-right  { top: 52%; left: calc(50% + 30% + 14px); transform: translateY(-50%); }
+
+  /* ── Project items ──────────────────────────────────────────────────────── */
+  .item {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .item:active { cursor: grabbing; }
+  .item:hover  { z-index: 10; }
+
+  .item-img-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .item-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+    pointer-events: none;
+    transition: box-shadow 0.2s;
+  }
+  .item:hover .item-img {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  }
+
+  .item-label {
+    font-size: 10.5px;
+    color: #a0a0a0;
+    text-align: center;
+    line-height: 1.4;
+    pointer-events: none;
+    margin: 0;
+    max-width: 160px;
+    white-space: normal;
+  }
+
+  /* ── Resize handle (anchored to image corner) ───────────────────────────── */
+  .resize-handle {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 10px; height: 10px;
+    background: #fff;
+    border: 1.5px solid #b0b0b0;
+    border-radius: 2px;
+    cursor: se-resize;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 6;
+  }
+  .item:hover .resize-handle { opacity: 1; }
+
+  /* ── Modal ──────────────────────────────────────────────────────────────── */
+  .modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.38);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    align-items: center; justify-content: center;
+  }
+  .modal.open { display: flex; }
+
+  .modal-card {
+    position: relative; display: flex;
+    width: min(840px, 92vw); max-height: 82vh;
+    background: #fff; border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.2);
+    animation: modal-in 0.2s ease-out;
+  }
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.96) translateY(10px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 18px;
+    width: 28px; height: 28px; border: none;
+    background: rgba(0,0,0,0.06); border-radius: 50%; cursor: pointer;
+    font-size: 14px; color: #555; line-height: 1; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10; transition: background 0.15s;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.12); }
+
+  .modal-left {
+    flex: 0 0 42%; padding: 40px 32px 36px;
+    overflow-y: auto; border-right: 1px solid #f0f0f0;
+    display: flex; flex-direction: column;
+  }
+  .modal-right {
+    flex: 1; padding: 40px 28px 36px;
+    overflow-y: auto; background: #fafafa;
+    display: flex; flex-direction: column;
+  }
+
+  .field-label {
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #b0b0b0; margin-bottom: 8px; font-weight: 500;
+  }
+  .pm-title {
+    font-size: 18px; font-weight: 600; color: #1d1d1f;
+    line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 6px;
+  }
+  .pm-venue {
+    font-size: 11px; color: #9a9a9a; letter-spacing: 0.01em;
+    font-style: italic; margin-bottom: 0;
+  }
+  .pm-desc {
+    font-size: 13px; color: #444; line-height: 1.65;
+    margin-top: 16px;
+    margin-bottom: 18px; flex: 1;
+  }
+  .pm-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
+  .pm-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+  .pm-image {
+    width: 100%; height: auto; border-radius: 10px;
+    object-fit: cover; display: block;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px;
+  }
+</style>

@@ -1,0 +1,264 @@
+---
+import Layout from "./Layout.astro";
+import { Icon } from "astro-icon/components";
+import type { SEOInfo } from "../types/config";
+
+interface Props {
+  seo: SEOInfo;
+}
+
+const { seo } = Astro.props;
+
+const APP_NAV = [
+  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
+  { label: "About",       icon: "mdi:account-outline",     href: "/#about" },
+  { label: "Experience",  icon: "mdi:briefcase-outline",   href: "/#experience" },
+  { label: "Projects",    icon: "mdi:folder-open-outline", href: "/projects" },
+  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photography", icon: "mdi:camera-outline",      href: "/photography" },
+];
+
+const path = Astro.url.pathname;
+---
+
+<Layout seo={seo} canvasPage={true} noNav={true}>
+  <div class="ws-shell">
+
+    <!-- App sidebar -->
+    <aside id="app-sidebar" class="app-sidebar open">
+
+      <div class="app-sidebar-header">
+        <button id="sidebar-toggle-btn" class="sidebar-icon-btn" title="Toggle sidebar">
+          <Icon name="mdi:chevron-left" id="toggle-icon-close" class="w-[15px] h-[15px]" />
+          <Icon name="mdi:chevron-right" id="toggle-icon-open" class="w-[15px] h-[15px] hidden" />
+        </button>
+      </div>
+
+      <!-- Profile photo -->
+      <div class="sidebar-photo-wrap">
+        <img src="/headshot.jpg" alt="Zayneb Cherif" class="sidebar-photo" draggable="false" />
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <nav class="app-nav">
+        {APP_NAV.map((item) => (
+          <>
+            <a
+              href={item.href}
+              class={`app-nav-btn ${path === item.href || path.startsWith(item.href + "/") ? "active" : ""}`}
+            >
+              <Icon name={item.icon} class="app-nav-icon" />
+              <span class="app-nav-label">{item.label}</span>
+            </a>
+            {item.label === "Projects" && <div class="nav-divider" />}
+          </>
+        ))}
+      </nav>
+
+    </aside>
+
+    <!-- Hover flyout (collapsed state) -->
+    <div id="sidebar-flyout" class="sidebar-flyout hidden">
+      {APP_NAV.map((item) => (
+        <a href={item.href} class={`flyout-item group ${path === item.href ? "flyout-active" : ""}`}>
+          <span class="flyout-dot"></span>
+          <span class="flyout-label">{item.label}</span>
+        </a>
+      ))}
+    </div>
+
+    <!-- Page content -->
+    <main class="ws-main">
+      <slot />
+    </main>
+
+  </div>
+</Layout>
+
+<script is:inline>
+  (function () {
+    // Fix scroll-reveal inside the ws-main scrollable container
+    function initScrollReveal() {
+      var container = document.querySelector(".ws-main");
+      if (!container) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { root: container, threshold: 0.05 });
+      document.querySelectorAll(".scroll-reveal").forEach(function(el) {
+        observer.observe(el);
+      });
+    }
+    document.addEventListener("astro:page-load", initScrollReveal);
+    initScrollReveal();
+
+    var sidebar    = document.getElementById("app-sidebar");
+    var toggleBtn  = document.getElementById("sidebar-toggle-btn");
+    var iconClose  = document.getElementById("toggle-icon-close");
+    var iconOpen   = document.getElementById("toggle-icon-open");
+    var flyout     = document.getElementById("sidebar-flyout");
+
+    function collapse() {
+      sidebar.classList.remove("open");
+      sidebar.classList.add("collapsed");
+      iconClose.classList.add("hidden");
+      iconOpen.classList.remove("hidden");
+    }
+    function expand() {
+      sidebar.classList.remove("collapsed");
+      sidebar.classList.add("open");
+      iconClose.classList.remove("hidden");
+      iconOpen.classList.add("hidden");
+      flyout.classList.add("hidden");
+    }
+
+    toggleBtn.addEventListener("click", function() {
+      sidebar.classList.contains("open") ? collapse() : expand();
+    });
+
+    var t;
+    sidebar.addEventListener("mouseenter", function () {
+      if (!sidebar.classList.contains("collapsed")) return;
+      clearTimeout(t); flyout.classList.remove("hidden");
+    });
+    sidebar.addEventListener("mouseleave", function () {
+      if (!sidebar.classList.contains("collapsed")) return;
+      t = setTimeout(function () { flyout.classList.add("hidden"); }, 150);
+    });
+    flyout.addEventListener("mouseenter", function () { clearTimeout(t); });
+    flyout.addEventListener("mouseleave", function () {
+      t = setTimeout(function () { flyout.classList.add("hidden"); }, 150);
+    });
+  })();
+</script>
+
+<style>
+  .ws-shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* ── Sidebar ── */
+  .app-sidebar {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+    transition: width 0.2s ease;
+    flex-shrink: 0;
+    padding-bottom: 24px;
+  }
+  .app-sidebar.open      { width: 220px; padding-top: 8px; align-items: stretch; }
+  .app-sidebar.collapsed { width: 48px;  padding-top: 8px; align-items: center; }
+
+  .app-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 16px 6px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-icon-btn {
+    background: none; border: none; cursor: pointer;
+    color: #c0c0c0; padding: 2px;
+    display: flex; align-items: center;
+    transition: color 0.15s;
+  }
+  .sidebar-icon-btn:hover { color: #5a5a5a; }
+
+  /* Profile photo */
+  .sidebar-photo-wrap {
+    width: calc(100% - 48px);
+    margin: 0 24px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f5f5f7;
+  }
+  .sidebar-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .app-sidebar.collapsed .sidebar-photo-wrap { display: none; }
+
+  .sidebar-divider {
+    height: 1px; background: #f0f0f0;
+    margin: 10px 16px 14px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .sidebar-divider { display: none; }
+
+  .nav-divider {
+    height: 1px; background: #f0f0f0;
+    margin: 6px 8px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .nav-divider { margin: 6px 4px; }
+
+  .app-nav {
+    display: flex; flex-direction: column;
+    gap: 2px; padding: 0 4px 0 12px; flex: 1;
+  }
+  .app-sidebar.collapsed .app-nav { padding: 0; align-items: center; gap: 4px; }
+
+  .app-nav-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; color: #7a7a7a;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap; width: 100%;
+  }
+  .app-nav-btn:hover  { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .app-nav-btn.active { background: #fff; color: #2c4470; font-weight: 600; }
+  .app-sidebar.collapsed .app-nav-btn { padding: 8px; width: auto; }
+
+  .app-nav-icon  { width: 15px; height: 15px; flex-shrink: 0; }
+  .app-nav-label { flex: 1; }
+  .app-sidebar.collapsed .app-nav-label { display: none; }
+
+
+
+  /* Flyout */
+  .sidebar-flyout {
+    position: absolute; left: 48px; top: 0; z-index: 50;
+    background: #fff; border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column; min-width: 160px;
+  }
+  .sidebar-flyout.hidden { display: none; }
+
+  .flyout-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 6px 0; text-decoration: none;
+  }
+  .flyout-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #d0d0d0; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .flyout-item:hover .flyout-dot  { background: #1d1d1f; }
+  .flyout-active .flyout-dot      { background: #2c4470; }
+  .flyout-label {
+    font-size: 12px; color: #7a7a7a;
+    transition: color 0.15s;
+  }
+  .flyout-item:hover .flyout-label { color: #1d1d1f; }
+  .flyout-active .flyout-label     { color: #2c4470; font-weight: 500; }
+
+  /* ── Main content ── */
+  .ws-main {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding-top: 16px;
+  }
+</style>
