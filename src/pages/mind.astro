@@ -142,9 +142,19 @@ const CHILD_LINKS = [
     <button id="reset-btn" style="position:absolute; bottom:16px; right:16px; font-size:11px; opacity:0.4; background:none; border:1px solid currentColor; padding:4px 10px; cursor:pointer; font-family:inherit; border-radius:2px;">Reset view</button>
   </section>
 
-  <section style="max-width:42rem; margin:0 auto; padding:1rem 1.5rem 100px; text-align:center;">
-    <p style="font-size:0.8rem; opacity:0.4;">Click any node to read. Ctrl+scroll to zoom, drag to pan.</p>
-  </section>
+  <!-- Node popup card -->
+  <div id="note-modal" style="display:none; position:fixed; inset:0; z-index:200; pointer-events:none;">
+    <div id="note-card" style="
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:#fff; border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,0.14);
+      padding:28px 32px; max-width:420px; width:calc(100% - 48px);
+      pointer-events:auto; font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;">
+      <button id="note-close" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;opacity:0.35;line-height:1;">✕</button>
+      <p id="note-cluster" style="font-size:0.65rem;opacity:0.35;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px;"></p>
+      <h2 id="note-title" style="font-size:1rem;font-weight:600;margin:0 0 12px;line-height:1.3;"></h2>
+      <p id="note-body" style="font-size:0.85rem;line-height:1.8;opacity:0.65;margin:0;"></p>
+    </div>
+  </div>
 
   <style>
     .mind-header {
@@ -169,14 +179,6 @@ const CHILD_LINKS = [
     .mind-social-sep { font-size: 12px; color: #c0c0c0; }
   </style>
 
-  <div id="note-panel" style="display:none; max-width:42rem; margin:0 auto; padding:2rem 1.5rem 5rem;">
-    <div style="border-top:1px solid rgba(0,0,0,0.1); padding-top:1.5rem;">
-      <p id="note-cluster" style="font-size:0.7rem; opacity:0.35; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.4rem;"></p>
-      <h2 id="note-title" style="font-size:1.1rem; font-weight:600; margin-bottom:0.85rem;"></h2>
-      <p id="note-body" style="font-size:0.9rem; line-height:1.8; opacity:0.7;"></p>
-    </div>
-  </div>
-
   <script id="graph-data" type="application/json" set:html={JSON.stringify({ clusters: CLUSTERS, nodes: NODES, childLinks: CHILD_LINKS })} />
 </Layout>
 
@@ -194,12 +196,20 @@ const CHILD_LINKS = [
   const TEXT_DIM     = "#d1d5db";
   const TEXT_ACTIVE  = "#111827";
 
-  const container = document.getElementById("graph-container") as HTMLDivElement;
-  const panel     = document.getElementById("note-panel") as HTMLDivElement;
+  const container   = document.getElementById("graph-container") as HTMLDivElement;
+  const modal       = document.getElementById("note-modal") as HTMLDivElement;
   const noteTitle   = document.getElementById("note-title") as HTMLElement;
   const noteCluster = document.getElementById("note-cluster") as HTMLElement;
   const noteBody    = document.getElementById("note-body") as HTMLElement;
+  const noteClose   = document.getElementById("note-close") as HTMLButtonElement;
   const resetBtn    = document.getElementById("reset-btn") as HTMLButtonElement;
+
+  function showModal() { modal.style.display = "block"; }
+  function hideModal() { modal.style.display = "none"; }
+
+  noteClose.addEventListener("click", (e) => { e.stopPropagation(); hideModal(); resetAll(); selectedId = null; });
+  modal.addEventListener("click", (e) => { if (e.target === modal) { hideModal(); resetAll(); selectedId = null; } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { hideModal(); resetAll(); selectedId = null; } });
 
   const W = container.clientWidth;
   const H = 860;
@@ -354,8 +364,7 @@ const CHILD_LINKS = [
     noteTitle.textContent   = d.label;
     noteCluster.textContent = "Cluster";
     noteBody.textContent    = d.note;
-    panel.style.display     = "block";
-    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    showModal();
   });
 
   childSel.on("click", function(_e, d: any) {
@@ -393,14 +402,13 @@ const CHILD_LINKS = [
     noteTitle.textContent   = d.label;
     noteCluster.textContent = clusters.find((c: any) => c.id === d.cluster)?.label ?? d.cluster;
     noteBody.textContent    = d.note;
-    panel.style.display     = "block";
-    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    showModal();
   });
 
   svg.on("click", () => {
     selectedId = null;
     resetAll();
-    panel.style.display = "none";
+    hideModal();
   });
 // Pre-settle simulation
 for (let i = 0; i < 200; i++) sim.tick();

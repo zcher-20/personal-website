@@ -134,6 +134,9 @@ const FAVORITES = [
   { id:"f04", title:"Walden",                                  author:"Henry David Thoreau",    isbn:"9780691096124", spineW:26, spineH:224,
     year:"1854", publisher:"Princeton UP",         format:"Paperback", pages:"350 pages",
     desc:"Thoreau's account of two years alone in a cabin at Walden Pond — a foundational American text on self-reliance, nature, and the examined life." },
+  { id:"f09", title:"Devotions",                              author:"Mary Oliver",            isbn:"9780399563263", spineW:30, spineH:230,
+    year:"2017", publisher:"Penguin Press",        format:"Hardcover", pages:"432 pages",
+    desc:"A definitive collection spanning more than fifty years of Oliver's poetry — luminous, mindful writing about the natural world and the art of paying attention." },
   { id:"f05", title:"A Room of One's Own",                     author:"Virginia Woolf",         isbn:"9780156787338", spineW:14, spineH:198,
     year:"1929", publisher:"Hogarth Press",        format:"Paperback", pages:"112 pages",
     desc:"Woolf argues that a woman must have financial independence and a private space if she is to write fiction. A landmark essay of feminist literary criticism." },
@@ -146,9 +149,6 @@ const FAVORITES = [
   { id:"f08", title:"Civilization and Its Discontents",       author:"Sigmund Freud",          isbn:"9780393304510", spineW:16, spineH:200,
     year:"1930", publisher:"W. W. Norton",         format:"Paperback", pages:"145 pages",
     desc:"Freud examines why civilization causes suffering on such a vast scale and whether human drives for pleasure and aggression can ever be reconciled." },
-  { id:"f09", title:"Devotions",                              author:"Mary Oliver",            isbn:"9780399563263", spineW:30, spineH:230,
-    year:"2017", publisher:"Penguin Press",        format:"Hardcover", pages:"432 pages",
-    desc:"A definitive collection spanning more than fifty years of Oliver's poetry — luminous, mindful writing about the natural world and the art of paying attention." },
   { id:"f10", title:"Never Let Me Go",                        author:"Kazuo Ishiguro",         isbn:"1400043395",    spineW:24, spineH:226,
     year:"2005", publisher:"Vintage",              format:"Paperback", pages:"288 pages",
     desc:"Students at Hailsham boarding school slowly learn the disturbing truth of their existence. A quietly devastating meditation on memory, love, and mortality." },
@@ -313,7 +313,7 @@ const PANEL_W = 340;
             <div class="spine" style={`width:${b.spineW}px;height:${b.spineH}px;`}>
               <img
                 class="spine-img"
-                src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
+                src={`/book-covers/${b.id}.jpg`}
                 alt={b.title}
                 loading="eager"
               />
@@ -323,7 +323,7 @@ const PANEL_W = 340;
             <div class="book-panel">
               <div class="b-cover">
                 <img
-                  src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
+                  src={`/book-covers/${b.id}.jpg`}
                   alt={b.title}
                   onerror="this.style.opacity='0'"
                   loading="lazy"
@@ -356,6 +356,8 @@ const PANEL_W = 340;
         ))}
       </div>
     </div>
+
+    <hr class="bs-shelf-divider" />
 
     <!-- ══ MAP + READING LIST ══ -->
     <div class="bs-lower">
@@ -433,7 +435,7 @@ const PANEL_W = 340;
     min-height: 44vh;
     overflow-x: auto;
     overflow-y: visible;
-    padding: 56px 0;
+    padding: 90px 0 120px;
     scrollbar-width: thin;
     scrollbar-color: #d8d8d8 transparent;
   }
@@ -617,6 +619,7 @@ const PANEL_W = 340;
   .bl-title { font-weight: 500; color: #1d1d1f; margin-right: 6px; }
   .bl-author { color: #aaa; font-size: 11px; }
   .bs-footnote { font-size: 10px; color: #ccc; margin-top: 20px; }
+  .bs-shelf-divider { border: none; border-top: 1px solid #e8e8e8; margin: 0 52px; }
 </style>
 
 <!-- ══ INTERACTION ══ -->
@@ -652,6 +655,17 @@ const PANEL_W = 340;
       active = book;
     }
   });
+
+  /* Auto-open Devotions (6th book) on load */
+  var devotions = shelf.querySelector('[data-id="f09"]');
+  if (devotions) {
+    devotions.classList.add("selected");
+    devotions.style.width = PANEL_W + "px";
+    active = devotions;
+    setTimeout(function () {
+      devotions.scrollIntoView({ behavior: "instant", block: "nearest", inline: "center" });
+    }, 50);
+  }
 })();
 </script>
 
