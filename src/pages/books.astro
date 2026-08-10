@@ -313,7 +313,7 @@ const PANEL_W = 340;
             <div class="spine" style={`width:${b.spineW}px;height:${b.spineH}px;`}>
               <img
                 class="spine-img"
-                src={`/book-covers/${b.id}.jpg`}
+                src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
                 alt={b.title}
                 loading="eager"
               />
@@ -323,7 +323,7 @@ const PANEL_W = 340;
             <div class="book-panel">
               <div class="b-cover">
                 <img
-                  src={`/book-covers/${b.id}.jpg`}
+                  src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
                   alt={b.title}
                   onerror="this.style.opacity='0'"
                   loading="lazy"
