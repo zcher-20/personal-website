@@ -624,49 +624,50 @@ const PANEL_W = 340;
 
 <!-- ══ INTERACTION ══ -->
 <script is:inline>
-(function () {
-  var PANEL_W = 340;
-  var shelf   = document.getElementById("shelf");
-  var active  = null;
+  function initShelf() {
+    var PANEL_W = 340;
+    var shelf   = document.getElementById("shelf");
+    var active  = null;
 
-  if (!shelf) return;
+    if (!shelf) return;
 
-  shelf.addEventListener("click", function (e) {
-    /* ignore clicks inside the text panel so user can select/read */
-    if (e.target.closest(".b-info")) return;
+    shelf.addEventListener("click", function (e) {
+      /* ignore clicks inside the text panel so user can select/read */
+      if (e.target.closest(".b-info")) return;
 
-    var book = e.target.closest(".book");
-    if (!book) return;
+      var book = e.target.closest(".book");
+      if (!book) return;
 
-    if (active === book) {
-      /* collapse */
-      book.classList.remove("selected");
-      book.style.width = book.dataset.sw + "px";
-      active = null;
-    } else {
-      /* close previous */
-      if (active) {
-        active.classList.remove("selected");
-        active.style.width = active.dataset.sw + "px";
+      if (active === book) {
+        /* collapse */
+        book.classList.remove("selected");
+        book.style.width = book.dataset.sw + "px";
+        active = null;
+      } else {
+        /* close previous */
+        if (active) {
+          active.classList.remove("selected");
+          active.style.width = active.dataset.sw + "px";
+        }
+        /* open new */
+        book.classList.add("selected");
+        book.style.width = PANEL_W + "px";
+        active = book;
       }
-      /* open new */
-      book.classList.add("selected");
-      book.style.width = PANEL_W + "px";
-      active = book;
-    }
-  });
+    });
 
-  /* Auto-open Devotions (6th book) on load */
-  var devotions = shelf.querySelector('[data-id="f09"]');
-  if (devotions) {
-    devotions.classList.add("selected");
-    devotions.style.width = PANEL_W + "px";
-    active = devotions;
-    setTimeout(function () {
-      devotions.scrollIntoView({ behavior: "instant", block: "nearest", inline: "center" });
-    }, 50);
+    /* Auto-open Devotions (6th book) on load */
+    var devotions = shelf.querySelector('[data-id="f09"]');
+    if (devotions) {
+      devotions.classList.add("selected");
+      devotions.style.width = PANEL_W + "px";
+      active = devotions;
+      setTimeout(function () {
+        devotions.scrollIntoView({ behavior: "instant", block: "nearest", inline: "center" });
+      }, 50);
+    }
   }
-})();
+  document.addEventListener("astro:page-load", initShelf);
 </script>
 
 <!-- ══ D3 WORLD MAP ══ -->
@@ -674,38 +675,45 @@ const PANEL_W = 340;
   import * as d3 from "d3";
 
   interface Book { country: string; title: string; author: string; }
-  const BOOKS: Book[] = JSON.parse(document.getElementById("books-data")!.textContent!);
-  const bookMap = new Map(BOOKS.map((b) => [b.country, b]));
-  const container = document.getElementById("map-container") as HTMLDivElement;
-  const tooltip   = document.getElementById("tooltip") as HTMLDivElement;
   let geoData: any = null;
 
-  async function render() {
-    const w = container.clientWidth;
-    const h = w * 0.5;
-    container.innerHTML = "";
-    const svg = d3.select(container).append("svg").attr("width", w).attr("height", h);
-    if (!geoData) { const r = await fetch("/world.geojson"); geoData = await r.json(); }
-    const proj = d3.geoNaturalEarth1().fitSize([w, h], geoData);
-    const path = d3.geoPath().projection(proj);
-    svg.selectAll("path").data(geoData.features).join("path")
-      .attr("d", path as any)
-      .attr("fill", (d: any) => bookMap.has(d.properties.name) ? "#B89EA9" : "#e5e7eb")
-      .attr("stroke", "none")
-      .style("filter", (d: any) => bookMap.has(d.properties.name) ? "drop-shadow(0 0 4px rgba(184,158,169,0.5))" : "none")
-      .style("cursor", (d: any) => bookMap.has(d.properties.name) ? "pointer" : "default")
-      .on("mouseenter", (_e: MouseEvent, d: any) => {
-        const b = bookMap.get(d.properties.name);
-        if (!b) return;
-        tooltip.style.display = "block";
-        tooltip.innerHTML = "<strong>" + b.country + "</strong><br/>" + b.title + "<br/><em>" + b.author + "</em>";
-      })
-      .on("mousemove", (e: MouseEvent) => { tooltip.style.left = e.clientX + 12 + "px"; tooltip.style.top = e.clientY + 12 + "px"; })
-      .on("mouseleave", () => { tooltip.style.display = "none"; });
+  function initMap() {
+    const booksEl = document.getElementById("books-data");
+    const container = document.getElementById("map-container") as HTMLDivElement;
+    const tooltip   = document.getElementById("tooltip") as HTMLDivElement;
+    if (!booksEl || !container || !tooltip) return;
+
+    const BOOKS: Book[] = JSON.parse(booksEl.textContent!);
+    const bookMap = new Map(BOOKS.map((b) => [b.country, b]));
+
+    async function render() {
+      const w = container.clientWidth;
+      const h = w * 0.5;
+      container.innerHTML = "";
+      const svg = d3.select(container).append("svg").attr("width", w).attr("height", h);
+      if (!geoData) { const r = await fetch("/world.geojson"); geoData = await r.json(); }
+      const proj = d3.geoNaturalEarth1().fitSize([w, h], geoData);
+      const path = d3.geoPath().projection(proj);
+      svg.selectAll("path").data(geoData.features).join("path")
+        .attr("d", path as any)
+        .attr("fill", (d: any) => bookMap.has(d.properties.name) ? "#B89EA9" : "#e5e7eb")
+        .attr("stroke", "none")
+        .style("filter", (d: any) => bookMap.has(d.properties.name) ? "drop-shadow(0 0 4px rgba(184,158,169,0.5))" : "none")
+        .style("cursor", (d: any) => bookMap.has(d.properties.name) ? "pointer" : "default")
+        .on("mouseenter", (_e: MouseEvent, d: any) => {
+          const b = bookMap.get(d.properties.name);
+          if (!b) return;
+          tooltip.style.display = "block";
+          tooltip.innerHTML = "<strong>" + b.country + "</strong><br/>" + b.title + "<br/><em>" + b.author + "</em>";
+        })
+        .on("mousemove", (e: MouseEvent) => { tooltip.style.left = e.clientX + 12 + "px"; tooltip.style.top = e.clientY + 12 + "px"; })
+        .on("mouseleave", () => { tooltip.style.display = "none"; });
+    }
+
+    render();
+    let t: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(render, 200); });
   }
 
-  render();
-  let t: ReturnType<typeof setTimeout>;
-  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(render, 200); });
-  new MutationObserver(() => render()).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  document.addEventListener("astro:page-load", initMap);
 </script>
