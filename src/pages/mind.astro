@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/WorkspaceLayout.astro";
 import { identity } from "../config";
 
 const CLUSTERS = [
@@ -122,18 +122,52 @@ const CHILD_LINKS = [
 ---
 
 <Layout seo={{ title: "Mind | " + identity.name, description: "A graph of ideas.", image: identity.logo }}>
-  <section class="mt-10 max-w-2xl mx-auto px-6 scroll-reveal text-center">
-    <h1 class="font-bold text-3xl mb-10">Mind</h1>
-  </section>
 
-  <section style="position:relative; width:100%; height:860px; overflow:hidden; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06);">
+  <div class="mind-header">
+    <span class="mind-title">Mind</span>
+    <span class="mind-sub">Ideas · Research · Curiosity</span>
+    <div class="mind-socials">
+      <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="mind-social-link">LinkedIn ↗</a>
+      <span class="mind-social-sep">·</span>
+      <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="mind-social-link">GitHub ↗</a>
+      <span class="mind-social-sep">·</span>
+      <a href="mailto:zaynebcheriff@gmail.com" class="mind-social-link">Gmail ↗</a>
+      <span class="mind-social-sep">·</span>
+      <a href="/resources" class="mind-social-link">Resources ↗</a>
+    </div>
+  </div>
+
+  <section style="position:relative; width:100%; height:860px; overflow:hidden;">
     <div id="graph-container" style="width:100%; height:100%;"></div>
     <button id="reset-btn" style="position:absolute; bottom:16px; right:16px; font-size:11px; opacity:0.4; background:none; border:1px solid currentColor; padding:4px 10px; cursor:pointer; font-family:inherit; border-radius:2px;">Reset view</button>
   </section>
 
-  <section class="max-w-2xl mx-auto px-6 text-center mt-4">
-    <p class="opacity-40 text-sm">A map of ideas I'm living inside. Click any node to read. Ctrl+scroll to zoom, drag to pan.</p>
+  <section style="max-width:42rem; margin:0 auto; padding:1rem 1.5rem 100px; text-align:center;">
+    <p style="font-size:0.8rem; opacity:0.4;">Click any node to read. Ctrl+scroll to zoom, drag to pan.</p>
   </section>
+
+  <style>
+    .mind-header {
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 32px 32px 10px;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .mind-title {
+      font-size: 28px; font-weight: 300; letter-spacing: -0.02em;
+      color: #1d1d1f; line-height: 1;
+    }
+    .mind-sub {
+      font-size: 12px; font-weight: 400; color: #7a7a7a; line-height: 1;
+    }
+    .mind-socials { display: flex; align-items: center; gap: 6px; }
+    .mind-social-link {
+      font-size: 12px; color: #7a7a7a;
+      text-decoration: none; transition: color 0.15s;
+    }
+    .mind-social-link:hover { color: #1d1d1f; }
+    .mind-social-sep { font-size: 12px; color: #c0c0c0; }
+  </style>
 
   <div id="note-panel" style="display:none; max-width:42rem; margin:0 auto; padding:2rem 1.5rem 5rem;">
     <div style="border-top:1px solid rgba(0,0,0,0.1); padding-top:1.5rem;">
@@ -172,8 +206,8 @@ const CHILD_LINKS = [
   const cx = W / 2;
   const cy = H / 2;
 
-  const R_HUB   = Math.min(W, H) * 0.20;
-  const R_CHILD = Math.min(W, H) * 0.42;
+  const R_HUB   = Math.min(W, H) * 0.14;
+  const R_CHILD = Math.min(W, H) * 0.30;
 
   // Fix hub positions evenly around inner ring
   const hubNodes = clusters.map((c: any, i: number) => {

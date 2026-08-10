@@ -1,21 +1,42 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../layouts/WorkspaceLayout.astro";
 import { identity } from "../config";
-import PhotographyHero from "../components/PhotographyHero";
 
-const PHOTOS = [
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
-  "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
-  "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
-  "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=600&q=80",
-  "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=600&q=80",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
-  "https://images.unsplash.com/photo-1504700610630-ac6aba3536d3?w=600&q=80",
-  "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=600&q=80",
-  "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=600&q=80",
-  "https://images.unsplash.com/photo-1510784722466-f2aa240d2699?w=600&q=80",
-  "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=600&q=80",
+const MOROCCO = [
+  "/photography/thumbs/morocco--98586D38-38FC-4F70-BCAF-1A20B19D7947.webp",
+  "/photography/thumbs/morocco--IMG_3049.webp",
+  "/photography/thumbs/morocco--IMG_7172.webp",
+  "/photography/thumbs/morocco--IMG_8971.webp",
+  "/photography/thumbs/morocco--IMG_9150.webp",
+  "/photography/thumbs/morocco--IMG_9172.webp",
+  "/photography/thumbs/morocco--IMG_9295.webp",
+  "/photography/thumbs/morocco--IMG_9553.webp",
+  "/photography/thumbs/morocco--Tezza-5653.webp",
+];
+const SPAIN = [
+  "/photography/thumbs/spain--IMG_1036.webp",
+  "/photography/thumbs/spain--IMG_1065.webp",
+  "/photography/thumbs/spain--IMG_3242.webp",
+  "/photography/thumbs/spain--IMG_5296.webp",
+  "/photography/thumbs/spain--IMG_5336.webp",
+  "/photography/thumbs/spain--IMG_5660.webp",
+  "/photography/thumbs/spain--IMG_6780.webp",
+  "/photography/thumbs/spain--IMG_6797.webp",
+];
+const SWITZERLAND = [
+  "/photography/thumbs/switzerland--A9CAAB5F-644C-4EA6-96E6-193BB256629B.webp",
+  "/photography/thumbs/switzerland--IMG_0403.webp",
+  "/photography/thumbs/switzerland--IMG_0435.webp",
+  "/photography/thumbs/switzerland--IMG_0913.webp",
+  "/photography/thumbs/switzerland--IMG_1154.webp",
+  "/photography/thumbs/switzerland--IMG_1414.webp",
+  "/photography/thumbs/switzerland--IMG_1551.webp",
+  "/photography/thumbs/switzerland--IMG_1661.webp",
+  "/photography/thumbs/switzerland--IMG_1857.webp",
+  "/photography/thumbs/switzerland--IMG_2243.webp",
+  "/photography/thumbs/switzerland--IMG_2261.webp",
+  "/photography/thumbs/switzerland--IMG_2707.webp",
+  "/photography/thumbs/switzerland--IMG_9831.webp",
 ];
 ---
 
@@ -26,183 +47,170 @@ const PHOTOS = [
     image: identity.logo,
   }}
 >
-  <!-- Trail section with parallax floating -->
-  <PhotographyHero client:load />
-
-  <!-- Gallery marquee section -->
-  <section class="mt-16 mb-4 scroll-reveal">
-    <div class="max-w-2xl mx-auto px-6 mb-6 text-center">
-      <h1 class="font-bold text-3xl mb-1">Morocco</h1>
+  <!-- ── Video hero ── -->
+  <div class="video-hero">
+    <video class="video-bg" autoplay muted loop playsinline>
+      <source src="/photography-header.mov" type="video/mp4" />
+    </video>
+    <div class="video-title-wrap">
+      <h1 class="video-title">Photography</h1>
     </div>
-    <div style="overflow:hidden; width:100%; position:relative;">
-      <div style="position:absolute; left:0; top:0; bottom:0; width:80px; background:linear-gradient(to right, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div style="position:absolute; right:0; top:0; bottom:0; width:80px; background:linear-gradient(to left, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div id="gallery-track" style="display:flex; gap:12px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
-    </div>
-  </section>
+  </div>
 
-
-  <!-- Spain marquee section -->
-  <section class="mt-16 mb-4 scroll-reveal">
-    <div class="max-w-2xl mx-auto px-6 mb-6 text-center">
-      <h1 class="font-bold text-3xl mb-1">Spain</h1>
-    </div>
-    <div style="overflow:hidden; width:100%; position:relative;">
-      <div style="position:absolute; left:0; top:0; bottom:0; width:80px; background:linear-gradient(to right, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div style="position:absolute; right:0; top:0; bottom:0; width:80px; background:linear-gradient(to left, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div id="spain-track" style="display:flex; gap:12px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
+  <!-- ── Gallery marquees ── -->
+  <section class="marquee-section scroll-reveal">
+    <p class="marquee-label">Morocco</p>
+    <div class="marquee-outer">
+      <div class="fade-left"></div><div class="fade-right"></div>
+      <div id="gallery-track" class="marquee-track"></div>
     </div>
   </section>
 
-
-  <!-- Switzerland marquee section -->
-  <section class="mt-16 mb-4 scroll-reveal">
-    <div class="max-w-2xl mx-auto px-6 mb-6 text-center">
-      <h1 class="font-bold text-3xl mb-1">Switzerland</h1>
-    </div>
-    <div style="overflow:hidden; width:100%; position:relative;">
-      <div style="position:absolute; left:0; top:0; bottom:0; width:80px; background:linear-gradient(to right, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div style="position:absolute; right:0; top:0; bottom:0; width:80px; background:linear-gradient(to left, white, transparent); z-index:2; pointer-events:none;"></div>
-      <div id="switzerland-track" style="display:flex; gap:12px; width:max-content; will-change:transform; padding:8px 0 16px;"></div>
+  <section class="marquee-section scroll-reveal">
+    <p class="marquee-label">Spain</p>
+    <div class="marquee-outer">
+      <div class="fade-left"></div><div class="fade-right"></div>
+      <div id="spain-track" class="marquee-track"></div>
     </div>
   </section>
 
-  <div class="mb-20"></div>
+  <section class="marquee-section scroll-reveal">
+    <p class="marquee-label">Switzerland</p>
+    <div class="marquee-outer">
+      <div class="fade-left"></div><div class="fade-right"></div>
+      <div id="switzerland-track" class="marquee-track"></div>
+    </div>
+  </section>
 
+  <div style="height:80px;"></div>
 </Layout>
 
+<style>
+  /* ── Video hero ── */
+  .video-hero {
+    position: relative;
+    width: 100%;
+    height: 72vh;
+    min-height: 480px;
+    overflow: hidden;
+    background: #000;
+  }
+  .video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 65% 65%;
+  }
+  .video-title-wrap {
+    position: absolute;
+    top: 46%;
+    left: 49%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  .video-title {
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: #2a2a2a;
+    margin: 0;
+    line-height: 1;
+  }
+
+  /* ── Marquees ── */
+  .marquee-section { margin-top: 56px; }
+  .marquee-label {
+    font-size: 22px; font-weight: 300; letter-spacing: -0.01em;
+    color: #2a2a2a; margin: 0 0 14px; text-align: center;
+  }
+  .marquee-outer { position: relative; overflow-x: auto; overflow-y: hidden; width: 100%; scrollbar-width: none; }
+  .marquee-outer::-webkit-scrollbar { display: none; }
+  .fade-left  { position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,white,transparent);z-index:2;pointer-events:none; }
+  .fade-right { position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,white,transparent);z-index:2;pointer-events:none; }
+  .marquee-track { display:flex;gap:12px;width:max-content;padding:8px 32px 16px; }
+</style>
+
 <script is:inline>
-  (function () {
-    // Gallery marquee
-        var GALLERY = [
-      "/photography/thumbs/morocco--98586D38-38FC-4F70-BCAF-1A20B19D7947.webp",
-      "/photography/thumbs/morocco--IMG_3049.webp",
-      "/photography/thumbs/morocco--IMG_7172.webp",
-      "/photography/thumbs/morocco--IMG_8971.webp",
-      "/photography/thumbs/morocco--IMG_9150.webp",
-      "/photography/thumbs/morocco--IMG_9172.webp",
-      "/photography/thumbs/morocco--IMG_9295.webp",
-      "/photography/thumbs/morocco--IMG_9553.webp",
-      "/photography/thumbs/morocco--Tezza-5653.webp"
-    ];
+(function () {
 
-    var track = document.getElementById('gallery-track');
+  /* ─────────────────────────────────────────────
+     MARQUEE BUILDER
+  ───────────────────────────────────────────── */
+
+  function buildGallery(trackId, srcs) {
+    var track = document.getElementById(trackId);
     if (!track) return;
-
-    var all = GALLERY.concat(GALLERY);
-    all.forEach(function (src) {
-      var item = document.createElement('div');
-      item.style.cssText = 'flex-shrink:0; width:200px; height:140px; overflow:hidden; border-radius:4px;';
-      var img = document.createElement('img');
-      img.src = src;
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.style.cssText = 'width:100%; height:100%; object-fit:cover; image-orientation:none;';
+    srcs.forEach(function (src) {
+      var item = document.createElement("div");
+      item.style.cssText = "flex-shrink:0;width:200px;height:140px;overflow:hidden;border-radius:4px;";
+      var img = document.createElement("img");
+      img.src = src; img.loading = "lazy"; img.decoding = "async";
+      img.style.cssText = "width:100%;height:100%;object-fit:cover;image-orientation:from-image;";
       item.appendChild(img);
       track.appendChild(item);
     });
 
-    var gx = 0;
-    var gPaused = false;
-    track.addEventListener('mouseenter', function () { gPaused = true; });
-    track.addEventListener('mouseleave', function () { gPaused = false; });
+    /* Drag-to-scroll */
+    var outer = track.parentElement;
+    outer.style.cursor = "grab";
+    var dragging = false, startX = 0, scrollLeft = 0;
+    outer.addEventListener("mousedown", function (e) {
+      dragging = true;
+      outer.style.cursor = "grabbing";
+      startX = e.pageX - outer.offsetLeft;
+      scrollLeft = outer.scrollLeft;
+    });
+    outer.addEventListener("mouseleave", function () { dragging = false; outer.style.cursor = "grab"; });
+    outer.addEventListener("mouseup",    function () { dragging = false; outer.style.cursor = "grab"; });
+    outer.addEventListener("mousemove",  function (e) {
+      if (!dragging) return;
+      e.preventDefault();
+      outer.scrollLeft = scrollLeft - (e.pageX - outer.offsetLeft - startX);
+    });
+  }
 
-    function animateGallery() {
-      if (!gPaused) {
-        gx -= 0.6;
-        var half = track.scrollWidth / 2;
-        if (Math.abs(gx) >= half) gx = 0;
-        track.style.transform = 'translateX(' + gx + 'px)';
-      }
-      requestAnimationFrame(animateGallery);
-    }
-    animateGallery();
+  buildGallery("gallery-track", [
+    "/photography/thumbs/morocco--98586D38-38FC-4F70-BCAF-1A20B19D7947.webp",
+    "/photography/thumbs/morocco--IMG_3049.webp",
+    "/photography/thumbs/morocco--IMG_7172.webp",
+    "/photography/thumbs/morocco--IMG_8971.webp",
+    "/photography/thumbs/morocco--IMG_9150.webp",
+    "/photography/thumbs/morocco--IMG_9172.webp",
+    "/photography/thumbs/morocco--IMG_9295.webp",
+    "/photography/thumbs/morocco--IMG_9553.webp",
+    "/photography/thumbs/morocco--Tezza-5653.webp",
+  ]);
 
-    // Spain marquee
-    var SPAIN = [
-      "/photography/thumbs/spain--IMG_1036.webp",
-      "/photography/thumbs/spain--IMG_1065.webp",
-      "/photography/thumbs/spain--IMG_3242.webp",
-      "/photography/thumbs/spain--IMG_5296.webp",
-      "/photography/thumbs/spain--IMG_5336.webp",
-      "/photography/thumbs/spain--IMG_5660.webp",
-      "/photography/thumbs/spain--IMG_6780.webp",
-      "/photography/thumbs/spain--IMG_6797.webp"
-    ];
-    var spainTrack = document.getElementById('spain-track');
-    if (spainTrack) {
-      var spainAll = SPAIN.concat(SPAIN);
-      spainAll.forEach(function (src) {
-        var item = document.createElement('div');
-        item.style.cssText = 'flex-shrink:0; width:200px; height:140px; overflow:hidden; border-radius:4px;';
-        var img = document.createElement('img');
-        img.src = src;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.style.cssText = 'width:100%; height:100%; object-fit:cover; image-orientation:none;';
-        item.appendChild(img);
-        spainTrack.appendChild(item);
-      });
-      var sx = 0;
-      var sPaused = false;
-      spainTrack.addEventListener('mouseenter', function () { sPaused = true; });
-      spainTrack.addEventListener('mouseleave', function () { sPaused = false; });
-      function animateSpain() {
-        if (!sPaused) {
-          sx -= 0.6;
-          var half = spainTrack.scrollWidth / 2;
-          if (Math.abs(sx) >= half) sx = 0;
-          spainTrack.style.transform = 'translateX(' + sx + 'px)';
-        }
-        requestAnimationFrame(animateSpain);
-      }
-      animateSpain();
-    }
+  buildGallery("spain-track", [
+    "/photography/thumbs/spain--IMG_1036.webp",
+    "/photography/thumbs/spain--IMG_1065.webp",
+    "/photography/thumbs/spain--IMG_3242.webp",
+    "/photography/thumbs/spain--IMG_5296.webp",
+    "/photography/thumbs/spain--IMG_5336.webp",
+    "/photography/thumbs/spain--IMG_5660.webp",
+    "/photography/thumbs/spain--IMG_6780.webp",
+    "/photography/thumbs/spain--IMG_6797.webp",
+  ]);
 
-    // Switzerland marquee
-    var SWITZERLAND = [
-      "/photography/thumbs/switzerland--A9CAAB5F-644C-4EA6-96E6-193BB256629B.webp",
-      "/photography/thumbs/switzerland--IMG_0403.webp",
-      "/photography/thumbs/switzerland--IMG_0435.webp",
-      "/photography/thumbs/switzerland--IMG_0913.webp",
-      "/photography/thumbs/switzerland--IMG_1154.webp",
-      "/photography/thumbs/switzerland--IMG_1414.webp",
-      "/photography/thumbs/switzerland--IMG_1551.webp",
-      "/photography/thumbs/switzerland--IMG_1661.webp",
-      "/photography/thumbs/switzerland--IMG_1857.webp",
-      "/photography/thumbs/switzerland--IMG_2243.webp",
-      "/photography/thumbs/switzerland--IMG_2261.webp",
-      "/photography/thumbs/switzerland--IMG_2707.webp",
-      "/photography/thumbs/switzerland--IMG_9831.webp"
-    ];
-    var swissTrack = document.getElementById('switzerland-track');
-    if (swissTrack) {
-      var swissAll = SWITZERLAND.concat(SWITZERLAND);
-      swissAll.forEach(function (src) {
-        var item = document.createElement('div');
-        item.style.cssText = 'flex-shrink:0; width:200px; height:140px; overflow:hidden; border-radius:4px;';
-        var img = document.createElement('img');
-        img.src = src;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        img.style.cssText = 'width:100%; height:100%; object-fit:cover; image-orientation:none;';
-        item.appendChild(img);
-        swissTrack.appendChild(item);
-      });
-      var wx = 0;
-      var wPaused = false;
-      swissTrack.addEventListener('mouseenter', function () { wPaused = true; });
-      swissTrack.addEventListener('mouseleave', function () { wPaused = false; });
-      function animateSwitzerland() {
-        if (!wPaused) {
-          wx -= 0.6;
-          var half = swissTrack.scrollWidth / 2;
-          if (Math.abs(wx) >= half) wx = 0;
-          swissTrack.style.transform = 'translateX(' + wx + 'px)';
-        }
-        requestAnimationFrame(animateSwitzerland);
-      }
-      animateSwitzerland();
-    }
-  })();
+  buildGallery("switzerland-track", [
+    "/photography/thumbs/switzerland--A9CAAB5F-644C-4EA6-96E6-193BB256629B.webp",
+    "/photography/thumbs/switzerland--IMG_0403.webp",
+    "/photography/thumbs/switzerland--IMG_0435.webp",
+    "/photography/thumbs/switzerland--IMG_0913.webp",
+    "/photography/thumbs/switzerland--IMG_1154.webp",
+    "/photography/thumbs/switzerland--IMG_1414.webp",
+    "/photography/thumbs/switzerland--IMG_1551.webp",
+    "/photography/thumbs/switzerland--IMG_1661.webp",
+    "/photography/thumbs/switzerland--IMG_1857.webp",
+    "/photography/thumbs/switzerland--IMG_2243.webp",
+    "/photography/thumbs/switzerland--IMG_2261.webp",
+    "/photography/thumbs/switzerland--IMG_2707.webp",
+    "/photography/thumbs/switzerland--IMG_9831.webp",
+  ]);
+
+})();
 </script>

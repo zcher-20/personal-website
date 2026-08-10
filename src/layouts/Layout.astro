@@ -1,68 +1,69 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 import { ViewTransitions } from "astro:transitions";
-import { navBarLinks, identity, socialLinks } from "../config";
+import { navBarLinks, identity } from "../config";
 import type { SEOInfo } from "../types/config";
-import HeroName from "../components/HeroName";
-import SocialLink from "../components/SocialLink.astro";
 
 interface Props {
   seo: SEOInfo;
   canvasPage?: boolean;
+  noNav?: boolean;
 }
 
-const { seo, canvasPage = false } = Astro.props;
+const { seo, canvasPage = false, noNav = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const fullImageURL = seo.image?.startsWith("http")
   ? seo.image
   : new URL(seo.image || "/logo.webp", Astro.site).toString();
+const path = Astro.url.pathname;
+const isActive = (url: string) =>
+  url === "/" ? path === "/" : path === url || path.startsWith(url + "/");
 ---
 
 <script>
-  function initLayout() {
-    const linkMenuButton = document.getElementById("link-menu-button");
-    const linkMenu = document.getElementById("link-menu");
-    const openIndicator = document.getElementById("open-indicator");
-
-    if (linkMenuButton && linkMenu && openIndicator) {
-      linkMenuButton.addEventListener("click", () => {
-        if (linkMenu.classList.contains("opacity-0")) {
-          linkMenu.classList.remove("pointer-events-none");
-          linkMenu.classList.remove("opacity-0");
-          openIndicator.innerText = "-";
-        } else {
-          linkMenu.classList.add("pointer-events-none");
-          linkMenu.classList.add("opacity-0");
-          openIndicator.innerText = "+";
-        }
-      });
-    }
-
-    document.addEventListener("click", (event) => {
-      if (!linkMenuButton || !linkMenu || !openIndicator) return;
-      const isLinkMenuButtonClicked =
-        event.target === linkMenuButton ||
-        linkMenuButton.contains(event.target as Node);
-      const isLinkMenuClicked =
-        event.target === linkMenu || linkMenu.contains(event.target as Node);
-
-      if (!isLinkMenuButtonClicked && !isLinkMenuClicked) {
-        linkMenu.classList.add("pointer-events-none");
-        linkMenu.classList.add("opacity-0");
-        openIndicator.innerText = "+";
-      }
-    });
-
+  document.addEventListener("astro:page-load", () => {
     document.querySelectorAll("#theme-toggle, #theme-toggle-mobile").forEach((btn) => {
       btn.addEventListener("click", () => {
         const isDark = document.documentElement.classList.toggle("dark");
         localStorage.setItem("theme", isDark ? "dark" : "light");
       });
     });
-  }
 
-  document.addEventListener("astro:page-load", initLayout);
+    const menuBtn = document.getElementById("mobile-menu-btn");
+    const openInd = document.getElementById("mobile-open-ind");
+    const drawer = document.getElementById("mobile-nav-drawer");
+    if (menuBtn && drawer && openInd) {
+      menuBtn.addEventListener("click", () => {
+        const isOpen = !drawer.classList.contains("hidden");
+        drawer.classList.toggle("hidden");
+        openInd.textContent = isOpen ? "+" : "−";
+      });
+      document.addEventListener("click", (e) => {
+        if (!menuBtn.contains(e.target as Node) && !drawer.contains(e.target as Node)) {
+          drawer.classList.add("hidden");
+          openInd.textContent = "+";
+        }
+      });
+    }
+
+    const nav = document.getElementById("site-nav");
+    if (nav) {
+      document.documentElement.style.setProperty("--nav-h", nav.offsetHeight + "px");
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll(".scroll-reveal").forEach((el) => observer.observe(el));
+  });
 </script>
 
 <html lang="en">
@@ -72,46 +73,30 @@ const fullImageURL = seo.image?.startsWith("http")
     <meta name="generator" content={Astro.generator} />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
-
-    <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={seo.title} />
     <meta property="og:description" content={seo.description} />
     <meta property="og:image" content={fullImageURL} />
     <meta property="og:site_name" content="Zayneb Cherif" />
-
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={seo.title} />
     <meta name="twitter:description" content={seo.description} />
     <meta name="twitter:image" content={fullImageURL} />
 
-    <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Zayneb Cherif's Blog" href="/rss.xml" />
 
-    <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Zayneb Cherif",
       "url": Astro.site,
-      "author": {
-        "@type": "Person",
-        "name": "Zayneb Cherif",
-        "email": "zc2913@columbia.edu",
-        "url": Astro.site
-      }
+      "author": { "@type": "Person", "name": "Zayneb Cherif", "email": "zc2913@columbia.edu" }
     })} />
 
-    <!-- Preload sidebar profile image -->
-    <link rel="preload" href={identity.logo} as="image" />
-
-    <!-- Theme initialization (prevents flash) -->
     <script is:inline>
       const theme = localStorage.getItem("theme") ||
         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
@@ -119,170 +104,97 @@ const fullImageURL = seo.image?.startsWith("http")
     </script>
     <ViewTransitions />
   </head>
-  <body class="bg-white dark:bg-black text-black dark:text-white transition-colors">
-    <!-- Mobile header -->
-    <header class="md:hidden flex items-center justify-between px-6 py-5 border-b border-gray-200 dark:border-gray-800">
-      <a href="/" class="font-bold text-xl">Zayneb Cherif</a>
-      <div class="flex items-center gap-2">
-        <button
-          id="theme-toggle-mobile"
-          class="p-2 rounded-lg hover:bg-gray-bg-light dark:hover:bg-gray-bg opacity-60 hover:opacity-100 transition-all"
-          aria-label="Toggle theme"
+
+  <body class="bg-white dark:bg-[#0c0c0c] text-black dark:text-white transition-colors flex flex-col min-h-screen">
+
+    <!-- Desktop nav -->
+    <header id="site-nav" class={`${noNav ? "!hidden" : ""} hidden md:flex items-center justify-between px-10 py-[14px] border-b border-black/[0.07] dark:border-white/[0.07] sticky top-0 bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-sm z-50`}>
+      <div class="flex items-baseline gap-3">
+        <a href="/" class="font-bold text-[13px] tracking-[0.14em] uppercase">{identity.name}</a>
+        <span class="text-[10.5px] tracking-widest uppercase opacity-35">CS + Design</span>
+      </div>
+
+      <nav class="flex items-center gap-7">
+        {navBarLinks.map((link) => (
+          <a
+            href={link.url}
+            target={link.external ? "_blank" : "_self"}
+            class={`text-[11px] tracking-[0.1em] uppercase transition-colors ${
+              isActive(link.url)
+                ? "text-[#c4501e] font-semibold"
+                : "opacity-40 hover:opacity-85"
+            }`}
+          >
+            {link.title}
+          </a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-5">
+        <a
+          href="https://github.com/zcher-20"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[11px] tracking-widest uppercase opacity-35 hover:opacity-70 transition-opacity"
         >
-          <Icon name="mdi:weather-sunny" class="w-5 h-5 hidden dark:block" />
-          <Icon name="mdi:weather-night" class="w-5 h-5 block dark:hidden" />
+          GitHub ↗
+        </a>
+        <button id="theme-toggle" class="opacity-35 hover:opacity-70 transition-opacity" aria-label="Toggle theme">
+          <Icon name="mdi:weather-sunny" class="w-[15px] h-[15px] hidden dark:block" />
+          <Icon name="mdi:weather-night" class="w-[15px] h-[15px] block dark:hidden" />
         </button>
-        <div class="relative">
-          <button
-            id="link-menu-button"
-            class="relative font-medium opacity-60 p-2"
-            >Menu <span id="open-indicator">+</span></button
-          >
-          <div
-            id="link-menu"
-            class="absolute p-2 right-0 bg-gray-bg-light dark:bg-gray-bg rounded-lg w-44 transition-opacity ease-in-out duration-300 opacity-0 pointer-events-none z-40"
-          >
-            <ul>
-              {
-                navBarLinks.map((link) => (
-                  <li>
-                    <a
-                      class="block pl-4 py-3"
-                      href={link.url}
-                      target={link.external ? "_blank" : "_self"}
-                    >
-                      {link.title}
-                    </a>
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        </div>
       </div>
     </header>
 
-    <div class="md:flex md:min-h-screen">
-      <!-- Sidebar (desktop only) -->
-      <aside transition:persist="sidebar" class="hidden md:flex md:flex-col md:items-center md:justify-between md:w-72 lg:w-80 md:shrink-0 md:sticky md:top-0 md:h-screen md:px-8 md:py-12 md:border-r md:border-gray-200 dark:md:border-gray-800">
-        <div class="flex flex-col items-center">
-          <img
-            src={identity.logo}
-            alt={identity.name}
-            width="120"
-            height="120"
-            class="rounded-full mb-5"
-            loading="eager"
-            fetchpriority="high"
-          />
-
-          <a href="/" class="block mb-1">
-            <h1 class="font-bold text-xl tracking-tight">
-              <HeroName name={identity.name} client:load />
-            </h1>
-          </a>
-          <p class="text-sm opacity-40">CS & Design · AI Research</p>
-          <a
-            href="/Zayneb_Cherif_Resume.docx"
-            download
-            class="mt-3 text-sm opacity-50 hover:opacity-100 transition-opacity"
-          >
-            Resume →
-          </a>
-        </div>
-
-        <nav>
-          <ul class="flex flex-col items-center gap-1">
-            {
-              navBarLinks.map((link) => (
-                <li>
-                  <a
-                    class="block py-1 opacity-60 hover:opacity-100 transition-opacity text-sm"
-                    href={link.url}
-                    target={link.external ? "_blank" : "_self"}
-                  >
-                    {link.title}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-
-        <div class="flex flex-col items-center gap-4">
-          <div class="flex flex-col items-center gap-2">
-            <div class="flex items-center gap-4">
-              {
-                socialLinks.filter((l) => l.title !== "Mail").map((link) => (
-                  <SocialLink
-                    title={link.title}
-                    url={link.url}
-                    icon={link.icon}
-                    external={link.external}
-                  />
-                ))
-              }
-            </div>
-            {
-              socialLinks.filter((l) => l.title === "Mail").map((link) => (
-                <SocialLink
-                  title={link.title}
-                  url={link.url}
-                  icon={link.icon}
-                  external={link.external}
-                />
-              ))
-            }
-          </div>
-          <div class="flex items-center gap-3">
-          <button
-            id="theme-toggle"
-            class="p-2 rounded-lg hover:bg-gray-bg-light dark:hover:bg-gray-bg opacity-60 hover:opacity-100 transition-all"
-            aria-label="Toggle theme"
-          >
-            <Icon name="mdi:weather-sunny" class="w-4 h-4 hidden dark:block" />
-            <Icon name="mdi:weather-night" class="w-4 h-4 block dark:hidden" />
-          </button>
-          <span class="text-xs opacity-40">© 2026</span>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Main content -->
-      <div class={`flex-1 min-w-0${canvasPage ? " overflow-hidden" : ""}`}>
-        <main class={canvasPage ? "" : "mb-32"}>
-          <slot />
-        </main>
-        {!canvasPage && (
-          <footer class="border-t border-gray-200 dark:border-gray-800 md:hidden">
-            <div class="px-6 py-8">
-              <div class="text-center text-sm opacity-60 space-y-2">
-                <p>© 2026 Zayneb Cherif</p>
-                <p>zc2913@columbia.edu</p>
-              </div>
-            </div>
-          </footer>
-        )}
+    <!-- Mobile nav -->
+    <header class={`${noNav ? "!hidden" : ""} md:hidden flex items-center justify-between px-5 py-4 border-b border-black/[0.07] dark:border-white/[0.07] sticky top-0 bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-sm z-50`}>
+      <a href="/" class="font-bold text-[13px] tracking-[0.14em] uppercase">{identity.name}</a>
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle-mobile" class="opacity-35 hover:opacity-70 transition-opacity p-1" aria-label="Toggle theme">
+          <Icon name="mdi:weather-sunny" class="w-4 h-4 hidden dark:block" />
+          <Icon name="mdi:weather-night" class="w-4 h-4 block dark:hidden" />
+        </button>
+        <button id="mobile-menu-btn" class="text-[11px] tracking-widest uppercase opacity-50 hover:opacity-100 transition-opacity">
+          Menu <span id="mobile-open-ind">+</span>
+        </button>
       </div>
+    </header>
+    <div id="mobile-nav-drawer" class="hidden md:hidden border-b border-black/[0.07] dark:border-white/[0.07] px-5 py-5 bg-white dark:bg-[#0c0c0c] z-40">
+      <ul class="flex flex-col gap-4">
+        {navBarLinks.map((link) => (
+          <li>
+            <a
+              href={link.url}
+              target={link.external ? "_blank" : "_self"}
+              class={`text-[13px] tracking-widest uppercase transition-colors ${
+                isActive(link.url) ? "text-[#c4501e]" : "opacity-45 hover:opacity-100"
+              }`}
+            >
+              {link.title}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
-    <script is:inline>
-      document.addEventListener('astro:page-load', function() {
-        var observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.scroll-reveal').forEach(function(el) { observer.observe(el); });
-      });
-    </script>
+
+    <!-- Main -->
+    <main class={canvasPage ? "flex-1 overflow-hidden flex flex-col" : "flex-1"}>
+      <slot />
+    </main>
+
+    {!canvasPage && (
+      <footer class="border-t border-black/[0.07] dark:border-white/[0.07] px-10 py-6 mt-10">
+        <div class="flex items-center justify-between">
+          <span class="text-[10.5px] uppercase tracking-widest opacity-25">© 2026 Zayneb Cherif</span>
+          <span class="text-[10.5px] uppercase tracking-widest opacity-25">zaynebcheriff@gmail.com</span>
+        </div>
+      </footer>
+    )}
   </body>
 </html>
 
 <style is:global>
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 
   html {
     font-family: "Inter", sans-serif;
@@ -296,15 +208,7 @@ const fullImageURL = seo.image?.startsWith("http")
   }
 
   code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
+    font-family: Menlo, Monaco, "Courier New", monospace;
   }
 
   .hover-underline {
@@ -312,30 +216,19 @@ const fullImageURL = seo.image?.startsWith("http")
     text-underline-offset: 5px;
     transition: text-decoration-color 300ms;
   }
-
   .post:hover .hover-underline {
     text-decoration-color: currentColor;
   }
 
-  /* Style for markdown links in content areas only */
   .mb-14 a, .mb-6 a {
     color: #2563eb;
     text-decoration: underline;
     text-underline-offset: 3px;
     transition: color 200ms ease;
   }
-
-  .mb-14 a:hover, .mb-6 a:hover {
-    color: #1d4ed8;
-  }
-
-  .dark .mb-14 a, .dark .mb-6 a {
-    color: #60a5fa;
-  }
-
-  .dark .mb-14 a:hover, .dark .mb-6 a:hover {
-    color: #93c5fd;
-  }
+  .mb-14 a:hover, .mb-6 a:hover { color: #1d4ed8; }
+  .dark .mb-14 a, .dark .mb-6 a { color: #60a5fa; }
+  .dark .mb-14 a:hover, .dark .mb-6 a:hover { color: #93c5fd; }
 
   .scroll-reveal {
     opacity: 0;

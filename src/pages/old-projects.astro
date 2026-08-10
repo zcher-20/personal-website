@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/WorkspaceLayout.astro";
+import { projectsPageContent } from "../config";
+import ProjectCard from "../components/ProjectCard.astro";
+
+const featured = projectsPageContent.projects.filter(p => p.featured);
+const publications = projectsPageContent.projects.filter(p => p.isPublication);
+const other = projectsPageContent.projects.filter(p => !p.featured && !p.isPublication);
+---
+
+<Layout seo={projectsPageContent.seo}>
+  <section class="mt-10 max-w-4xl mx-auto px-6 scroll-reveal">
+    <h1 class="font-bold text-3xl mb-10 text-center">Projects</h1>
+
+    <div class="mb-2">
+      <div class="grid grid-cols-1 group">
+        {featured.map((project) => (
+          <ProjectCard {...project} />
+        ))}
+      </div>
+    </div>
+
+    <!-- Other Projects -->
+    {other.length > 0 && (
+      <div class="mb-2 mt-10">
+        <h2 class="text-xs uppercase tracking-widest opacity-40 mb-6">More Projects</h2>
+        <div class="grid grid-cols-1 group">
+          {other.map((project) => (
+            <ProjectCard {...project} />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <div class="mt-10 mb-20">
+      <h2 class="font-bold text-2xl mb-2 text-center">Research Projects + Papers</h2>
+      <div class="grid grid-cols-1 group">
+        {publications.map((project) => (
+          <ProjectCard {...project} />
+        ))}
+      </div>
+    </div>
+
+  </section>
+</Layout>
