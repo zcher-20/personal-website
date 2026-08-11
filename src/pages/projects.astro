@@ -63,7 +63,8 @@ const ITEMS = [
     title: "Cinema Archive",
     shortTitle: "Cinema Archive",
     description: "A personal film archive — browse a curated collection of films with large typographic titles, scrolling movie stills, and an editorial dark aesthetic.",
-    image: "/design-cinema-archive.png",
+    image: "/design-cinema-archive-2.png",
+    images: ["/design-cinema-archive-2.png", "/design-cinema-archive.png"],
     venue: "",
     tags: ["Vanilla JavaScript", "CSS Animations", "Editorial Design"],
     links: [
@@ -387,7 +388,15 @@ const ITEMS = [
     pmTitle.textContent = d.title;
     pmVenue.textContent = d.venue || ""; pmVenue.style.display = d.venue ? "" : "none";
     pmDesc.textContent  = d.description;
-    pmImage.src = d.image; pmImage.alt = d.title;
+    var imgs = d.images && d.images.length ? d.images : [d.image];
+    var imgContainer = pmImage.parentElement;
+    imgContainer.querySelectorAll(".pm-image-extra").forEach(function(e){ e.remove(); });
+    pmImage.src = imgs[0]; pmImage.alt = d.title;
+    imgs.slice(1).forEach(function(src) {
+      var ex = document.createElement("img");
+      ex.src = src; ex.alt = d.title; ex.className = "pm-image pm-image-extra";
+      imgContainer.appendChild(ex);
+    });
 
     pmTags.innerHTML = "";
     (d.tags || []).forEach(function (t) {
@@ -664,4 +673,5 @@ const ITEMS = [
     object-fit: cover; display: block;
     box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px;
   }
+  .pm-image-extra { margin-top: 12px; }
 </style>
