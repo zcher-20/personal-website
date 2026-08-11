@@ -239,6 +239,33 @@ const ITEMS = [
       </div>
     ))}
 
+  </div><!-- end canvas -->
+
+  <!-- Mobile card list (hidden on desktop) -->
+  <div class="mobile-proj-list">
+    {ITEMS.filter((item) => !item.hidden).map((item) => (
+      <div class="mobile-proj-item" data-id={item.id}>
+        <img src={item.image} alt={item.title} class="mobile-proj-img" loading="lazy" />
+        <div class="mobile-proj-info">
+          <p class="mobile-proj-title">{item.shortTitle}</p>
+          {item.venue && <p class="mobile-proj-venue">{item.venue}</p>}
+          <p class="mobile-proj-desc">{item.description}</p>
+          <div class="mobile-proj-tags">
+            {item.tags.map((t: string) => <span class="pm-tag">{t}</span>)}
+          </div>
+          <div class="mobile-proj-links">
+            {item.links && item.links.length > 0
+              ? item.links.map((lnk: { label: string; href: string }) => (
+                  <a href={lnk.href} target="_blank" rel="noopener noreferrer" class="pm-link">{lnk.label}</a>
+                ))
+              : <span class="pm-link pm-link-muted">Confidential</span>
+            }
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
     <!-- Detail modal -->
     <div id="proj-modal" class="modal" role="dialog" aria-modal="true">
       <div class="modal-card" id="proj-modal-card">
@@ -256,7 +283,6 @@ const ITEMS = [
       </div>
     </div>
 
-  </div><!-- end canvas -->
   <div class="proj-footer"></div>
   </div><!-- end proj-shell -->
 </Layout>
@@ -424,7 +450,7 @@ const ITEMS = [
 
   function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
 
-  document.querySelectorAll(".item").forEach(function (el) {
+  document.querySelectorAll(".item, .mobile-proj-item").forEach(function (el) {
     el.addEventListener("click", function () { openModal(el.dataset.id); });
   });
   modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
@@ -675,4 +701,41 @@ const ITEMS = [
     box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px;
   }
   .pm-image-extra { margin-top: 12px; }
+
+  /* ── Mobile project list ── */
+  .mobile-proj-list { display: none; }
+
+  @media (max-width: 768px) {
+    .canvas           { display: none; }
+    .proj-footer      { display: none; }
+    .mobile-proj-list {
+      display: flex; flex-direction: column; gap: 0;
+      padding: 0 20px 80px;
+    }
+    .mobile-proj-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 0; border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+    }
+    .mobile-proj-img {
+      width: 90px; height: 68px; object-fit: cover;
+      border-radius: 6px; flex-shrink: 0;
+    }
+    .mobile-proj-info { flex: 1; min-width: 0; }
+    .mobile-proj-title {
+      font-size: 13.5px; font-weight: 500; color: #1d1d1f;
+      margin: 0 0 2px; line-height: 1.3;
+    }
+    .mobile-proj-venue {
+      font-size: 11px; color: #a0a0a0; font-style: italic; margin: 0 0 4px;
+    }
+    .mobile-proj-desc {
+      font-size: 11.5px; color: #6a6a6a; line-height: 1.5; margin: 0 0 8px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .mobile-proj-tags  { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+    .mobile-proj-links { display: flex; flex-wrap: wrap; gap: 6px; }
+    .proj-header { padding: 28px 20px 12px; }
+    .wordmark-title { font-size: 22px; }
+  }
 </style>

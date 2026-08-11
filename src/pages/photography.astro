@@ -94,6 +94,14 @@ import { identity } from "../config";
   .fade-left  { position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,white,transparent);z-index:2;pointer-events:none; }
   .fade-right { position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,white,transparent);z-index:2;pointer-events:none; }
   .marquee-track { display:flex;gap:12px;width:max-content;padding:8px 32px 16px; }
+
+  @media (max-width: 768px) {
+    .video-hero   { height: 50vh; min-height: 280px; }
+    .video-title  { font-size: 24px; }
+    .video-title-wrap { bottom: 20px; left: 20px; }
+    .marquee-section  { margin-top: 36px; }
+    .marquee-label    { font-size: 18px; }
+  }
 </style>
 
 <script is:inline>
@@ -111,22 +119,24 @@ import { identity } from "../config";
       track.appendChild(item);
     });
 
-    /* Drag-to-scroll */
+    /* Drag-to-scroll (pointer events: works on mouse + touch) */
     var outer = track.parentElement;
     outer.style.cursor = "grab";
+    outer.style.touchAction = "pan-y";
     var dragging = false, startX = 0, scrollLeft = 0;
-    outer.addEventListener("mousedown", function (e) {
+    outer.addEventListener("pointerdown", function (e) {
       dragging = true;
       outer.style.cursor = "grabbing";
-      startX = e.pageX - outer.offsetLeft;
+      outer.setPointerCapture(e.pointerId);
+      startX = e.clientX;
       scrollLeft = outer.scrollLeft;
     });
-    outer.addEventListener("mouseleave", function () { dragging = false; outer.style.cursor = "grab"; });
-    outer.addEventListener("mouseup",    function () { dragging = false; outer.style.cursor = "grab"; });
-    outer.addEventListener("mousemove",  function (e) {
+    outer.addEventListener("pointerup",     function () { dragging = false; outer.style.cursor = "grab"; });
+    outer.addEventListener("pointercancel", function () { dragging = false; outer.style.cursor = "grab"; });
+    outer.addEventListener("pointermove",   function (e) {
       if (!dragging) return;
       e.preventDefault();
-      outer.scrollLeft = scrollLeft - (e.pageX - outer.offsetLeft - startX);
+      outer.scrollLeft = scrollLeft - (e.clientX - startX);
     });
   }
 

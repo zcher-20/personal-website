@@ -13,8 +13,8 @@ const dateStr = now.toLocaleDateString("en-US", {
 
 const SECTIONS = [
   { num: "001", label: "About",       image: "/about-cover.png",               href: "#about" },
-  { num: "003", label: "Experience",  image: "/experience-cover.png",          href: "#experience" },
   { num: "002", label: "Projects",    image: "/projects-canvas-cover.png",     href: "/projects" },
+  { num: "003", label: "Experience",  image: "/experience-cover.png",          href: "#experience" },
   { num: "004", label: "Mind",        image: "/ws-network.png",                 href: "/mind" },
   { num: "005", label: "Bookshelf",   image: "/books-cover.png",                href: "/books" },
   { num: "006", label: "Photography", image: "/photography-cover.png",           href: "/photography" },
@@ -28,6 +28,14 @@ const APP_NAV = [
   { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
   { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
   { label: "Photography", icon: "mdi:camera-outline",      href: "/photography" },
+];
+
+const MOBILE_NAV = [
+  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
+  { label: "Projects",    icon: "mdi:folder-open-outline", href: "/projects" },
+  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photos",      icon: "mdi:camera-outline",      href: "/photography" },
 ];
 
 const EXPERIENCE = workPageContent.items.map((job) => ({
@@ -221,6 +229,17 @@ const SKILLS = [
     </div>
 
   </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="mobile-nav">
+    {MOBILE_NAV.map((item) => (
+      <a href={item.href} class={`mobile-nav-btn${item.href === "/" ? " mobile-nav-active" : ""}`}>
+        <Icon name={item.icon} class="mobile-nav-icon" />
+        <span class="mobile-nav-label">{item.label}</span>
+      </a>
+    ))}
+  </nav>
+
 </Layout>
 
 <script is:inline>
@@ -419,9 +438,9 @@ const SKILLS = [
   }
   .section-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .section-card:nth-child(1) .section-img img { object-position: 60% center; }
-  .section-card:nth-child(2) .section-img { background: #ffffff; }
-  .section-card:nth-child(2) .section-img img { object-fit: contain; object-position: center center; }
-  .section-card:nth-child(3) .section-img img { object-position: 35% center; }
+  .section-card:nth-child(2) .section-img img { object-position: 35% center; }
+  .section-card:nth-child(3) .section-img { background: #ffffff; }
+  .section-card:nth-child(3) .section-img img { object-fit: contain; object-position: center center; }
   .section-card:nth-child(5) .section-img { background: #ffffff; }
   .section-card:nth-child(5) .section-img img { object-fit: contain; object-position: left center; filter: saturate(70%); }
   .section-card:nth-child(6) .section-img img { object-position: center top; transform: scale(1.18); transform-origin: center 20%; }
@@ -529,5 +548,55 @@ const SKILLS = [
   .exp-date {
     flex-shrink: 0; font-size: 12px; color: #8a8a8a;
     white-space: nowrap; padding-top: 2px;
+  }
+
+  /* ── Mobile bottom nav ── */
+  .mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 60px;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid #f0f0f0;
+    z-index: 200;
+    align-items: stretch;
+  }
+  .mobile-nav-btn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; text-decoration: none;
+    color: #b0b0b0; transition: color 0.15s;
+  }
+  .mobile-nav-btn.mobile-nav-active { color: #1d1d1f; }
+  .mobile-nav-icon { width: 20px; height: 20px; }
+  .mobile-nav-label { font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ── Mobile responsive overrides ── */
+  @media (max-width: 768px) {
+    .app-sidebar    { display: none !important; }
+    .sidebar-flyout { display: none !important; }
+    .mobile-nav     { display: flex; }
+
+    .archive-main   { padding-bottom: 72px; }
+    .archive-content { padding: 28px 20px 80px; }
+
+    /* Header stacks */
+    .archive-header { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 32px; }
+    .archive-identity { text-align: left; }
+    .archive-socials  { justify-content: flex-start; }
+    .archive-name  { font-size: 22px; }
+
+    /* 3-col → 2-col grid */
+    .sections-grid { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 32px; margin-bottom: 48px; }
+
+    /* About: side-by-side → stack */
+    .about-layout { flex-direction: column; gap: 32px; }
+    .about-left   { flex: none; width: 100%; }
+    .about-right  { flex: none; width: 100%; }
+
+    /* Experience rows: hide date on very small screens */
+    .exp-date { display: none; }
   }
 </style>

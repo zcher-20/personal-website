@@ -19,6 +19,14 @@ const APP_NAV = [
   { label: "Photography", icon: "mdi:camera-outline",      href: "/photography" },
 ];
 
+const MOBILE_NAV = [
+  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
+  { label: "Projects",    icon: "mdi:folder-open-outline", href: "/projects" },
+  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photos",      icon: "mdi:camera-outline",      href: "/photography" },
+];
+
 const path = Astro.url.pathname;
 ---
 
@@ -75,6 +83,19 @@ const path = Astro.url.pathname;
     </main>
 
   </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="mobile-nav">
+    {MOBILE_NAV.map((item) => (
+      <a
+        href={item.href}
+        class={`mobile-nav-btn ${path === item.href || (item.href !== "/" && path.startsWith(item.href)) ? "mobile-nav-active" : ""}`}
+      >
+        <Icon name={item.icon} class="mobile-nav-icon" />
+        <span class="mobile-nav-label">{item.label}</span>
+      </a>
+    ))}
+  </nav>
 </Layout>
 
 <script is:inline>
@@ -260,5 +281,36 @@ const path = Astro.url.pathname;
     min-width: 0;
     overflow-y: auto;
     padding-top: 16px;
+  }
+
+  /* ── Mobile bottom nav ── */
+  .mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 60px;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid #f0f0f0;
+    z-index: 200;
+    align-items: stretch;
+  }
+  .mobile-nav-btn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; text-decoration: none;
+    color: #b0b0b0; transition: color 0.15s;
+  }
+  .mobile-nav-btn.mobile-nav-active { color: #1d1d1f; }
+  .mobile-nav-icon { width: 20px; height: 20px; }
+  .mobile-nav-label { font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ── Mobile overrides ── */
+  @media (max-width: 768px) {
+    .app-sidebar   { display: none !important; }
+    .sidebar-flyout { display: none !important; }
+    .mobile-nav    { display: flex; }
+    .ws-main       { padding-bottom: 72px; padding-top: 0; }
   }
 </style>
