@@ -219,7 +219,7 @@ const ITEMS = [
     <span class="al al-right">Research</span>
 
     <!-- Project items (hidden:true entries are excluded) -->
-    {ITEMS.filter((item) => !item.hidden).map((item) => (
+    {ITEMS.filter((item) => !(item as any).hidden).map((item) => (
       <div
         class="item"
         data-id={item.id}
@@ -243,7 +243,7 @@ const ITEMS = [
 
   <!-- Mobile card list (hidden on desktop) -->
   <div class="mobile-proj-list">
-    {ITEMS.filter((item) => !item.hidden).map((item) => (
+    {ITEMS.filter((item) => !(item as any).hidden).map((item) => (
       <div class="mobile-proj-item" data-id={item.id}>
         <img src={item.image} alt={item.title} class="mobile-proj-img" loading="lazy" />
         <div class="mobile-proj-info">
