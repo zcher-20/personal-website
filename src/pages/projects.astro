@@ -95,6 +95,11 @@ const ITEMS = [
     image: "/project-skinkit.jpg",
     venue: "Cornell University — Hybrid Body Lab",
     tags: ["HCI", "Wearable Computing", "Interaction Design"],
+    meta: [
+      { label: "MY ROLE",       value: "Interaction Design · Prototyping · HCI Research" },
+      { label: "CONTRIBUTIONS", value: "Use Case Design · Interaction Concepts · Physical Prototyping" },
+      { label: "SYSTEM",        value: "Flexible PCB · Modular Electronics · On-Skin Interfaces" },
+    ],
     links: [
       { label: "View project →", href: "https://www.hybridbody.human.cornell.edu/#/skinkit/" },
     ],
@@ -290,6 +295,7 @@ const ITEMS = [
           <h2 id="pm-title" class="pm-title"></h2>
           <p id="pm-venue" class="pm-venue"></p>
           <p id="pm-desc" class="pm-desc"></p>
+          <div id="pm-meta" class="pm-meta"></div>
           <div id="pm-tags" class="pm-tags"></div>
           <div id="pm-links" class="pm-links"></div>
         </div>
@@ -422,6 +428,7 @@ const ITEMS = [
   var pmTitle  = document.getElementById("pm-title");
   var pmVenue  = document.getElementById("pm-venue");
   var pmDesc   = document.getElementById("pm-desc");
+  var pmMeta   = document.getElementById("pm-meta");
   var pmTags   = document.getElementById("pm-tags");
   var pmLinks  = document.getElementById("pm-links");
   var pmImage  = document.getElementById("pm-image");
@@ -439,6 +446,15 @@ const ITEMS = [
       var ex = document.createElement("img");
       ex.src = src; ex.alt = d.title; ex.className = "pm-image pm-image-extra";
       imgContainer.appendChild(ex);
+    });
+
+    pmMeta.innerHTML = "";
+    (d.meta || []).forEach(function (m) {
+      var row = document.createElement("div"); row.className = "pm-meta-row";
+      var lbl = document.createElement("span"); lbl.className = "pm-meta-label"; lbl.textContent = m.label;
+      var val = document.createElement("span"); lbl.className = "pm-meta-label"; val.className = "pm-meta-value"; val.textContent = m.value;
+      row.appendChild(lbl); row.appendChild(val);
+      pmMeta.appendChild(row);
     });
 
     pmTags.innerHTML = "";
@@ -709,6 +725,13 @@ const ITEMS = [
     margin-top: 16px;
     margin-bottom: 18px; flex: 1;
   }
+  .pm-meta  { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .pm-meta-row { display: flex; flex-direction: column; gap: 1px; }
+  .pm-meta-label {
+    font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #b0b0b0; font-weight: 500;
+  }
+  .pm-meta-value { font-size: 12px; color: #3a3a3a; line-height: 1.5; }
   .pm-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
   .pm-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
   .pm-image {
