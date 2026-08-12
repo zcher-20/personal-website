@@ -38,10 +38,12 @@ const MOBILE_NAV = [
   { label: "Photos",      icon: "mdi:camera-outline",      href: "/photography" },
 ];
 
-const EXPERIENCE = workPageContent.items.map((job) => ({
-  ...job,
-  cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
-}));
+const EXPERIENCE = workPageContent.items
+  .filter((job) => !job.hidden)
+  .map((job) => ({
+    ...job,
+    cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
+  }));
 
 const SKILLS = [
   {

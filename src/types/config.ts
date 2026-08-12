@@ -51,6 +51,7 @@ export type ResumeItem = {
   };
   date: string;
   description?: string;
+  hidden?: boolean;
 };
 
 export type AboutPageContent = {

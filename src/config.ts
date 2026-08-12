@@ -216,6 +216,7 @@ export const workPageContent: WorkPageContent = {
     },
     {
       title: "Advanced AI Extern",
+      hidden: true,
       company: { name: "Pfizer", image: "/pfizer.svg", url: "https://www.extern.com/externships/pfizer-advanced-ai-powered-document-intelligence-externship-jun-2026-2" },
       date: "Jun 2026 - Present",
       description: "Building intelligent document processing pipelines with Python and layout-aware OCR; developing RAG systems for enterprise document search; prototyping an internal AI chatbot using Gradio.",
@@ -234,6 +235,7 @@ export const workPageContent: WorkPageContent = {
     },
     {
       title: "Career Fellow — Tech / SWE Track",
+      hidden: true,
       company: { name: "SEO (Sponsors for Educational Opportunity)", image: "/seo.jpg", url: "https://career.seo-usa.org/" },
       date: "2026 - Present",
       description: "Selected for SEO's competitive Career Fellowship; receiving mentorship, technical interview preparation, and recruiting support targeting top-tier SWE roles.",
@@ -246,6 +248,7 @@ export const workPageContent: WorkPageContent = {
     },
     {
       title: "Student Researcher — HCI & Wearable Systems",
+      hidden: true,
       company: { name: "Cornell University — Hybrid Body Lab", image: "/cornell.webp", url: "https://www.hybridbody.human.cornell.edu/#/skinkit/" },
       date: "Mar 2026",
       description: "Prototyped modular flexible PCB wearables for continuous physiological monitoring, applying embedded hardware and HCI design principles to on-body <a href=\"https://www.linkedin.com/posts/zayneb-cherif-830294251_recently-i-had-the-opportunity-to-work-with-ugcPost-7439764313671749633-hyFd/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">interaction applications</a>.",
@@ -264,6 +267,7 @@ export const workPageContent: WorkPageContent = {
     },
     {
       title: "Mind Brain Behavior Mentorship",
+      hidden: true,
       company: { name: "Harvard University", image: "/harvard.svg", url: "https://mbb.harvard.edu" },
       date: "Sep 2021 - Jun 2023",
       description: "Apprenticeship under the <a href=\"https://mbb.harvard.edu/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Mind Brain Behavior Interfaculty Initiative</a>; conducted research on neurodevelopmental disorders under faculty mentorship <a href=\"https://mbb.harvard.edu/people/anne-arnett\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Dr. Anne Arnett</a>.",
