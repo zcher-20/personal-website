@@ -243,7 +243,7 @@ export const workPageContent: WorkPageContent = {
     {
       title: "Development Board",
       company: { name: "Columbia General Studies Business Society", image: "/columbia.webp", url: "https://www.columbiagsbs.com/" },
-      date: "Jan 2026 - Present",
+      date: "Jan 2026 - May 2026",
       description: "Lead growth initiatives to expand engagement; built alumni and external partner pipeline for sponsorships and events.",
     },
     {
