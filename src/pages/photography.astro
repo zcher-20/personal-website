@@ -29,10 +29,9 @@ const ALL_CARDS = [
   {
     id: "switzerland", name: "Switzerland",
     images: [
-      "/photography/switzerland/IMG_0435.jpeg",
+      "/photography/thumbs/switzerland--IMG_0435.webp",
       "/photography/thumbs/switzerland--A9CAAB5F-644C-4EA6-96E6-193BB256629B.webp",
       "/photography/thumbs/switzerland--IMG_0403.webp",
-      "/photography/thumbs/switzerland--IMG_0435.webp",
       "/photography/thumbs/switzerland--IMG_0913.webp",
       "/photography/thumbs/switzerland--IMG_1154.webp",
       "/photography/thumbs/switzerland--IMG_1414.webp",
@@ -46,14 +45,13 @@ const ALL_CARDS = [
     ],
   },
   { id: "oxford",    name: "Oxford",   cover: "/photography/oxford-cover.jpeg" },
-  { id: "italy",     name: "Italy",     cover: "/photography-italy-cover.png" },
+  { id: "italy",     name: "Italy",     cover: "/photography-italy-cover.jpg" },
   {
     id: "spain", name: "Spain",
     images: [
-      "/photography/spain/IMG_3242.jpeg",
+      "/photography/thumbs/spain--IMG_3242.webp",
       "/photography/thumbs/spain--IMG_1036.webp",
       "/photography/thumbs/spain--IMG_1065.webp",
-      "/photography/thumbs/spain--IMG_3242.webp",
       "/photography/thumbs/spain--IMG_5296.webp",
       "/photography/thumbs/spain--IMG_5336.webp",
       "/photography/thumbs/spain--IMG_5660.webp",
@@ -61,11 +59,11 @@ const ALL_CARDS = [
       "/photography/thumbs/spain--IMG_6797.webp",
     ],
   },
-  { id: "new-york",  name: "New York", cover: "/photography-new-york-cover.png" },
+  { id: "new-york",  name: "New York", cover: "/photography-new-york-cover.jpg" },
   {
     id: "morocco", name: "Morocco",
     images: [
-      "/photography/morocco/IMG_1757.jpeg",
+      "/photography/thumbs/morocco--IMG_1757.webp",
       "/photography/thumbs/morocco--98586D38-38FC-4F70-BCAF-1A20B19D7947.webp",
       "/photography/thumbs/morocco--IMG_3049.webp",
       "/photography/thumbs/morocco--IMG_7172.webp",
@@ -129,10 +127,10 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
           <div class={`cat-card${!frontSrc ? " cat-card-placeholder" : ""}`} data-id={card.id} aria-label={card.name}>
             <div class="cat-stack">
               <div class={`card-back${!backSrc ? " placeholder-card" : ""}`}>
-                {backSrc && <img src={backSrc} alt="" loading="lazy" decoding="async" />}
+                {backSrc && <img src={backSrc} alt="" loading="eager" decoding="async" />}
               </div>
               <div class={`card-front${!frontSrc ? " placeholder-card" : ""}`}>
-                {frontSrc && <img src={frontSrc} alt="" loading="lazy" decoding="async" />}
+                {frontSrc && <img src={frontSrc} alt="" loading="eager" decoding="async" fetchpriority="high" />}
               </div>
             </div>
             <p class={`cat-name${!frontSrc ? " cat-name-placeholder" : ""}`}>{card.name}</p>
@@ -313,6 +311,7 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
     height: 168px;
     margin-bottom: 20px;
     overflow: hidden;
+    background: #e8e2da;
   }
 
   .card-front,

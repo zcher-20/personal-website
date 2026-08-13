@@ -315,7 +315,7 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
             <div class="spine" style={`width:${b.spineW}px;height:${b.spineH}px;`}>
               <img
                 class="spine-img"
-                src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
+                src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-S.jpg`}
                 alt={b.title}
                 loading="eager"
               />
@@ -325,7 +325,7 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
             <div class="book-panel">
               <div class="b-cover">
                 <img
-                  src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg`}
+                  src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg`}
                   alt={b.title}
                   onerror="this.style.opacity='0'"
                   loading="lazy"

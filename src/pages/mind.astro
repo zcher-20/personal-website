@@ -185,7 +185,10 @@ const CHILD_LINKS = [
 <script>
   import * as d3 from "d3";
 
-  const { clusters, nodes, childLinks } = JSON.parse(document.getElementById("graph-data")!.textContent!);
+  function initGraph() {
+  const graphEl = document.getElementById("graph-data");
+  if (!graphEl) return;
+  const { clusters, nodes, childLinks } = JSON.parse(graphEl.textContent!);
 
   const ACCENT       = "#8b1a4a";
   const NODE_DEFAULT = "#9ca3af";
@@ -421,4 +424,8 @@ sim.on("tick", () => {
     hubSel.attr("transform", (d: any) => `translate(${d.x},${d.y})`);
     childSel.attr("transform", (d: any) => `translate(${d.x},${d.y})`);
   });
+  } // end initGraph
+
+  initGraph();
+  document.addEventListener("astro:page-load", initGraph);
 </script>
