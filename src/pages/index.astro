@@ -414,17 +414,39 @@ const SKILLS = [
         </section>
 
         <footer class="home-footer">
-          <div class="hf-top">
-            <span class="hf-copy">© Zayneb Cherif 2026</span>
-            <div class="hf-links">
-              <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="hf-link">LinkedIn ↗</a>
-              <span class="hf-sep">·</span>
-              <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="hf-link">GitHub ↗</a>
-              <span class="hf-sep">·</span>
-              <a href="mailto:zaynebcheriff@gmail.com" class="hf-link">Gmail ↗</a>
+
+          <!-- Left: hero identity -->
+          <div class="hf-identity">
+            <div class="hf-name-row">
+              <span class="hf-name">Zayneb Cherif</span>
+              <img src="/favicon.png" alt="Z" class="hf-logo" />
+            </div>
+            <p class="hf-copy">© 2026</p>
+          </div>
+
+          <!-- Right: contact + icons -->
+          <div class="hf-contact">
+            <p class="hf-tagline">Let's work together!</p>
+            <a href="mailto:zaynebcheriff@gmail.com" class="hf-email">zaynebcheriff@gmail.com</a>
+            <div class="hf-icons">
+              <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="hf-icon-link" aria-label="LinkedIn">
+                <Icon name="mdi:linkedin" class="hf-icon" />
+              </a>
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="hf-icon-link" aria-label="X">
+                <Icon name="simple-icons:x" class="hf-icon" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hf-icon-link" aria-label="Instagram">
+                <Icon name="mdi:instagram" class="hf-icon" />
+              </a>
+              <a href="/" class="hf-icon-link" aria-label="Site">
+                <Icon name="mdi:star-four-points" class="hf-icon" />
+              </a>
+              <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="hf-icon-link" aria-label="GitHub">
+                <Icon name="mdi:github" class="hf-icon" />
+              </a>
             </div>
           </div>
-          <a href="/Zayneb_Cherif_Resume.docx" download class="hf-resume">Resume ↓</a>
+
         </footer>
 
       </div>
@@ -1030,28 +1052,48 @@ const SKILLS = [
   .hpm-image { width: 100%; height: auto; border-radius: 10px; object-fit: cover; display: block; box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px; }
 
   /* ── Footer ── */
+  /* ── Footer ── */
   .home-footer {
-    display: flex; flex-direction: column; gap: 12px;
-    padding: 24px 0 40px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 36px 0 52px;
     border-top: 1px solid #f0f0f0;
+    gap: 24px;
   }
-  .hf-top {
-    display: flex; align-items: center; justify-content: space-between;
+
+  /* Left: identity */
+  .hf-identity { display: flex; flex-direction: column; gap: 10px; }
+  .hf-name-row { display: flex; align-items: center; gap: 10px; }
+  .hf-name {
+    font-size: 28px; font-weight: 300; letter-spacing: -0.02em;
+    color: #1d1d1f; line-height: 1;
+  }
+  .hf-logo {
+    width: 28px; height: 28px; object-fit: contain;
+    opacity: 0.75;
   }
   .hf-copy {
-    font-size: 10.5px; color: #b0b0b0;
+    font-size: 10.5px; color: #c0c0c0;
     text-transform: uppercase; letter-spacing: 0.07em;
   }
-  .hf-links { display: flex; align-items: center; gap: 6px; }
-  .hf-link  { font-size: 10.5px; color: #8a8a8a; text-decoration: none; transition: color 0.15s; }
-  .hf-link:hover { color: var(--mauve); }
-  .hf-sep   { font-size: 11px; color: #d0d0d0; }
-  .hf-resume {
-    font-size: 10.5px; color: #8a8a8a; text-decoration: none;
-    text-transform: uppercase; letter-spacing: 0.07em;
-    transition: color 0.15s; align-self: flex-end;
+
+  /* Right: contact */
+  .hf-contact { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .hf-tagline {
+    font-size: 13px; color: #b0b0b0; font-weight: 300;
   }
-  .hf-resume:hover { color: var(--mauve); }
+  .hf-email {
+    font-size: 15px; font-weight: 500; color: #1d1d1f;
+    text-decoration: none; transition: color 0.15s;
+    letter-spacing: -0.01em;
+  }
+  .hf-email:hover { color: var(--mauve); }
+  .hf-icons {
+    display: flex; align-items: center; gap: 18px;
+    margin-top: 6px;
+  }
+  .hf-icon-link { color: #c8c8c8; text-decoration: none; transition: color 0.15s; }
+  .hf-icon-link:hover { color: var(--mauve); }
+  .hf-icon { width: 19px; height: 19px; display: block; }
 
   /* ── Mobile responsive overrides ── */
   @media (max-width: 768px) {
@@ -1103,5 +1145,10 @@ const SKILLS = [
     .home-modal-card { flex-direction: column; max-height: 90vh; width: 92vw; }
     .home-modal-left { flex: none; border-right: none; border-bottom: 1px solid #f0f0f0; padding: 28px 20px 20px; }
     .home-modal-right { flex: none; padding: 20px; }
+
+    /* Footer stacks on mobile */
+    .home-footer { flex-direction: column; gap: 28px; }
+    .hf-contact { align-items: flex-start; }
+    .hf-name { font-size: 22px; }
   }
 </style>
