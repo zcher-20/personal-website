@@ -45,6 +45,154 @@ const EXPERIENCE = workPageContent.items
     cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
   }));
 
+const PROJECTS = [
+  {
+    id: "arena-vis",
+    title: "Are.na Visualizer",
+    shortTitle: "Are.na Visualizer",
+    description: "A visual explorer for Are.na channels — browse collections across multiple layout modes including grid, canvas, and disk views.",
+    image: "/design-arena-vis-v2.png",
+    venue: "",
+    tags: ["Tailwind CSS", "Are.na API", "TypeScript 5", "React 19", "Next.js 16"],
+    links: [{ label: "Live site →", href: "https://arena-vis.vercel.app" }, { label: "GitHub →", href: "https://github.com/zcher-20/arena-vis" }],
+  },
+  {
+    id: "margiela",
+    title: "Maison Margiela Archive",
+    shortTitle: "Margiela Archive",
+    description: "A visual archive of the Maison Margiela folders — browsable gallery with a scrolling filmstrip, rotated hero image, and editorial layout.",
+    image: "/design-margiela.png",
+    venue: "",
+    tags: ["Next.js", "React", "TypeScript", "Vercel"],
+    links: [{ label: "Live site →", href: "https://margiela-archive.vercel.app/" }, { label: "GitHub →", href: "https://github.com/zcher-20/margiela-archive" }],
+  },
+  {
+    id: "ai-workspace",
+    title: "AI Workspace",
+    shortTitle: "Intelligence Workspace",
+    description: "Built an AI-native workspace combining project planning, research, opportunity tracking, networking, academic planning, and document workflows. Engineered the full-stack application and orchestrated specialized LLM agents for research, writing, planning, and task execution.",
+    image: "/ai-workspace-canva.png",
+    venue: "Pathfinders Challenge",
+    tags: ["Multi-Agent", "Full-Stack", "LangGraph", "AI Product"],
+    meta: [
+      { label: "ROLE",  value: "Full-Stack Engineering · AI Engineering · Product Design" },
+      { label: "BUILT", value: "Multi-Agent Workflows · Project Canvas · AI Chat · Opportunity Tracker · Network CRM · Degree Planner" },
+      { label: "STACK", value: "React · Python · LangGraph · LLMs" },
+    ],
+    links: [{ label: "Live site →", href: "https://workspace-os-xi.vercel.app/" }, { label: "GitHub →", href: "https://github.com/zcher-20/ai-workspace" }],
+  },
+  {
+    id: "healthcare-ai",
+    title: "Healthcare Agent",
+    shortTitle: "Clinical Intelligence",
+    description: "Built the frontend and backend for an LLM-powered healthcare agent that transforms patient visits into structured clinical intelligence. Integrated real-time transcription, automated clinical notes and summaries, document processing, visit analysis, and contextual Q&A into a unified workflow.",
+    image: "/project-healthcare-ai.png",
+    venue: "MIT-Incubated Stealth AI Startup",
+    tags: ["Agentic AI", "Full-Stack", "Voice AI", "Healthcare"],
+    meta: [
+      { label: "ROLE",  value: "Full-Stack AI Engineering · Product Design" },
+      { label: "BUILT", value: "Agent Workflows · React Frontend · Backend APIs · Transcription Pipeline · Document Processing" },
+      { label: "STACK", value: "Python · React · LLMs · OpenAI API · GPT-4o Transcribe" },
+    ],
+    links: [],
+  },
+  {
+    id: "film-archive",
+    title: "Film Album",
+    shortTitle: "Film Album",
+    description: "An interactive, scroll-driven photo gallery — a single self-contained HTML file with depth-based carousel, real-time caption editing, and full client-side persistence.",
+    image: "/design-film-album.png",
+    venue: "",
+    tags: ["Vanilla JavaScript", "IndexedDB", "File API", "CSS Transforms"],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/Film-Album" }],
+  },
+  {
+    id: "skinkit",
+    title: "SkinKit",
+    shortTitle: "SkinKit",
+    description: "Prototyped wearable computing concepts using flexible electronic modules assembled directly on the body. Designed use cases, interaction patterns, and physical interface concepts spanning sensing, health, and expressive applications.",
+    image: "/project-skinkit.jpg",
+    venue: "Cornell University — Hybrid Body Lab",
+    tags: ["HCI", "Wearable Computing", "Interaction Design"],
+    meta: [
+      { label: "MY ROLE",       value: "Interaction Design · Prototyping · HCI Research" },
+      { label: "CONTRIBUTIONS", value: "Use Case Design · Interaction Concepts · Physical Prototyping" },
+      { label: "SYSTEM",        value: "Flexible PCB · Modular Electronics · On-Skin Interfaces" },
+    ],
+    links: [{ label: "View project →", href: "https://www.hybridbody.human.cornell.edu/#/skinkit/" }],
+  },
+  {
+    id: "aimc",
+    title: "Analog In-Memory Computing with Uncertainty Quantification",
+    shortTitle: "Analog Intelligence",
+    description: "Published at ICLR 2024 (Notable). Benchmarked a deep learning inference pipeline on IBM analog in-memory computing hardware for medical image segmentation at the edge.",
+    image: "/project-aimc.jpg",
+    venue: "ICLR 2024 · Notable Paper",
+    tags: ["IBM Research", "Analog Computing", "Medical Imaging", "Uncertainty Quantification"],
+    links: [{ label: "OpenReview →", href: "https://openreview.net/forum?id=hvp5I4dDya" }],
+  },
+  {
+    id: "nas-survey",
+    title: "Medical NAS: Survey and Taxonomy",
+    shortTitle: "Medical NAS",
+    description: "Published at IJCAI 2024. Co-authored a comprehensive survey of Neural Architecture Search in medical imaging, categorizing 100+ papers. Presented to 200+ researchers at IBM/IEEE AICS 2023.",
+    image: "/project-survey.jpg",
+    venue: "IJCAI 2024 · pp. 7932–7940",
+    tags: ["Neural Architecture Search", "Medical Imaging", "Survey", "IBM Research"],
+    links: [{ label: "IJCAI 2024 →", href: "https://www.ijcai.org/proceedings/2024/878" }],
+  },
+  {
+    id: "ricer",
+    title: "RICER — AI Forest Fire Risk Prediction",
+    shortTitle: "RICER",
+    description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Al Akhawayn University Digital Innovation Lab.",
+    image: "/ricer-notion.png",
+    venue: "Al Akhawayn University Digital Innovation Lab",
+    tags: ["Computer Vision", "Earth Observation", "GIS", "Python"],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/wildfire_data_pipeline" }],
+  },
+  {
+    id: "places-archive",
+    title: "City Scape",
+    shortTitle: "City Scape",
+    description: "A full-stack personal places archive — a curated map and grid of favorite spots from cities around the world. Pulls live data from a Google Sheet backend, with map view, photo archive, collections, and a journal.",
+    image: "/design-places-archive-2.png",
+    venue: "",
+    tags: ["Full-Stack", "Google Sheets API", "Mapbox", "Next.js", "TypeScript", "React"],
+    links: [{ label: "Live site →", href: "https://places-archive.vercel.app/" }],
+  },
+  {
+    id: "enterprise-ai",
+    title: "Multi-Domain Agentic AI Platform",
+    shortTitle: "Agentic Systems",
+    description: "Developed production-facing AI agents using a custom LLM and modular skill architecture, adapting the system to healthcare, finance, mathematics, and enterprise use cases. Built two agentic workflow interfaces and contributed to backend agent logic, transcription pipelines, document processing, and multimodal data workflows.",
+    image: "/project-agent-new.png",
+    venue: "MIT-Incubated Stealth AI Startup",
+    tags: ["Agentic AI", "LLMs", "AI Agents", "Full-Stack", "Document AI"],
+    links: [],
+  },
+  {
+    id: "investment",
+    title: "Multi-Agent Investment Research System",
+    shortTitle: "Alpha Research",
+    description: "5-agent LLM pipeline on Azure AI Foundry — Research, Financial Analysis, Risk, News, and Memo agents producing a full investment thesis from a single stock ticker.",
+    image: "/project-investment.png",
+    venue: "Microsoft Agents League Hackathon",
+    tags: ["Multi-Agent", "Azure AI Foundry", "LLMs", "Python"],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/Alpha-Research-Agent-" }],
+  },
+  {
+    id: "quantum",
+    title: "Hybrid Quantum-Classical Medical Imaging",
+    shortTitle: "Quantum Imaging",
+    description: "Hybrid quantum-classical U-Net replacing the CNN bottleneck with a 4-qubit PennyLane variational circuit. 95% IoU at 60% fewer parameters.",
+    image: "/project-quantum.jpg",
+    venue: "NYU Abu Dhabi Hackathon — Quantum Track",
+    tags: ["Quantum ML", "PennyLane", "Medical Imaging", "PyTorch"],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/SihaSansFrontieres" }],
+  },
+];
+
 const SKILLS = [
   {
     label: "Design & Creative",
@@ -227,9 +375,48 @@ const SKILLS = [
           ))}
         </section>
 
+        <!-- Projects section -->
+        <section id="projects" class="home-proj-section">
+          <h2 class="exp-heading">Projects</h2>
+          <script id="home-proj-data" type="application/json" set:html={JSON.stringify(PROJECTS)} />
+          <div class="home-proj-grid">
+            {PROJECTS.map((item) => (
+              <div class="home-proj-card" data-id={item.id}>
+                <div class="home-proj-img-wrap">
+                  <img src={item.image} alt={item.title} loading="lazy" draggable="false" />
+                </div>
+                <p class="home-proj-title">{item.shortTitle}</p>
+                {item.venue && <p class="home-proj-venue">{item.venue}</p>}
+                <p class="home-proj-desc">{item.description}</p>
+                <div class="home-proj-tags">
+                  {item.tags.map((t: string) => <span class="home-proj-tag">{t}</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
       </div>
     </div>
 
+  </div>
+
+  <!-- Projects modal -->
+  <div id="home-proj-modal" class="home-modal" role="dialog" aria-modal="true">
+    <div class="home-modal-card" id="home-modal-card">
+      <button id="home-modal-close" class="home-modal-close" aria-label="Close">&#x2715;</button>
+      <div class="home-modal-left">
+        <h2 id="hpm-title" class="hpm-title"></h2>
+        <p id="hpm-venue" class="hpm-venue"></p>
+        <p id="hpm-desc" class="hpm-desc"></p>
+        <div id="hpm-meta" class="hpm-meta"></div>
+        <div id="hpm-tags" class="hpm-tags"></div>
+        <div id="hpm-links" class="hpm-links"></div>
+      </div>
+      <div class="home-modal-right">
+        <img id="hpm-image" class="hpm-image" src="" alt="" />
+      </div>
+    </div>
   </div>
 
   <!-- Mobile bottom nav -->
@@ -302,6 +489,76 @@ const SKILLS = [
       });
     });
   })();
+</script>
+
+<script is:inline>
+(function () {
+  var rawData = document.getElementById("home-proj-data");
+  if (!rawData) return;
+  var ITEMS = JSON.parse(rawData.textContent);
+  var itemMap = {};
+  ITEMS.forEach(function (d) { itemMap[d.id] = d; });
+
+  var modal    = document.getElementById("home-proj-modal");
+  var card     = document.getElementById("home-modal-card");
+  var closeBtn = document.getElementById("home-modal-close");
+  var hpmTitle  = document.getElementById("hpm-title");
+  var hpmVenue  = document.getElementById("hpm-venue");
+  var hpmDesc   = document.getElementById("hpm-desc");
+  var hpmMeta   = document.getElementById("hpm-meta");
+  var hpmTags   = document.getElementById("hpm-tags");
+  var hpmLinks  = document.getElementById("hpm-links");
+  var hpmImage  = document.getElementById("hpm-image");
+
+  function openModal(id) {
+    var d = itemMap[id]; if (!d) return;
+    hpmTitle.textContent = d.title;
+    hpmVenue.textContent = d.venue || ""; hpmVenue.style.display = d.venue ? "" : "none";
+    hpmDesc.textContent  = d.description;
+    hpmImage.src = d.image; hpmImage.alt = d.title;
+
+    hpmMeta.innerHTML = "";
+    (d.meta || []).forEach(function (m) {
+      var row = document.createElement("div"); row.className = "hpm-meta-row";
+      var lbl = document.createElement("span"); lbl.className = "hpm-meta-label"; lbl.textContent = m.label;
+      var val = document.createElement("span"); val.className = "hpm-meta-value"; val.textContent = m.value;
+      row.appendChild(lbl); row.appendChild(val); hpmMeta.appendChild(row);
+    });
+
+    hpmTags.innerHTML = "";
+    (d.tags || []).forEach(function (t) {
+      var s = document.createElement("span"); s.className = "hpm-tag"; s.textContent = t;
+      hpmTags.appendChild(s);
+    });
+
+    hpmLinks.innerHTML = "";
+    if (d.links && d.links.length) {
+      d.links.forEach(function (lnk) {
+        var a = document.createElement("a");
+        a.href = lnk.href; a.target = "_blank"; a.rel = "noopener noreferrer";
+        a.className = "hpm-link"; a.textContent = lnk.label;
+        hpmLinks.appendChild(a);
+      });
+    } else {
+      var s2 = document.createElement("span");
+      s2.className = "hpm-link hpm-link-muted"; s2.textContent = "Confidential";
+      hpmLinks.appendChild(s2);
+    }
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
+
+  document.querySelectorAll(".home-proj-card").forEach(function (el) {
+    el.addEventListener("click", function () { openModal(el.dataset.id); });
+  });
+  modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
+  closeBtn.addEventListener("click", closeModal);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+})();
 </script>
 
 <style>
@@ -575,6 +832,110 @@ const SKILLS = [
   .mobile-nav-icon { width: 20px; height: 20px; }
   .mobile-nav-label { font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
 
+  /* ── Projects section ── */
+  .home-proj-section {
+    padding-top: 56px;
+    padding-bottom: 100px;
+    border-top: 1px solid #e8e8e8;
+  }
+  .home-proj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 8px;
+  }
+  .home-proj-card {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .home-proj-card:hover .home-proj-img-wrap img {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  }
+  .home-proj-img-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f5f5f7;
+  }
+  .home-proj-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: box-shadow 0.2s;
+  }
+  .home-proj-title {
+    font-size: 13px; font-weight: 600; color: #1d1d1f;
+    margin: 0; letter-spacing: -0.01em;
+  }
+  .home-proj-venue {
+    font-size: 10.5px; color: #a0a0a0; font-style: italic; margin: 0;
+  }
+  .home-proj-desc {
+    font-size: 11.5px; color: #6a6a6a; line-height: 1.5; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .home-proj-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .home-proj-tag {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 3px 8px; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 3px; color: #6b7280;
+  }
+
+  /* ── Projects modal ── */
+  .home-modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.38);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    align-items: center; justify-content: center;
+  }
+  .home-modal.open { display: flex; }
+  .home-modal-card {
+    position: relative; display: flex;
+    width: min(840px, 92vw); max-height: 82vh;
+    background: #fff; border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.2);
+    animation: modal-in 0.2s ease-out;
+  }
+  .home-modal-close {
+    position: absolute; top: 16px; right: 18px;
+    width: 28px; height: 28px; border: none;
+    background: rgba(0,0,0,0.06); border-radius: 50%; cursor: pointer;
+    font-size: 14px; color: #555; line-height: 1; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10; transition: background 0.15s;
+  }
+  .home-modal-close:hover { background: rgba(0,0,0,0.12); }
+  .home-modal-left {
+    flex: 0 0 42%; padding: 40px 32px 36px;
+    overflow-y: auto; border-right: 1px solid #f0f0f0;
+    display: flex; flex-direction: column;
+  }
+  .home-modal-right {
+    flex: 1; padding: 40px 28px 36px;
+    overflow-y: auto; background: #fafafa;
+    display: flex; flex-direction: column;
+  }
+  .hpm-title { font-size: 18px; font-weight: 600; color: #1d1d1f; line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .hpm-venue { font-size: 11px; color: #9a9a9a; font-style: italic; margin-bottom: 0; }
+  .hpm-desc  { font-size: 13px; color: #444; line-height: 1.65; margin-top: 16px; margin-bottom: 18px; flex: 1; }
+  .hpm-meta  { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .hpm-meta-row { display: flex; flex-direction: column; gap: 1px; }
+  .hpm-meta-label { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: #b0b0b0; font-weight: 500; }
+  .hpm-meta-value { font-size: 12px; color: #3a3a3a; line-height: 1.5; }
+  .hpm-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
+  .hpm-tag   { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border: 1px solid rgba(0,0,0,0.12); border-radius: 3px; color: #6b7280; }
+  .hpm-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+  .hpm-link  { font-size: 11px; padding: 5px 12px; border: 1px solid #1d1d1f; border-radius: 5px; color: #1d1d1f; text-decoration: none; font-weight: 500; letter-spacing: 0.02em; transition: background 0.15s, color 0.15s; display: inline-block; }
+  .hpm-link:hover { background: #1d1d1f; color: #fff; }
+  .hpm-link-muted { border-color: #ddd; color: #999; cursor: default; }
+  .hpm-link-muted:hover { background: transparent !important; color: #999 !important; }
+  .hpm-image { width: 100%; height: auto; border-radius: 10px; object-fit: cover; display: block; box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px; }
+
   /* ── Mobile responsive overrides ── */
   @media (max-width: 768px) {
     .app-sidebar    { display: none !important; }
@@ -600,5 +961,13 @@ const SKILLS = [
 
     /* Experience rows: hide date on very small screens */
     .exp-date { display: none; }
+
+    /* Projects grid → 2-col on mobile */
+    .home-proj-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+    /* Modal stacks on mobile */
+    .home-modal-card { flex-direction: column; max-height: 90vh; width: 92vw; }
+    .home-modal-left { flex: none; border-right: none; border-bottom: 1px solid #f0f0f0; padding: 28px 20px 20px; }
+    .home-modal-right { flex: none; padding: 20px; }
   }
 </style>
