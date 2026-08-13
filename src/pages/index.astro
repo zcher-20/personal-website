@@ -403,14 +403,17 @@ const SKILLS = [
         </section>
 
         <footer class="home-footer">
-          <span class="hf-copy">© Zayneb Cherif 2026</span>
-          <div class="hf-links">
-            <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="hf-link">LinkedIn ↗</a>
-            <span class="hf-sep">·</span>
-            <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="hf-link">GitHub ↗</a>
-            <span class="hf-sep">·</span>
-            <a href="mailto:zaynebcheriff@gmail.com" class="hf-link">Gmail ↗</a>
+          <div class="hf-top">
+            <span class="hf-copy">© Zayneb Cherif 2026</span>
+            <div class="hf-links">
+              <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="hf-link">LinkedIn ↗</a>
+              <span class="hf-sep">·</span>
+              <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="hf-link">GitHub ↗</a>
+              <span class="hf-sep">·</span>
+              <a href="mailto:zaynebcheriff@gmail.com" class="hf-link">Gmail ↗</a>
+            </div>
           </div>
+          <a href="/Zayneb_Cherif_Resume.docx" download class="hf-resume">Resume ↓</a>
         </footer>
 
       </div>
@@ -974,9 +977,12 @@ const SKILLS = [
 
   /* ── Footer ── */
   .home-footer {
-    display: flex; align-items: center; justify-content: space-between;
+    display: flex; flex-direction: column; gap: 12px;
     padding: 24px 0 40px;
     border-top: 1px solid #f0f0f0;
+  }
+  .hf-top {
+    display: flex; align-items: center; justify-content: space-between;
   }
   .hf-copy {
     font-size: 10.5px; color: #b0b0b0;
@@ -986,6 +992,12 @@ const SKILLS = [
   .hf-link  { font-size: 10.5px; color: #8a8a8a; text-decoration: none; transition: color 0.15s; }
   .hf-link:hover { color: #1d1d1f; }
   .hf-sep   { font-size: 11px; color: #d0d0d0; }
+  .hf-resume {
+    font-size: 10.5px; color: #8a8a8a; text-decoration: none;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    transition: color 0.15s; align-self: flex-end;
+  }
+  .hf-resume:hover { color: #1d1d1f; }
 
   /* ── Mobile responsive overrides ── */
   @media (max-width: 768px) {

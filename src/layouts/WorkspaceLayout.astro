@@ -67,6 +67,13 @@ const path = Astro.url.pathname;
         ))}
       </nav>
 
+      <div class="sidebar-resume-wrap">
+        <a href="/Zayneb_Cherif_Resume.docx" download class="sidebar-resume-btn">
+          <Icon name="mdi:download-outline" class="app-nav-icon" />
+          <span class="app-nav-label">Resume</span>
+        </a>
+      </div>
+
     </aside>
 
     <!-- Hover flyout (collapsed state) -->
@@ -246,6 +253,21 @@ const path = Astro.url.pathname;
   .app-nav-icon  { width: 15px; height: 15px; flex-shrink: 0; }
   .app-nav-label { flex: 1; }
   .app-sidebar.collapsed .app-nav-label { display: none; }
+
+  .sidebar-resume-wrap {
+    margin-top: auto; padding: 0 4px 0 12px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .sidebar-resume-wrap { padding: 0; display: flex; justify-content: center; }
+
+  .sidebar-resume-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; color: #7a7a7a;
+    text-decoration: none; width: 100%;
+    transition: background 0.15s, color 0.15s;
+  }
+  .sidebar-resume-btn:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .app-sidebar.collapsed .sidebar-resume-btn { padding: 8px; width: auto; }
 
 
 
