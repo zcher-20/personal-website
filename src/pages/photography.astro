@@ -107,7 +107,7 @@ const PLACEHOLDERS = [
               <img src={country.images[1] ?? country.images[0]} alt="" loading="lazy" />
             </div>
             <div class="card-front">
-              <img src={country.images[0]} alt={country.name} loading="eager" />
+              <img src={country.images[0]} alt="" loading="eager" />
             </div>
           </div>
           <p class="cat-name">{country.name}</p>
@@ -120,7 +120,7 @@ const PLACEHOLDERS = [
               {(p as any).cover && <img src={(p as any).cover} alt="" loading="lazy" />}
             </div>
             <div class={`card-front${(p as any).cover ? "" : " placeholder-card"}`}>
-              {(p as any).cover && <img src={(p as any).cover} alt={p.name} loading="lazy" />}
+              {(p as any).cover && <img src={(p as any).cover} alt="" loading="lazy" />}
             </div>
           </div>
           <p class={`cat-name${(p as any).cover ? "" : " cat-name-placeholder"}`}>{p.name}</p>
@@ -333,6 +333,11 @@ const PLACEHOLDERS = [
   .card-back {
     transform: rotate(-1.5deg);
     z-index: 0;
+  }
+
+  .card-back img {
+    filter: grayscale(100%);
+    image-rendering: auto;
   }
 
   .cat-name {
