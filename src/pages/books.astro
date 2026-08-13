@@ -488,7 +488,12 @@ const PANEL_W = 340;
     object-fit: cover;
     object-position: center top;
     display: block;
-    filter: saturate(70%);
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+  }
+
+  .book.selected .spine-img {
+    filter: none;
   }
 
   /* ── Expanded panel (cover + info) ── */
