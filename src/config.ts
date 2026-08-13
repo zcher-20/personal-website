@@ -224,7 +224,7 @@ export const workPageContent: WorkPageContent = {
     {
       title: "Agentic AI & ML Intern",
       company: { name: "MIT-Incubated Stealth AI Startup", image: "/startup.webp", url: "#" },
-      date: "Jun - Aug 2026",
+      date: "Jun 2026 - Present",
       description: "Building and evaluating production-facing AI agents with prompt engineering, model evaluation, and workflow design. Running large-scale testing of agentic AI systems and identifying optimization opportunities under <a href=\"https://um6pventures.com/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">UM6P Ventures</a>. Mentored by <a href=\"https://www.linkedin.com/in/omarbenzit\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Omar Benzit</a>.",
     },
     {
