@@ -108,7 +108,13 @@ const COUNTRIES = [
       ))}
     </div>
 
-    <div class="photo-center-label">Photography</div>
+    <div class="photo-center-label">
+      <span class="pcl-sep">|</span>
+      <span class="pcl-active">Photography (04)</span>
+      <span class="pcl-sep">|</span>
+      <span class="pcl-muted">Archive (04)</span>
+      <span class="pcl-sep">|</span>
+    </div>
 
   </div>
 
@@ -238,13 +244,27 @@ const COUNTRIES = [
   /* ── Center label ── */
   .photo-center-label {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 400;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #a0a0a0;
+    color: #1d1d1f;
     margin: 52px 0 0;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .pcl-sep {
+    color: #d0d0d0;
+    font-weight: 300;
+    user-select: none;
+  }
+  .pcl-active {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    color: #1d1d1f;
+  }
+  .pcl-muted {
+    color: #b0b0b0;
   }
 
   .cat-card {
