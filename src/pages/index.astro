@@ -861,9 +861,10 @@ const SKILLS = [
   }
   .home-proj-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
+    grid-template-columns: repeat(3, minmax(0, 200px));
+    gap: 24px;
     margin-top: 8px;
+    justify-content: center;
   }
   .home-proj-card {
     cursor: pointer;
