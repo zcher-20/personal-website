@@ -326,17 +326,17 @@ const ITEMS = [
   function getPos()     { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { return {}; } }
   function savePos(pos) { localStorage.setItem(STORAGE_KEY, JSON.stringify(pos)); }
 
-  var rawData = document.getElementById("items-data");
-  if (!rawData) return;
-  var ITEMS = JSON.parse(rawData.textContent);
-  var itemMap = {};
-  ITEMS.forEach(function (d) { itemMap[d.id] = d; });
+  function init() {
+    var rawData = document.getElementById("items-data");
+    if (!rawData) return;
+    var ITEMS = JSON.parse(rawData.textContent);
+    var itemMap = {};
+    ITEMS.forEach(function (d) { itemMap[d.id] = d; });
 
-  var canvas = document.getElementById("proj-canvas");
-  if (!canvas) return;
+    var canvas = document.getElementById("proj-canvas");
+    if (!canvas) return;
 
-  // ── Restore saved px positions; leave default % positions untouched ──────
-  function initPositions() {
+    // ── Restore saved px positions ────────────────────────────────────────
     var pos = getPos();
     document.querySelectorAll(".item").forEach(function (el) {
       var saved = pos[el.dataset.id];
@@ -346,159 +346,172 @@ const ITEMS = [
         if (saved.width) el.style.width = saved.width;
       }
     });
-  }
-  initPositions();
 
-  // ── Drag ─────────────────────────────────────────────────────────────────
-  var dragging = null, dragOX = 0, dragOY = 0, smx = 0, smy = 0, didDrag = false;
-  var THRESHOLD = 5;
+    // ── Drag ─────────────────────────────────────────────────────────────
+    var dragging = null, dragOX = 0, dragOY = 0, smx = 0, smy = 0, didDrag = false;
+    var THRESHOLD = 5;
 
-  document.querySelectorAll(".item").forEach(function (el) {
-    el.addEventListener("mousedown", function (e) {
-      if (e.button !== 0 || e.target.classList.contains("resize-handle")) return;
-      e.preventDefault();
-      // Convert % positions to px on first drag so the drag math is correct
-      if (el.style.left.indexOf('%') !== -1 || el.style.top.indexOf('%') !== -1) {
-        var cr = canvas.getBoundingClientRect();
-        var er = el.getBoundingClientRect();
-        el.style.left = (er.left - cr.left) + "px";
-        el.style.top  = (er.top  - cr.top)  + "px";
-      }
-      dragging = el; didDrag = false; smx = e.clientX; smy = e.clientY;
-      var r = el.getBoundingClientRect();
-      dragOX = e.clientX - r.left; dragOY = e.clientY - r.top;
-      el.style.zIndex = "100";
-    });
-  });
-
-  // ── Resize ───────────────────────────────────────────────────────────────
-  var resizing = null, rsX = 0, rsW = 0;
-
-  document.querySelectorAll(".resize-handle").forEach(function (h) {
-    h.addEventListener("mousedown", function (e) {
-      e.preventDefault(); e.stopPropagation();
-      resizing = h.parentElement;
-      rsX = e.clientX; rsW = resizing.offsetWidth;
-      resizing.style.zIndex = "100";
-    });
-  });
-
-  // ── Shared move/up ────────────────────────────────────────────────────────
-  document.addEventListener("mousemove", function (e) {
-    if (dragging) {
-      var dx = e.clientX - smx, dy = e.clientY - smy;
-      if (!didDrag && (Math.abs(dx) > THRESHOLD || Math.abs(dy) > THRESHOLD)) didDrag = true;
-      if (!didDrag) return;
-      var cr = canvas.getBoundingClientRect();
-      var x = Math.max(0, Math.min(e.clientX - cr.left - dragOX, cr.width  - dragging.offsetWidth));
-      var y = Math.max(0, Math.min(e.clientY - cr.top  - dragOY, cr.height - dragging.offsetHeight));
-      dragging.style.left = x + "px";
-      dragging.style.top  = y + "px";
-    }
-    if (resizing) {
-      var nw = Math.max(80, Math.min(400, rsW + (e.clientX - rsX)));
-      resizing.style.width = nw + "px";
-    }
-  });
-
-  document.addEventListener("mouseup", function () {
-    if (dragging) {
-      dragging.style.zIndex = "";
-      if (didDrag) {
-        var pos = getPos();
-        pos[dragging.dataset.id] = { left: dragging.style.left, top: dragging.style.top, width: dragging.style.width || "" };
-        savePos(pos);
-      }
-      var was = didDrag;
-      dragging = null; didDrag = false;
-      if (was) {
-        document.addEventListener("click", function ab(e) {
-          e.stopImmediatePropagation();
-          document.removeEventListener("click", ab, true);
-        }, true);
-      }
-    }
-    if (resizing) {
-      resizing.style.zIndex = "";
-      var pos2 = getPos();
-      pos2[resizing.dataset.id] = pos2[resizing.dataset.id] || {};
-      pos2[resizing.dataset.id].left  = resizing.style.left;
-      pos2[resizing.dataset.id].top   = resizing.style.top;
-      pos2[resizing.dataset.id].width = resizing.style.width;
-      savePos(pos2);
-      resizing = null;
-    }
-  });
-
-  // ── Modal ─────────────────────────────────────────────────────────────────
-  var modal    = document.getElementById("proj-modal");
-  var card     = document.getElementById("proj-modal-card");
-  var closeBtn = document.getElementById("proj-modal-close");
-  var pmTitle  = document.getElementById("pm-title");
-  var pmVenue  = document.getElementById("pm-venue");
-  var pmDesc   = document.getElementById("pm-desc");
-  var pmMeta   = document.getElementById("pm-meta");
-  var pmTags   = document.getElementById("pm-tags");
-  var pmLinks  = document.getElementById("pm-links");
-  var pmImage  = document.getElementById("pm-image");
-
-  function openModal(id) {
-    var d = itemMap[id]; if (!d) return;
-    pmTitle.textContent = d.title;
-    pmVenue.textContent = d.venue || ""; pmVenue.style.display = d.venue ? "" : "none";
-    pmDesc.textContent  = d.description;
-    var imgs = d.images && d.images.length ? d.images : [d.image];
-    var imgContainer = pmImage.parentElement;
-    imgContainer.querySelectorAll(".pm-image-extra").forEach(function(e){ e.remove(); });
-    pmImage.src = imgs[0]; pmImage.alt = d.title;
-    imgs.slice(1).forEach(function(src) {
-      var ex = document.createElement("img");
-      ex.src = src; ex.alt = d.title; ex.className = "pm-image pm-image-extra";
-      imgContainer.appendChild(ex);
-    });
-
-    pmMeta.innerHTML = "";
-    (d.meta || []).forEach(function (m) {
-      var row = document.createElement("div"); row.className = "pm-meta-row";
-      var lbl = document.createElement("span"); lbl.className = "pm-meta-label"; lbl.textContent = m.label;
-      var val = document.createElement("span"); lbl.className = "pm-meta-label"; val.className = "pm-meta-value"; val.textContent = m.value;
-      row.appendChild(lbl); row.appendChild(val);
-      pmMeta.appendChild(row);
-    });
-
-    pmTags.innerHTML = "";
-    (d.tags || []).forEach(function (t) {
-      var s = document.createElement("span"); s.className = "pm-tag"; s.textContent = t;
-      pmTags.appendChild(s);
-    });
-
-    pmLinks.innerHTML = "";
-    if (d.links && d.links.length) {
-      d.links.forEach(function (lnk) {
-        var a = document.createElement("a");
-        a.href = lnk.href; a.target = "_blank"; a.rel = "noopener noreferrer";
-        a.className = "pm-link"; a.textContent = lnk.label;
-        pmLinks.appendChild(a);
+    document.querySelectorAll(".item").forEach(function (el) {
+      el.addEventListener("mousedown", function (e) {
+        if (e.button !== 0 || e.target.classList.contains("resize-handle")) return;
+        e.preventDefault();
+        if (el.style.left.indexOf('%') !== -1 || el.style.top.indexOf('%') !== -1) {
+          var cr = canvas.getBoundingClientRect();
+          var er = el.getBoundingClientRect();
+          el.style.left = (er.left - cr.left) + "px";
+          el.style.top  = (er.top  - cr.top)  + "px";
+        }
+        dragging = el; didDrag = false; smx = e.clientX; smy = e.clientY;
+        var r = el.getBoundingClientRect();
+        dragOX = e.clientX - r.left; dragOY = e.clientY - r.top;
+        el.style.zIndex = "100";
       });
-    } else {
-      var s2 = document.createElement("span");
-      s2.className = "pm-link pm-link-muted"; s2.textContent = "Confidential";
-      pmLinks.appendChild(s2);
+    });
+
+    // ── Resize ───────────────────────────────────────────────────────────
+    var resizing = null, rsX = 0, rsW = 0;
+
+    document.querySelectorAll(".resize-handle").forEach(function (h) {
+      h.addEventListener("mousedown", function (e) {
+        e.preventDefault(); e.stopPropagation();
+        resizing = h.parentElement;
+        rsX = e.clientX; rsW = resizing.offsetWidth;
+        resizing.style.zIndex = "100";
+      });
+    });
+
+    // ── Shared move/up ────────────────────────────────────────────────────
+    function onMouseMove(e) {
+      if (dragging) {
+        var dx = e.clientX - smx, dy = e.clientY - smy;
+        if (!didDrag && (Math.abs(dx) > THRESHOLD || Math.abs(dy) > THRESHOLD)) didDrag = true;
+        if (!didDrag) return;
+        var cr = canvas.getBoundingClientRect();
+        var x = Math.max(0, Math.min(e.clientX - cr.left - dragOX, cr.width  - dragging.offsetWidth));
+        var y = Math.max(0, Math.min(e.clientY - cr.top  - dragOY, cr.height - dragging.offsetHeight));
+        dragging.style.left = x + "px";
+        dragging.style.top  = y + "px";
+      }
+      if (resizing) {
+        var nw = Math.max(80, Math.min(400, rsW + (e.clientX - rsX)));
+        resizing.style.width = nw + "px";
+      }
     }
-    modal.classList.add("open");
-    document.body.style.overflow = "hidden";
+
+    function onMouseUp() {
+      if (dragging) {
+        dragging.style.zIndex = "";
+        if (didDrag) {
+          var pos = getPos();
+          pos[dragging.dataset.id] = { left: dragging.style.left, top: dragging.style.top, width: dragging.style.width || "" };
+          savePos(pos);
+        }
+        var was = didDrag;
+        dragging = null; didDrag = false;
+        if (was) {
+          document.addEventListener("click", function ab(e) {
+            e.stopImmediatePropagation();
+            document.removeEventListener("click", ab, true);
+          }, true);
+        }
+      }
+      if (resizing) {
+        resizing.style.zIndex = "";
+        var pos2 = getPos();
+        pos2[resizing.dataset.id] = pos2[resizing.dataset.id] || {};
+        pos2[resizing.dataset.id].left  = resizing.style.left;
+        pos2[resizing.dataset.id].top   = resizing.style.top;
+        pos2[resizing.dataset.id].width = resizing.style.width;
+        savePos(pos2);
+        resizing = null;
+      }
+    }
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+
+    // ── Modal ─────────────────────────────────────────────────────────────
+    var modal    = document.getElementById("proj-modal");
+    var card     = document.getElementById("proj-modal-card");
+    var closeBtn = document.getElementById("proj-modal-close");
+    var pmTitle  = document.getElementById("pm-title");
+    var pmVenue  = document.getElementById("pm-venue");
+    var pmDesc   = document.getElementById("pm-desc");
+    var pmMeta   = document.getElementById("pm-meta");
+    var pmTags   = document.getElementById("pm-tags");
+    var pmLinks  = document.getElementById("pm-links");
+    var pmImage  = document.getElementById("pm-image");
+
+    function openModal(id) {
+      var d = itemMap[id]; if (!d) return;
+      pmTitle.textContent = d.title;
+      pmVenue.textContent = d.venue || ""; pmVenue.style.display = d.venue ? "" : "none";
+      pmDesc.textContent  = d.description;
+      var imgs = d.images && d.images.length ? d.images : [d.image];
+      var imgContainer = pmImage.parentElement;
+      imgContainer.querySelectorAll(".pm-image-extra").forEach(function(e){ e.remove(); });
+      pmImage.src = imgs[0]; pmImage.alt = d.title;
+      imgs.slice(1).forEach(function(src) {
+        var ex = document.createElement("img");
+        ex.src = src; ex.alt = d.title; ex.className = "pm-image pm-image-extra";
+        imgContainer.appendChild(ex);
+      });
+
+      pmMeta.innerHTML = "";
+      (d.meta || []).forEach(function (m) {
+        var row = document.createElement("div"); row.className = "pm-meta-row";
+        var lbl = document.createElement("span"); lbl.className = "pm-meta-label"; lbl.textContent = m.label;
+        var val = document.createElement("span"); lbl.className = "pm-meta-label"; val.className = "pm-meta-value"; val.textContent = m.value;
+        row.appendChild(lbl); row.appendChild(val);
+        pmMeta.appendChild(row);
+      });
+
+      pmTags.innerHTML = "";
+      (d.tags || []).forEach(function (t) {
+        var s = document.createElement("span"); s.className = "pm-tag"; s.textContent = t;
+        pmTags.appendChild(s);
+      });
+
+      pmLinks.innerHTML = "";
+      if (d.links && d.links.length) {
+        d.links.forEach(function (lnk) {
+          var a = document.createElement("a");
+          a.href = lnk.href; a.target = "_blank"; a.rel = "noopener noreferrer";
+          a.className = "pm-link"; a.textContent = lnk.label;
+          pmLinks.appendChild(a);
+        });
+      } else {
+        var s2 = document.createElement("span");
+        s2.className = "pm-link pm-link-muted"; s2.textContent = "Confidential";
+        pmLinks.appendChild(s2);
+      }
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
+
+    function onKeyDown(e) {
+      if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    }
+
+    document.querySelectorAll(".item, .mobile-proj-item").forEach(function (el) {
+      el.addEventListener("click", function () { openModal(el.dataset.id); });
+    });
+    modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
+    closeBtn.addEventListener("click", closeModal);
+    document.addEventListener("keydown", onKeyDown);
+
+    // ── Cleanup before next navigation ────────────────────────────────────
+    document.addEventListener("astro:before-swap", function cleanup() {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("astro:before-swap", cleanup);
+    });
   }
 
-  function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
-
-  document.querySelectorAll(".item, .mobile-proj-item").forEach(function (el) {
-    el.addEventListener("click", function () { openModal(el.dataset.id); });
-  });
-  modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
-  closeBtn.addEventListener("click", closeModal);
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
-  });
+  document.addEventListener("astro:page-load", init);
 })();
 </script>
 
@@ -528,6 +541,14 @@ const ITEMS = [
   .pm-link:hover { background: #1d1d1f; color: #fff; }
   .pm-link-muted { border-color: #ddd; color: #999; cursor: default; }
   .pm-link-muted:hover { background: transparent !important; color: #999 !important; }
+
+  /* JS-created meta row elements need global scope */
+  .pm-meta-row { display: flex; flex-direction: column; gap: 1px; }
+  .pm-meta-label {
+    font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #b0b0b0; font-weight: 500;
+  }
+  .pm-meta-value { font-size: 12px; color: #3a3a3a; line-height: 1.5; }
 </style>
 
 <style>
