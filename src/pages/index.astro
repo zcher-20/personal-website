@@ -376,6 +376,8 @@ const SKILLS = [
           ))}
         </section>
 
+        <hr class="inter-section-divider" />
+
         <!-- Projects section -->
         <section id="projects" class="home-proj-section">
           <div class="home-proj-header">
@@ -785,8 +787,14 @@ const SKILLS = [
   /* ── Experience section ── */
   .exp-section {
     padding-top: 56px;
-    padding-bottom: 100px;
+    padding-bottom: 48px;
     border-top: 1px solid #e8e8e8;
+  }
+  .exp-section .exp-row:last-child { border-bottom: none; }
+  .inter-section-divider {
+    border: none;
+    border-top: 1px solid #e8e8e8;
+    margin: 0;
   }
   .exp-heading {
     font-size: 28px; font-weight: 300; color: #1d1d1f;
@@ -848,7 +856,7 @@ const SKILLS = [
   }
   .view-all-link:hover { color: #1d1d1f; }
   .home-proj-section {
-    padding-top: 32px;
+    padding-top: 48px;
     padding-bottom: 100px;
   }
   .home-proj-grid {
