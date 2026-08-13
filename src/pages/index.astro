@@ -1079,10 +1079,25 @@ const SKILLS = [
     /* Experience rows: hide date on very small screens */
     .exp-date { display: none; }
 
-    /* Projects grid → 2-col on mobile */
+    /* Projects grid → horizontal scroll on mobile */
     .home-proj-section { margin-left: -20px; margin-right: -20px; }
     .home-proj-header { padding-left: 20px; padding-right: 20px; }
-    .home-proj-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .home-proj-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 14px;
+      grid-template-columns: unset;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 20px 12px;
+      scrollbar-width: none;
+    }
+    .home-proj-grid::-webkit-scrollbar { display: none; }
+    .home-proj-card {
+      flex: 0 0 72vw;
+      scroll-snap-align: start;
+    }
 
     /* Modal stacks on mobile */
     .home-modal-card { flex-direction: column; max-height: 90vh; width: 92vw; }
