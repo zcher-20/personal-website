@@ -89,8 +89,8 @@ const COUNTRIES = [
   <!-- ── Category landing ── -->
   <div id="photo-landing" class="photo-landing">
 
-    <div class="cat-row">
-      {COUNTRIES.slice(0, 2).map((country) => (
+    <div class="cat-grid">
+      {COUNTRIES.map((country) => (
         <div class="cat-card" data-id={country.id} tabindex="0" role="button" aria-label={country.name}>
           <div class="cat-stack">
             <div class="card-back">
@@ -106,22 +106,6 @@ const COUNTRIES = [
     </div>
 
     <div class="photo-center-label">Photography</div>
-
-    <div class="cat-row">
-      {COUNTRIES.slice(2).map((country) => (
-        <div class="cat-card" data-id={country.id} tabindex="0" role="button" aria-label={country.name}>
-          <div class="cat-stack">
-            <div class="card-back">
-              <img src={country.images[1] ?? country.images[0]} alt="" loading="lazy" />
-            </div>
-            <div class="card-front">
-              <img src={country.images[0]} alt={country.name} loading="eager" />
-            </div>
-          </div>
-          <p class="cat-name">{country.name}</p>
-        </div>
-      ))}
-    </div>
 
   </div>
 
@@ -235,18 +219,17 @@ const COUNTRIES = [
   .photo-landing {
     padding: 72px 48px 80px;
     min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0;
   }
   .photo-landing.hidden { display: none; }
 
-  /* ── Two-row layout ── */
-  .cat-row {
-    display: flex;
-    justify-content: center;
-    gap: 80px;
+  /* ── Category grid ── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    justify-items: center;
   }
 
   /* ── Center label ── */
@@ -257,7 +240,7 @@ const COUNTRIES = [
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #a0a0a0;
-    margin: 52px 0;
+    margin: 52px 0 0;
     text-align: center;
   }
 
@@ -443,10 +426,10 @@ const COUNTRIES = [
   /* ── Mobile ── */
   @media (max-width: 768px) {
     .photo-landing { padding: 40px 20px 60px; }
-    .cat-row { gap: 32px; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 16px; }
     .cat-stack { width: 110px; height: 142px; }
     .cat-name { font-size: 16px; }
-    .photo-center-label { margin: 36px 0; }
+    .photo-center-label { margin: 36px 0 0; }
     .photo-detail { padding: 28px 20px 80px; }
     .detail-grid { columns: 2; column-gap: 8px; }
     .detail-img-wrap { margin-bottom: 8px; }
