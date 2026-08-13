@@ -284,23 +284,11 @@ const COUNTRIES = [
   .card-front {
     transform: rotate(2deg);
     z-index: 1;
-    transition: transform 0.4s ease;
   }
 
   .card-back {
-    transform: rotate(90deg) scale(0.5);
-    opacity: 0;
-    z-index: 2;
-    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
-  }
-
-  .cat-card:hover .card-back {
-    transform: rotate(1deg) scale(1);
-    opacity: 1;
-  }
-
-  .cat-card:hover .card-front {
-    transform: rotate(2.5deg);
+    transform: rotate(-1.5deg);
+    z-index: 0;
   }
 
   .cat-name {
