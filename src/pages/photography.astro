@@ -325,6 +325,15 @@ const PLACEHOLDERS = [
     object-fit: cover;
     display: block;
     pointer-events: none;
+    transition: filter 0.35s ease;
+  }
+
+  .card-front img {
+    filter: grayscale(100%);
+  }
+
+  .cat-card:hover .card-front img {
+    filter: none;
   }
 
   .card-front {
@@ -339,7 +348,6 @@ const PLACEHOLDERS = [
 
   .card-back img {
     filter: grayscale(100%);
-    image-rendering: auto;
   }
 
   .cat-name {
