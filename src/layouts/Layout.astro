@@ -71,6 +71,7 @@ const isActive = (url: string) =>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <slot name="head" />
     <title>{seo.title}</title>
     <meta name="description" content={seo.description} />
     <link rel="canonical" href={canonicalURL} />

@@ -90,6 +90,7 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
     image: identity.logo,
   }}
 >
+  <link rel="preload" href="/fonts/BastligaOne.otf" as="font" type="font/otf" crossorigin slot="head" />
 
   <!-- ── Category landing ── -->
   <div id="photo-landing" class="photo-landing">
@@ -245,7 +246,7 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
   @font-face {
     font-family: "Bastliga One";
     src: url("/fonts/BastligaOne.otf") format("opentype");
-    font-display: swap;
+    font-display: block;
   }
 
   /* ── Landing ── */
@@ -272,7 +273,7 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
     font-size: 12px;
     font-weight: 400;
     color: #1d1d1f;
-    margin: 0 0 8px;
+    margin: 0 0 18px;
     display: flex;
     align-items: center;
     justify-content: center;

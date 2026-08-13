@@ -31,6 +31,7 @@ const path = Astro.url.pathname;
 ---
 
 <Layout seo={seo} canvasPage={true} noNav={true}>
+  <slot name="head" slot="head" />
   <div class="ws-shell">
 
     <!-- App sidebar -->
