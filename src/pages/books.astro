@@ -315,9 +315,9 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
             <div class="spine" style={`width:${b.spineW}px;height:${b.spineH}px;`}>
               <img
                 class="spine-img"
-                src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-S.jpg`}
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                data-src={b.cover || `https://covers.openlibrary.org/b/isbn/${b.isbn}-M.jpg`}
                 alt={b.title}
-                loading="eager"
               />
             </div>
 
@@ -641,11 +641,30 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
 <!-- ══ INTERACTION ══ -->
 <script is:inline>
   function initShelf() {
-    var PANEL_W = 340;
-    var shelf   = document.getElementById("shelf");
-    var active  = null;
+    var PANEL_W   = 340;
+    var shelf     = document.getElementById("shelf");
+    var shelfArea = shelf && shelf.closest(".shelf-area");
+    var active    = null;
 
     if (!shelf) return;
+
+    /* ── Lazy-load spine images scoped to horizontal shelf scroll ── */
+    var lazySpines = shelf.querySelectorAll("img.spine-img[data-src]");
+    if (lazySpines.length && "IntersectionObserver" in window) {
+      var spineIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var img = entry.target;
+            img.src = img.dataset.src;
+            spineIO.unobserve(img);
+          }
+        });
+      }, { root: shelfArea, rootMargin: "0px 600px 0px 0px", threshold: 0 });
+      lazySpines.forEach(function (img) { spineIO.observe(img); });
+    } else {
+      /* fallback: just load all */
+      lazySpines.forEach(function (img) { img.src = img.dataset.src; });
+    }
 
     shelf.addEventListener("click", function (e) {
       /* ignore clicks inside the text panel so user can select/read */
