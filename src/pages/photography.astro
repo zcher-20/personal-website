@@ -92,18 +92,22 @@ const COUNTRIES = [
 
     <div class="cat-grid">
       {COUNTRIES.map((country, i) => (
-        <div class="cat-card" data-id={country.id} tabindex="0" role="button" aria-label={country.name}>
-          <span class="cat-num">{String(i + 1).padStart(2, "0")}.</span>
+        <div class="cat-card" data-id={country.id} data-images={JSON.stringify(country.images)} tabindex="0" role="button" aria-label={country.name}>
           <div class="cat-stack">
             <div class="card-back">
-              <img src={country.images[1] ?? country.images[0]} alt="" loading="lazy" />
+              <img src={country.images[1] ?? country.images[0]} alt="" loading="lazy" class="card-back-img" />
             </div>
             <div class="card-front">
-              <img src={country.images[0]} alt={country.name} loading="eager" />
+              <img src={country.images[0]} alt={country.name} loading="eager" class="card-front-img" />
             </div>
           </div>
           <p class="cat-name">{country.name}</p>
-          <p class="cat-count">{country.images.length} photos</p>
+          <button class="cover-cycle-btn" data-cycle title="Change cover" aria-label="Change cover image">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            change cover
+          </button>
         </div>
       ))}
     </div>
@@ -117,7 +121,6 @@ const COUNTRIES = [
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
-          All countries
         </button>
         <h2 class="detail-title">{country.name}</h2>
       </div>
@@ -180,6 +183,23 @@ const COUNTRIES = [
     lbImg.src = "";
   }
 
+  // Cover cycle state
+  var coverIndex = {};
+
+  // Cover cycle buttons
+  document.querySelectorAll(".cover-cycle-btn[data-cycle]").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var card = btn.closest(".cat-card");
+      var images = JSON.parse(card.dataset.images);
+      var id = card.dataset.id;
+      coverIndex[id] = ((coverIndex[id] ?? 0) + 1) % images.length;
+      var idx = coverIndex[id];
+      card.querySelector(".card-front-img").src = images[idx];
+      card.querySelector(".card-back-img").src = images[(idx + 1) % images.length];
+    });
+  });
+
   // Category card clicks
   document.querySelectorAll(".cat-card").forEach(function (card) {
     card.addEventListener("click", function () { showDetail(card.dataset.id); });
@@ -210,6 +230,12 @@ const COUNTRIES = [
 </script>
 
 <style>
+  @font-face {
+    font-family: "Bastliga One";
+    src: url("/fonts/BastligaOne.otf") format("opentype");
+    font-display: swap;
+  }
+
   /* ── Landing ── */
   .photo-landing {
     padding: 52px 48px 80px;
@@ -243,15 +269,6 @@ const COUNTRIES = [
     gap: 0;
     cursor: pointer;
     outline: none;
-  }
-
-  .cat-num {
-    font-size: 11px;
-    color: #b0b0b0;
-    align-self: flex-start;
-    margin-bottom: 12px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
   }
 
   /* Stacked card */
@@ -302,22 +319,31 @@ const COUNTRIES = [
   }
 
   .cat-name {
-    font-size: 20px;
-    font-weight: 300;
-    letter-spacing: -0.01em;
+    font-family: "Bastliga One", cursive;
+    font-size: 26px;
+    font-weight: 400;
     color: #1d1d1f;
-    margin: 0 0 4px;
+    margin: 0 0 8px;
     text-align: center;
     line-height: 1.2;
   }
 
-  .cat-count {
+  .cover-cycle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
     font-size: 10px;
     color: #b0b0b0;
-    margin: 0;
+    padding: 0;
     letter-spacing: 0.04em;
-    text-transform: uppercase;
+    transition: color 0.15s;
+    font-family: inherit;
   }
+  .cover-cycle-btn:hover { color: #1d1d1f; }
+  .cover-cycle-btn svg { flex-shrink: 0; }
 
   /* ── Detail view ── */
   .photo-detail {
@@ -353,9 +379,9 @@ const COUNTRIES = [
   .back-btn:hover { color: #1d1d1f; }
 
   .detail-title {
-    font-size: 24px;
-    font-weight: 300;
-    letter-spacing: -0.02em;
+    font-family: "Bastliga One", cursive;
+    font-size: 28px;
+    font-weight: 400;
     color: #1d1d1f;
     margin: 0;
   }
