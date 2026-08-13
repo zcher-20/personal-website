@@ -335,27 +335,19 @@ const ITEMS = [
   var canvas = document.getElementById("proj-canvas");
   if (!canvas) return;
 
-  // ── Convert initial % → px, restore saved state ─────────────────────────
+  // ── Restore saved px positions; leave default % positions untouched ──────
   function initPositions() {
     var pos = getPos();
     document.querySelectorAll(".item").forEach(function (el) {
-      var id = el.dataset.id;
-      var saved = pos[id];
+      var saved = pos[el.dataset.id];
       if (saved) {
         if (saved.left)  el.style.left  = saved.left;
         if (saved.top)   el.style.top   = saved.top;
         if (saved.width) el.style.width = saved.width;
-      } else {
-        var cr = canvas.getBoundingClientRect();
-        var er = el.getBoundingClientRect();
-        el.style.left = (er.left - cr.left) + "px";
-        el.style.top  = (er.top  - cr.top)  + "px";
       }
     });
   }
-  requestAnimationFrame(function () {
-    requestAnimationFrame(initPositions);
-  });
+  initPositions();
 
   // ── Drag ─────────────────────────────────────────────────────────────────
   var dragging = null, dragOX = 0, dragOY = 0, smx = 0, smy = 0, didDrag = false;
@@ -365,6 +357,13 @@ const ITEMS = [
     el.addEventListener("mousedown", function (e) {
       if (e.button !== 0 || e.target.classList.contains("resize-handle")) return;
       e.preventDefault();
+      // Convert % positions to px on first drag so the drag math is correct
+      if (el.style.left.indexOf('%') !== -1 || el.style.top.indexOf('%') !== -1) {
+        var cr = canvas.getBoundingClientRect();
+        var er = el.getBoundingClientRect();
+        el.style.left = (er.left - cr.left) + "px";
+        el.style.top  = (er.top  - cr.top)  + "px";
+      }
       dragging = el; didDrag = false; smx = e.clientX; smy = e.clientY;
       var r = el.getBoundingClientRect();
       dragOX = e.clientX - r.left; dragOY = e.clientY - r.top;

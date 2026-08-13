@@ -113,6 +113,15 @@ const PLACEHOLDERS = [
           <p class="cat-name">{country.name}</p>
         </div>
       ))}
+
+      <div class="photo-center-label">
+        <span class="pcl-sep">|</span>
+        <span class="pcl-active">Photography (08)</span>
+        <span class="pcl-sep">|</span>
+        <span class="pcl-muted">Travel (08)</span>
+        <span class="pcl-sep">|</span>
+      </div>
+
       {PLACEHOLDERS.map((p) => (
         <div class={`cat-card${(p as any).cover ? "" : " cat-card-placeholder"}`} aria-label={p.name}>
           <div class="cat-stack">
@@ -126,14 +135,6 @@ const PLACEHOLDERS = [
           <p class={`cat-name${(p as any).cover ? "" : " cat-name-placeholder"}`}>{p.name}</p>
         </div>
       ))}
-    </div>
-
-    <div class="photo-center-label">
-      <span class="pcl-sep">|</span>
-      <span class="pcl-active">Photography (08)</span>
-      <span class="pcl-sep">|</span>
-      <span class="pcl-muted">Archive (08)</span>
-      <span class="pcl-sep">|</span>
     </div>
 
   </div>
@@ -261,13 +262,14 @@ const PLACEHOLDERS = [
     justify-items: center;
   }
 
-  /* ── Center label ── */
+  /* ── Center label (sits between the two grid rows) ── */
   .photo-center-label {
+    grid-column: 1 / -1;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     color: #1d1d1f;
-    margin: 52px 0 0;
+    margin: 8px 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,8 +305,8 @@ const PLACEHOLDERS = [
   /* Stacked card */
   .cat-stack {
     position: relative;
-    width: 130px;
-    height: 168px;
+    width: 100px;
+    height: 160px;
     margin-bottom: 20px;
   }
 
@@ -467,7 +469,7 @@ const PLACEHOLDERS = [
   @media (max-width: 768px) {
     .photo-landing { padding: 40px 20px 60px; }
     .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 16px; }
-    .cat-stack { width: 110px; height: 142px; }
+    .cat-stack { width: 84px; height: 130px; }
     .cat-name { font-size: 16px; }
     .photo-center-label { margin: 36px 0 0; }
     .photo-detail { padding: 28px 20px 80px; }
