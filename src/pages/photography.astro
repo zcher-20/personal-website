@@ -102,10 +102,10 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
           <div class={`cat-card${!frontSrc ? " cat-card-placeholder" : ""}`} data-id={card.id} aria-label={card.name}>
             <div class="cat-stack">
               <div class={`card-back${!backSrc ? " placeholder-card" : ""}`}>
-                {backSrc && <img src={backSrc} alt="" loading="lazy" />}
+                {backSrc && <img src={backSrc} alt="" loading="lazy" decoding="async" />}
               </div>
               <div class={`card-front${!frontSrc ? " placeholder-card" : ""}`}>
-                {frontSrc && <img src={frontSrc} alt="" loading="eager" />}
+                {frontSrc && <img src={frontSrc} alt="" loading="eager" decoding="async" fetchpriority="high" />}
               </div>
             </div>
             <p class={`cat-name${!frontSrc ? " cat-name-placeholder" : ""}`}>{card.name}</p>
@@ -128,10 +128,10 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
           <div class={`cat-card${!frontSrc ? " cat-card-placeholder" : ""}`} data-id={card.id} aria-label={card.name}>
             <div class="cat-stack">
               <div class={`card-back${!backSrc ? " placeholder-card" : ""}`}>
-                {backSrc && <img src={backSrc} alt="" loading="lazy" />}
+                {backSrc && <img src={backSrc} alt="" loading="lazy" decoding="async" />}
               </div>
               <div class={`card-front${!frontSrc ? " placeholder-card" : ""}`}>
-                {frontSrc && <img src={frontSrc} alt="" loading="lazy" />}
+                {frontSrc && <img src={frontSrc} alt="" loading="lazy" decoding="async" />}
               </div>
             </div>
             <p class={`cat-name${!frontSrc ? " cat-name-placeholder" : ""}`}>{card.name}</p>
@@ -245,7 +245,7 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
   @font-face {
     font-family: "Bastliga One";
     src: url("/fonts/BastligaOne.otf") format("opentype");
-    font-display: block;
+    font-display: swap;
   }
 
   /* ── Landing ── */
