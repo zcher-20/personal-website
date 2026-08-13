@@ -243,7 +243,7 @@ export const workPageContent: WorkPageContent = {
     {
       title: "Development Board",
       company: { name: "Columbia General Studies Business Society", image: "/columbia.webp", url: "https://www.columbiagsbs.com/" },
-      date: "Feb 2026 - Present",
+      date: "Jan 2026 - Present",
       description: "Lead growth initiatives to expand engagement; built alumni and external partner pipeline for sponsorships and events.",
     },
     {
@@ -256,7 +256,7 @@ export const workPageContent: WorkPageContent = {
     {
       title: "Data Analytics Research Intern",
       company: { name: "New York University", image: "/nyu.webp", url: "https://nyu.edu" },
-      date: "Oct - Dec 2025",
+      date: "Sep - Dec 2025",
       description: "Built end-to-end ML classification pipelines in scikit-learn processing 500K+ records; researched orbital time periods for astrophysics professor <a href=\"https://ilc.fyi/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Dr. Isabel Colman</a>; applied STL time-series decomposition to denoise sensor signals and improve downstream model F1 score.",
     },
     {
