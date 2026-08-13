@@ -82,7 +82,7 @@ const COUNTRIES = [
 
 const PLACEHOLDERS = [
   { id: "oxford",   name: "Oxford" },
-  { id: "new-york", name: "New York" },
+  { id: "new-york", name: "New York", cover: "/photography-new-york-cover.png" },
   { id: "italy",    name: "Italy" },
   { id: "abu-dhabi", name: "Abu Dhabi" },
 ];
@@ -114,12 +114,16 @@ const PLACEHOLDERS = [
         </div>
       ))}
       {PLACEHOLDERS.map((p) => (
-        <div class="cat-card cat-card-placeholder" aria-label={p.name}>
+        <div class={`cat-card${(p as any).cover ? "" : " cat-card-placeholder"}`} aria-label={p.name}>
           <div class="cat-stack">
-            <div class="card-back placeholder-card"></div>
-            <div class="card-front placeholder-card"></div>
+            <div class={`card-back${(p as any).cover ? "" : " placeholder-card"}`}>
+              {(p as any).cover && <img src={(p as any).cover} alt="" loading="lazy" />}
+            </div>
+            <div class={`card-front${(p as any).cover ? "" : " placeholder-card"}`}>
+              {(p as any).cover && <img src={(p as any).cover} alt={p.name} loading="lazy" />}
+            </div>
           </div>
-          <p class="cat-name cat-name-placeholder">{p.name}</p>
+          <p class={`cat-name${(p as any).cover ? "" : " cat-name-placeholder"}`}>{p.name}</p>
         </div>
       ))}
     </div>
