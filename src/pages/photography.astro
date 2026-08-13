@@ -2,61 +2,9 @@
 import Layout from "../layouts/WorkspaceLayout.astro";
 import { identity } from "../config";
 
-const COUNTRIES = [
+const ALL_CARDS = [
   {
-    id: "morocco",
-    name: "Morocco",
-    images: [
-      "/photography/morocco/IMG_1757.jpeg",
-      "/photography/thumbs/morocco--98586D38-38FC-4F70-BCAF-1A20B19D7947.webp",
-      "/photography/thumbs/morocco--IMG_3049.webp",
-      "/photography/thumbs/morocco--IMG_7172.webp",
-      "/photography/thumbs/morocco--IMG_8971.webp",
-      "/photography/thumbs/morocco--IMG_9150.webp",
-      "/photography/thumbs/morocco--IMG_9172.webp",
-      "/photography/thumbs/morocco--IMG_9295.webp",
-      "/photography/thumbs/morocco--IMG_9553.webp",
-      "/photography/thumbs/morocco--Tezza-5653.webp",
-    ],
-  },
-  {
-    id: "spain",
-    name: "Spain",
-    images: [
-      "/photography/spain/IMG_3242.jpeg",
-      "/photography/thumbs/spain--IMG_1036.webp",
-      "/photography/thumbs/spain--IMG_1065.webp",
-      "/photography/thumbs/spain--IMG_3242.webp",
-      "/photography/thumbs/spain--IMG_5296.webp",
-      "/photography/thumbs/spain--IMG_5336.webp",
-      "/photography/thumbs/spain--IMG_5660.webp",
-      "/photography/thumbs/spain--IMG_6780.webp",
-      "/photography/thumbs/spain--IMG_6797.webp",
-    ],
-  },
-  {
-    id: "switzerland",
-    name: "Switzerland",
-    images: [
-      "/photography/switzerland/IMG_0435.jpeg",
-      "/photography/thumbs/switzerland--A9CAAB5F-644C-4EA6-96E6-193BB256629B.webp",
-      "/photography/thumbs/switzerland--IMG_0403.webp",
-      "/photography/thumbs/switzerland--IMG_0435.webp",
-      "/photography/thumbs/switzerland--IMG_0913.webp",
-      "/photography/thumbs/switzerland--IMG_1154.webp",
-      "/photography/thumbs/switzerland--IMG_1414.webp",
-      "/photography/thumbs/switzerland--IMG_1551.webp",
-      "/photography/thumbs/switzerland--IMG_1661.webp",
-      "/photography/thumbs/switzerland--IMG_1857.webp",
-      "/photography/thumbs/switzerland--IMG_2243.webp",
-      "/photography/thumbs/switzerland--IMG_2261.webp",
-      "/photography/thumbs/switzerland--IMG_2707.webp",
-      "/photography/thumbs/switzerland--IMG_9831.webp",
-    ],
-  },
-  {
-    id: "trail",
-    name: "Trail",
+    id: "trail", name: "Trail",
     images: [
       "/photography/thumbs/trail--100_1775.webp",
       "/photography/thumbs/trail--IMG_0005.webp",
@@ -78,14 +26,61 @@ const COUNTRIES = [
       "/photography/thumbs/trail--Tezza-5653.webp",
     ],
   },
-];
-
-const PLACEHOLDERS = [
-  { id: "oxford",   name: "Oxford", cover: "/photography/oxford-cover.jpeg" },
-  { id: "new-york", name: "New York", cover: "/photography-new-york-cover.png" },
-  { id: "italy",    name: "Italy", cover: "/photography-italy-cover.png" },
+  {
+    id: "switzerland", name: "Switzerland",
+    images: [
+      "/photography/switzerland/IMG_0435.jpeg",
+      "/photography/thumbs/switzerland--A9CAAB5F-644C-4EA6-96E6-193BB256629B.webp",
+      "/photography/thumbs/switzerland--IMG_0403.webp",
+      "/photography/thumbs/switzerland--IMG_0435.webp",
+      "/photography/thumbs/switzerland--IMG_0913.webp",
+      "/photography/thumbs/switzerland--IMG_1154.webp",
+      "/photography/thumbs/switzerland--IMG_1414.webp",
+      "/photography/thumbs/switzerland--IMG_1551.webp",
+      "/photography/thumbs/switzerland--IMG_1661.webp",
+      "/photography/thumbs/switzerland--IMG_1857.webp",
+      "/photography/thumbs/switzerland--IMG_2243.webp",
+      "/photography/thumbs/switzerland--IMG_2261.webp",
+      "/photography/thumbs/switzerland--IMG_2707.webp",
+      "/photography/thumbs/switzerland--IMG_9831.webp",
+    ],
+  },
+  { id: "oxford",    name: "Oxford",   cover: "/photography/oxford-cover.jpeg" },
+  { id: "new-york",  name: "New York", cover: "/photography-new-york-cover.png" },
+  {
+    id: "spain", name: "Spain",
+    images: [
+      "/photography/spain/IMG_3242.jpeg",
+      "/photography/thumbs/spain--IMG_1036.webp",
+      "/photography/thumbs/spain--IMG_1065.webp",
+      "/photography/thumbs/spain--IMG_3242.webp",
+      "/photography/thumbs/spain--IMG_5296.webp",
+      "/photography/thumbs/spain--IMG_5336.webp",
+      "/photography/thumbs/spain--IMG_5660.webp",
+      "/photography/thumbs/spain--IMG_6780.webp",
+      "/photography/thumbs/spain--IMG_6797.webp",
+    ],
+  },
+  {
+    id: "morocco", name: "Morocco",
+    images: [
+      "/photography/morocco/IMG_1757.jpeg",
+      "/photography/thumbs/morocco--98586D38-38FC-4F70-BCAF-1A20B19D7947.webp",
+      "/photography/thumbs/morocco--IMG_3049.webp",
+      "/photography/thumbs/morocco--IMG_7172.webp",
+      "/photography/thumbs/morocco--IMG_8971.webp",
+      "/photography/thumbs/morocco--IMG_9150.webp",
+      "/photography/thumbs/morocco--IMG_9172.webp",
+      "/photography/thumbs/morocco--IMG_9295.webp",
+      "/photography/thumbs/morocco--IMG_9553.webp",
+      "/photography/thumbs/morocco--Tezza-5653.webp",
+    ],
+  },
+  { id: "italy",     name: "Italy",     cover: "/photography-italy-cover.png" },
   { id: "abu-dhabi", name: "Abu Dhabi", cover: "/photography-abu-dhabi-cover.jpg" },
 ];
+
+const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
 ---
 
 <Layout
@@ -100,19 +95,23 @@ const PLACEHOLDERS = [
   <div id="photo-landing" class="photo-landing">
 
     <div class="cat-grid">
-      {COUNTRIES.map((country) => (
-        <div class="cat-card" data-id={country.id} aria-label={country.name}>
-          <div class="cat-stack">
-            <div class="card-back">
-              <img src={country.images[1] ?? country.images[0]} alt="" loading="lazy" />
+      {ALL_CARDS.slice(0, 4).map((card: any) => {
+        const frontSrc = card.images ? card.images[0] : card.cover;
+        const backSrc  = card.images ? (card.images[1] ?? card.images[0]) : card.cover;
+        return (
+          <div class={`cat-card${!frontSrc ? " cat-card-placeholder" : ""}`} data-id={card.id} aria-label={card.name}>
+            <div class="cat-stack">
+              <div class={`card-back${!backSrc ? " placeholder-card" : ""}`}>
+                {backSrc && <img src={backSrc} alt="" loading="lazy" />}
+              </div>
+              <div class={`card-front${!frontSrc ? " placeholder-card" : ""}`}>
+                {frontSrc && <img src={frontSrc} alt="" loading="eager" />}
+              </div>
             </div>
-            <div class="card-front">
-              <img src={country.images[0]} alt="" loading="eager" />
-            </div>
+            <p class={`cat-name${!frontSrc ? " cat-name-placeholder" : ""}`}>{card.name}</p>
           </div>
-          <p class="cat-name">{country.name}</p>
-        </div>
-      ))}
+        );
+      })}
 
       <div class="photo-center-label">
         <span class="pcl-sep">|</span>
@@ -122,36 +121,40 @@ const PLACEHOLDERS = [
         <span class="pcl-sep">|</span>
       </div>
 
-      {PLACEHOLDERS.map((p) => (
-        <div class={`cat-card${(p as any).cover ? "" : " cat-card-placeholder"}`} aria-label={p.name}>
-          <div class="cat-stack">
-            <div class={`card-back${(p as any).cover ? "" : " placeholder-card"}`}>
-              {(p as any).cover && <img src={(p as any).cover} alt="" loading="lazy" />}
+      {ALL_CARDS.slice(4).map((card: any) => {
+        const frontSrc = card.images ? card.images[0] : card.cover;
+        const backSrc  = card.images ? (card.images[1] ?? card.images[0]) : card.cover;
+        return (
+          <div class={`cat-card${!frontSrc ? " cat-card-placeholder" : ""}`} data-id={card.id} aria-label={card.name}>
+            <div class="cat-stack">
+              <div class={`card-back${!backSrc ? " placeholder-card" : ""}`}>
+                {backSrc && <img src={backSrc} alt="" loading="lazy" />}
+              </div>
+              <div class={`card-front${!frontSrc ? " placeholder-card" : ""}`}>
+                {frontSrc && <img src={frontSrc} alt="" loading="lazy" />}
+              </div>
             </div>
-            <div class={`card-front${(p as any).cover ? "" : " placeholder-card"}`}>
-              {(p as any).cover && <img src={(p as any).cover} alt="" loading="lazy" />}
-            </div>
+            <p class={`cat-name${!frontSrc ? " cat-name-placeholder" : ""}`}>{card.name}</p>
           </div>
-          <p class={`cat-name${(p as any).cover ? "" : " cat-name-placeholder"}`}>{p.name}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
 
   </div>
 
-  <!-- ── Detail views (one per country) ── -->
-  {COUNTRIES.map((country) => (
-    <div id={`detail-${country.id}`} class="photo-detail" aria-hidden="true">
+  <!-- ── Detail views (one per card with images) ── -->
+  {DETAIL_CARDS.map((card: any) => (
+    <div id={`detail-${card.id}`} class="photo-detail" aria-hidden="true">
       <div class="detail-header">
         <button class="back-btn" data-back>
           <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
           </svg>
         </button>
-        <h2 class="detail-title">{country.name}</h2>
+        <h2 class="detail-title">{card.name}</h2>
       </div>
       <div class="detail-grid">
-        {country.images.map((src) => (
+        {card.images.map((src: string) => (
           <div class="detail-img-wrap" data-src={src}>
             <img src={src} alt="" loading="lazy" />
           </div>
