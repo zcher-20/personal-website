@@ -511,6 +511,9 @@ const ITEMS = [
     display: flex !important;
     flex-direction: column !important;
   }
+  @media (max-width: 768px) {
+    .ws-main { overflow-y: auto !important; }
+  }
 
   /* JS-created modal tag/link elements need global scope */
   .pm-tag {
@@ -757,6 +760,7 @@ const ITEMS = [
   @media (max-width: 768px) {
     .canvas           { display: none; }
     .proj-footer      { display: none; }
+    .proj-shell       { height: auto; }
     .mobile-proj-list {
       display: flex; flex-direction: column; gap: 0;
       padding: 0 20px 80px;
