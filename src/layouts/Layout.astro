@@ -203,6 +203,8 @@ const isActive = (url: string) =>
 </html>
 
 <style is:global>
+  :root { --mauve: #9e7fa4; }
+
   html {
     font-family: "Inter", sans-serif;
   }
@@ -258,30 +260,36 @@ const isActive = (url: string) =>
 
     #cursor-dot {
       position: fixed;
-      top: 0; left: 0;
+      top: -20px; left: -20px;
       width: 5px; height: 5px;
       background: #1d1d1f;
       border-radius: 50%;
       pointer-events: none;
-      z-index: 99999;
+      /* above everything including canvas/mind overflow containers */
+      z-index: 2147483647;
       transform: translate(-50%, -50%);
-      transition: transform 0.18s ease, opacity 0.2s, background 0.2s;
-      will-change: left, top;
+      transition: transform 0.15s ease, opacity 0.15s;
+      will-change: transform, left, top;
+      opacity: 0;
     }
 
     #cursor-ring {
       position: fixed;
-      top: 0; left: 0;
+      top: -20px; left: -20px;
       width: 28px; height: 28px;
       border: 1px solid rgba(29, 29, 31, 0.38);
       border-radius: 50%;
       pointer-events: none;
-      z-index: 99998;
+      z-index: 2147483646;
       transform: translate(-50%, -50%);
-      transition: width 0.22s ease, height 0.22s ease,
-                  border-color 0.22s, background 0.22s, opacity 0.2s;
-      will-change: left, top;
+      transition: width 0.2s ease, height 0.2s ease,
+                  border-color 0.2s, background 0.2s, opacity 0.15s;
+      will-change: transform, left, top;
+      opacity: 0;
     }
+
+    #cursor-dot.cur-visible  { opacity: 1; }
+    #cursor-ring.cur-visible { opacity: 1; }
 
     #cursor-dot.cur-hover {
       transform: translate(-50%, -50%) scale(0);
@@ -309,26 +317,34 @@ const isActive = (url: string) =>
   var ring = document.getElementById("cursor-ring");
   if (!dot || !ring) return;
 
-  var mx = -200, my = -200, rx = -200, ry = -200;
+  var mx, my, rx, ry, hasMoved = false;
 
   document.addEventListener("mousemove", function (e) {
     mx = e.clientX; my = e.clientY;
     dot.style.left = mx + "px";
     dot.style.top  = my + "px";
-  });
+    if (!hasMoved) {
+      hasMoved = true;
+      rx = mx; ry = my;
+      dot.classList.add("cur-visible");
+      ring.classList.add("cur-visible");
+    }
+  }, { passive: true });
 
   (function animate() {
-    rx += (mx - rx) * 0.11;
-    ry += (my - ry) * 0.11;
-    ring.style.left = rx + "px";
-    ring.style.top  = ry + "px";
+    if (hasMoved) {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.left = rx + "px";
+      ring.style.top  = ry + "px";
+    }
     requestAnimationFrame(animate);
   })();
 
   var HOVER_SEL = "a, button, label, input, select, textarea, " +
     "[role='button'], .item, .home-proj-card, .mobile-proj-item, " +
     ".app-nav-btn, .sidebar-resume-btn, .flyout-item, .mobile-nav-btn, " +
-    ".exp-row, .cat-card";
+    ".exp-row, .cat-card, .about-projects-wrap";
 
   document.addEventListener("mouseover", function (e) {
     if (e.target.closest(HOVER_SEL)) {
@@ -351,10 +367,14 @@ const isActive = (url: string) =>
     ring.classList.remove("cur-click");
   });
   document.addEventListener("mouseleave", function () {
-    dot.style.opacity = "0"; ring.style.opacity = "0";
+    dot.classList.remove("cur-visible");
+    ring.classList.remove("cur-visible");
   });
   document.addEventListener("mouseenter", function () {
-    dot.style.opacity = "1"; ring.style.opacity = "1";
+    if (hasMoved) {
+      dot.classList.add("cur-visible");
+      ring.classList.add("cur-visible");
+    }
   });
 })();
 </script>

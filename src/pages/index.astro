@@ -357,8 +357,9 @@ const SKILLS = [
               ))}
 
               <div class="about-projects-preview">
-                <img src="/projects-preview.png" alt="Projects canvas" class="about-projects-img" />
-                <a href="/projects" class="about-projects-link">Projects →</a>
+                <div class="about-projects-wrap" id="about-proj-trigger">
+                  <img src="/projects-preview.png" alt="Projects canvas" class="about-projects-img" />
+                </div>
               </div>
 
             </div>
@@ -588,6 +589,26 @@ const SKILLS = [
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
   });
+
+  // ── Projects image expand-to-navigate ─────────────────────────────────
+  var projTrigger = document.getElementById("about-proj-trigger");
+  if (projTrigger) {
+    projTrigger.addEventListener("click", function (e) {
+      var x = e.clientX, y = e.clientY;
+      var circle = document.createElement("div");
+      var max = Math.sqrt(window.innerWidth * window.innerWidth + window.innerHeight * window.innerHeight) * 2.4;
+      circle.style.cssText = "position:fixed;left:" + x + "px;top:" + y + "px;" +
+        "width:0;height:0;border-radius:50%;background:#1d1d1f;" +
+        "transform:translate(-50%,-50%);pointer-events:none;z-index:99990;" +
+        "transition:width 0.55s cubic-bezier(0.4,0,0.2,1),height 0.55s cubic-bezier(0.4,0,0.2,1);";
+      document.body.appendChild(circle);
+      requestAnimationFrame(function () {
+        circle.style.width  = max + "px";
+        circle.style.height = max + "px";
+      });
+      setTimeout(function () { window.location.href = "/projects"; }, 520);
+    });
+  }
 })();
 </script>
 
@@ -662,7 +683,7 @@ const SKILLS = [
     transition: background 0.15s, color 0.15s;
     white-space: nowrap; width: 100%;
   }
-  .app-nav-btn:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .app-nav-btn:hover { background: rgba(0,0,0,0.04); color: var(--mauve); }
   .app-sidebar.collapsed .app-nav-btn { padding: 8px; width: auto; }
 
   .app-nav-icon { width: 15px; height: 15px; flex-shrink: 0; }
@@ -681,7 +702,7 @@ const SKILLS = [
     text-decoration: none; width: 100%;
     transition: background 0.15s, color 0.15s;
   }
-  .sidebar-resume-btn:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .sidebar-resume-btn:hover { background: rgba(0,0,0,0.04); color: var(--mauve); }
   .app-sidebar.collapsed .sidebar-resume-btn { padding: 8px; width: auto; }
 
   /* Flyout */
@@ -724,7 +745,7 @@ const SKILLS = [
     justify-content: flex-end; margin-top: 8px;
   }
   .social-link { font-size: 13px; color: #7a7a7a; text-decoration: none; transition: color 0.15s; }
-  .social-link:hover { color: #1d1d1f; }
+  .social-link:hover { color: var(--mauve); }
   .social-sep { font-size: 13px; color: #c0c0c0; }
 
   /* Grid */
@@ -780,7 +801,7 @@ const SKILLS = [
     border: 1px solid #e0e0e0; border-radius: 6px;
     padding: 7px 14px; transition: border-color 0.15s, color 0.15s;
   }
-  .about-resume-btn:hover { border-color: #aaa; color: #1d1d1f; }
+  .about-resume-btn:hover { border-color: var(--mauve); color: var(--mauve); }
 
   .nav-divider {
     height: 1px; background: #f0f0f0;
@@ -798,22 +819,22 @@ const SKILLS = [
     margin-top: 28px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     align-items: center;
   }
+  .about-projects-wrap {
+    width: 90%;
+    position: relative;
+  }
   .about-projects-img {
-    width: 82%;
+    width: 100%;
     border-radius: 6px;
     border: 1px solid #efefef;
     display: block;
+    transition: box-shadow 0.22s;
   }
-  .about-projects-link {
-    font-size: 12px;
-    color: #7a7a7a;
-    text-decoration: none;
-    transition: color 0.15s;
+  .about-projects-wrap:hover .about-projects-img {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
   }
-  .about-projects-link:hover { color: #1d1d1f; }
   .skills-heading {
     font-size: 28px; font-weight: 300; color: #1d1d1f;
     letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px;
@@ -1023,14 +1044,14 @@ const SKILLS = [
   }
   .hf-links { display: flex; align-items: center; gap: 6px; }
   .hf-link  { font-size: 10.5px; color: #8a8a8a; text-decoration: none; transition: color 0.15s; }
-  .hf-link:hover { color: #1d1d1f; }
+  .hf-link:hover { color: var(--mauve); }
   .hf-sep   { font-size: 11px; color: #d0d0d0; }
   .hf-resume {
     font-size: 10.5px; color: #8a8a8a; text-decoration: none;
     text-transform: uppercase; letter-spacing: 0.07em;
     transition: color 0.15s; align-self: flex-end;
   }
-  .hf-resume:hover { color: #1d1d1f; }
+  .hf-resume:hover { color: var(--mauve); }
 
   /* ── Mobile responsive overrides ── */
   @media (max-width: 768px) {

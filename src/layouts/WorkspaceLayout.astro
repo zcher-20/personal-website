@@ -246,7 +246,7 @@ const path = Astro.url.pathname;
     transition: background 0.15s, color 0.15s;
     white-space: nowrap; width: 100%;
   }
-  .app-nav-btn:hover  { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .app-nav-btn:hover  { background: rgba(0,0,0,0.04); color: var(--mauve); }
   .app-nav-btn.active { background: #fff; color: #2c4470; font-weight: 600; }
   .app-sidebar.collapsed .app-nav-btn { padding: 8px; width: auto; }
 
@@ -266,7 +266,7 @@ const path = Astro.url.pathname;
     text-decoration: none; width: 100%;
     transition: background 0.15s, color 0.15s;
   }
-  .sidebar-resume-btn:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .sidebar-resume-btn:hover { background: rgba(0,0,0,0.04); color: var(--mauve); }
   .app-sidebar.collapsed .sidebar-resume-btn { padding: 8px; width: auto; }
 
 
@@ -296,7 +296,7 @@ const path = Astro.url.pathname;
     font-size: 12px; color: #7a7a7a;
     transition: color 0.15s;
   }
-  .flyout-item:hover .flyout-label { color: #1d1d1f; }
+  .flyout-item:hover .flyout-label { color: var(--mauve); }
   .flyout-active .flyout-label     { color: #2c4470; font-weight: 500; }
 
   /* ── Main content ── */
