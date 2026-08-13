@@ -12,8 +12,8 @@ const { seo } = Astro.props;
 const APP_NAV = [
   { label: "Home",                 icon: "mdi:home-outline",          href: "/" },
   { label: "About",                icon: "mdi:account-outline",       href: "/#about" },
-  { label: "Experience",           icon: "mdi:briefcase-outline",     href: "/#experience" },
   { label: "Highlighted Projects", icon: "mdi:star-outline",          href: "/#projects" },
+  { label: "Experience",           icon: "mdi:briefcase-outline",     href: "/#experience" },
   { label: "Projects",             icon: "mdi:folder-open-outline",   href: "/projects" },
   { label: "Mind",                 icon: "mdi:brain",                 href: "/mind" },
   { label: "Bookshelf",            icon: "mdi:book-open-outline",     href: "/books" },
@@ -62,7 +62,7 @@ const path = Astro.url.pathname;
               <Icon name={item.icon} class="app-nav-icon" />
               <span class="app-nav-label">{item.label}</span>
             </a>
-            {item.label === "Highlighted Projects" && <div class="nav-divider" />}
+            {item.label === "Experience" && <div class="nav-divider" />}
           </>
         ))}
       </nav>
