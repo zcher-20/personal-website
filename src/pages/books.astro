@@ -275,6 +275,8 @@ const FAVORITES = [
 ];
 
 const PANEL_W = 340;
+const SPINE_W = 16;
+const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
 ---
 
 <Layout
@@ -301,7 +303,7 @@ const PANEL_W = 340;
     <!-- ══ SHELF (favourites) ══ -->
     <div class="shelf-area">
       <div class="shelf" id="shelf">
-        {FAVORITES.map((b) => (
+        {FAVORITES_DISPLAY.map((b) => (
           <div
             class="book"
             data-id={b.id}
@@ -670,14 +672,14 @@ const PANEL_W = 340;
       }
     });
 
-    /* Auto-open Devotions (6th book) on load */
-    var devotions = shelf.querySelector('[data-id="f09"]');
-    if (devotions) {
-      devotions.classList.add("selected");
-      devotions.style.width = PANEL_W + "px";
-      active = devotions;
+    /* Auto-open A Room of One's Own on load */
+    var roomOfOnesOwn = shelf.querySelector('[data-id="f05"]');
+    if (roomOfOnesOwn) {
+      roomOfOnesOwn.classList.add("selected");
+      roomOfOnesOwn.style.width = PANEL_W + "px";
+      active = roomOfOnesOwn;
       setTimeout(function () {
-        devotions.scrollIntoView({ behavior: "instant", block: "nearest", inline: "center" });
+        roomOfOnesOwn.scrollIntoView({ behavior: "instant", block: "nearest", inline: "center" });
       }, 50);
     }
   }
