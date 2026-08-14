@@ -84,10 +84,16 @@ const PROJECTS = [
   },
   {
     id: "healthcare-ai",
+    section: "work",
+    confidential: true,
+    year: "2026",
     title: "Healthcare Agent",
     shortTitle: "Clinical Intelligence AI Agent",
     description: "Built the frontend and backend for an LLM-powered healthcare agent that transforms patient visits into structured clinical intelligence. Integrated real-time transcription, automated clinical notes and summaries, document processing, visit analysis, and contextual Q&A into a unified workflow.",
     image: "/project-healthcare-ui.png",
+    logo: "/startup.webp",
+    logoHeight: "72px",
+    logoOffset: "-18px",
     venue: "MIT-Incubated Stealth AI Startup",
     tags: ["Agentic AI", "Full-Stack", "Voice AI", "Healthcare"],
     meta: [
@@ -124,10 +130,13 @@ const PROJECTS = [
   },
   {
     id: "aimc",
+    section: "research",
+    year: "2024",
     title: "Analog In-Memory Computing with Uncertainty Quantification",
     shortTitle: "Analog In-Memory Inference",
     description: "Published at ICLR 2024 (Notable). Benchmarked a deep learning inference pipeline on IBM analog in-memory computing hardware for medical image segmentation at the edge.",
     image: "/project-aimc.jpg",
+    logo: "/ibm.webp",
     venue: "ICLR 2024 · Notable Paper",
     tags: ["IBM Research", "Analog Computing", "Medical Imaging", "Uncertainty Quantification"],
     links: [{ label: "OpenReview →", href: "https://openreview.net/forum?id=hvp5I4dDya" }],
@@ -144,10 +153,15 @@ const PROJECTS = [
   },
   {
     id: "ricer",
+    section: "research",
+    confidential: true,
+    year: "2024",
     title: "AI Wildfire Risk Foundation Model",
     shortTitle: "AI Wildfire Risk Foundation Model",
     description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Al Akhawayn University Digital Innovation Lab.",
     image: "/project-ricer-map.png",
+    logo: "/akhawayn.webp",
+    logoHeight: "120px",
     venue: "Al Akhawayn University Digital Innovation Lab",
     tags: ["Computer Vision", "Earth Observation", "GIS", "Python"],
     links: [{ label: "GitHub →", href: "https://github.com/zcher-20/wildfire_data_pipeline" }],
@@ -164,10 +178,16 @@ const PROJECTS = [
   },
   {
     id: "enterprise-ai",
+    section: "work",
+    confidential: true,
+    year: "2026",
     title: "Multi-Domain Agentic AI Platform",
     shortTitle: "Statistical Agentic Systems",
     description: "Developed production-facing AI agents using a custom LLM and modular skill architecture, adapting the system to healthcare, finance, mathematics, and enterprise use cases. Built two agentic workflow interfaces and contributed to backend agent logic, transcription pipelines, document processing, and multimodal data workflows.",
     image: "/project-agentic-eval.png",
+    logo: "/startup.webp",
+    logoHeight: "72px",
+    logoOffset: "-18px",
     venue: "MIT-Incubated Stealth AI Startup",
     tags: ["Agentic AI", "LLMs", "AI Agents", "Full-Stack", "Document AI"],
     links: [],
@@ -192,7 +212,7 @@ const PROJECTS = [
     tags: ["Quantum ML", "PennyLane", "Medical Imaging", "PyTorch"],
     links: [{ label: "GitHub →", href: "https://github.com/zcher-20/SihaSansFrontieres" }],
   },
-].filter((item: any) => ["aimc", "enterprise-ai", "healthcare-ai", "ricer", "investment"].includes(item.id));
+].filter((item: any) => ["aimc", "enterprise-ai", "healthcare-ai", "ricer"].includes(item.id));
 
 const SKILLS = [
   {
@@ -208,7 +228,7 @@ const SKILLS = [
   {
     label: "Research & Publication",
     desc: "Publishing peer-reviewed research across machine learning, hardware, and medical imaging.",
-    tags: ["IBM Research", "Medical Imaging", "Computer Vision", "Quantum ML", "Earth Observation", "GIS"],
+    tags: ["Research Design", "Experimental Design", "Technical Writing", "Data Analysis", "Literature Review", "Critical Analysis"],
   },
 ];
 ---
@@ -231,15 +251,14 @@ const SKILLS = [
         <img src="/headshot.jpg" alt="Zayneb Cherif" class="sidebar-photo" draggable="false" />
       </div>
 
-      <div class="sidebar-divider"></div>
-
-      <nav class="app-nav">
+      <nav class="app-nav" id="home-app-nav">
         {APP_NAV.map((item) => (
           <>
             <a
               href={item.href}
-              class={`app-nav-btn${item.href.startsWith("#") ? " section-scroll-link" : ""}`}
+              class={`app-nav-btn${item.href.startsWith("#") ? " section-scroll-link" : ""}${item.href === "/" ? " active" : ""}`}
               data-target={item.href.startsWith("#") ? item.href.slice(1) : undefined}
+              data-section={item.href.startsWith("#") ? item.href.slice(1) : undefined}
             >
               <Icon name={item.icon} class="app-nav-icon" />
               <span class="app-nav-label">{item.label}</span>
@@ -323,7 +342,7 @@ const SKILLS = [
                 <div class="exp-row">
                   <div class="exp-logo"><img src="/openai.webp" alt="OpenAI" /></div>
                   <div class="exp-content">
-                    <p class="exp-title">AI Model Trainer — Codex / Project Vox</p>
+                    <p class="exp-title">AI Model Trainer — Codex</p>
                     <p class="exp-company-name">OpenAI</p>
                     <p class="exp-desc">Training Codex by crafting targeted prompts and adversarial edge-case sets; providing structured feedback to improve code generation, reasoning, and instruction-following capabilities.</p>
                   </div>
@@ -357,9 +376,12 @@ const SKILLS = [
               ))}
 
               <div class="about-projects-preview">
-                <div class="about-projects-wrap" id="about-proj-trigger">
+                <a href="/projects" class="about-projects-wrap" id="about-proj-trigger">
                   <img src="/projects-preview.png" alt="Projects canvas" class="about-projects-img" />
-                </div>
+                  <div class="about-projects-overlay">
+                    <span class="about-projects-overlay-text">View All Projects</span>
+                  </div>
+                </a>
               </div>
 
             </div>
@@ -454,18 +476,19 @@ const SKILLS = [
   <!-- Projects modal -->
   <div id="home-proj-modal" class="home-modal" role="dialog" aria-modal="true">
     <div class="home-modal-card" id="home-modal-card">
-      <button id="home-modal-close" class="home-modal-close" aria-label="Close">&#x2715;</button>
-      <div class="home-modal-left">
-        <h2 id="hpm-title" class="hpm-title"></h2>
-        <p id="hpm-venue" class="hpm-venue"></p>
-        <p id="hpm-desc" class="hpm-desc"></p>
-        <div id="hpm-meta" class="hpm-meta"></div>
-        <div id="hpm-tags" class="hpm-tags"></div>
-        <div id="hpm-links" class="hpm-links"></div>
+      <div class="hpm-topbar">
+        <a id="hpm-visit-btn" class="hpm-visit-btn" href="#" target="_blank" rel="noopener noreferrer">Visit Site ↗</a>
       </div>
-      <div class="home-modal-right">
-        <img id="hpm-image" class="hpm-image" src="" alt="" />
+      <div class="hpm-cs-header">
+        <img id="hpm-logo" class="hpm-logo" src="" alt="" />
+        <h2 class="hpm-cs-title">
+          <span id="hpm-title-text"></span><span class="hpm-cs-title-sep"> · </span><span id="hpm-title-year" class="hpm-cs-title-year"></span>
+        </h2>
+        <p id="hpm-venue" class="hpm-cs-venue"></p>
+        <p id="hpm-desc" class="hpm-cs-desc"></p>
       </div>
+      <div id="hpm-stack" class="hpm-cs-stack"></div>
+      <div id="hpm-images" class="hpm-cs-images"></div>
     </div>
   </div>
 
@@ -538,64 +561,154 @@ const SKILLS = [
         if (flyout) flyout.classList.add("hidden");
       });
     });
+
+    // Active nav highlight based on visible section
+    var sectionIds = ["about", "projects", "experience"];
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var id = entry.target.id;
+        var link = document.querySelector("#home-app-nav [data-section='" + id + "']");
+        var homeLink = document.querySelector("#home-app-nav [href='/']");
+        if (!link) return;
+        if (entry.isIntersecting) {
+          document.querySelectorAll("#home-app-nav .app-nav-btn").forEach(function (b) { b.classList.remove("active"); });
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+          var anyActive = document.querySelector("#home-app-nav .app-nav-btn.active");
+          if (!anyActive && homeLink) homeLink.classList.add("active");
+        }
+      });
+    }, { root: archiveMain, threshold: 0.3 });
+
+    sectionIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
   })();
 </script>
 
 <script is:inline>
 (function () {
+  var CASE_STUDY_PW = "zayneb"; // change to your preferred password
+
+  function showPwGate(container, onUnlock) {
+    var gate = document.createElement("div");
+    gate.className = "hpm-pw-gate";
+    gate.innerHTML =
+      '<div class="hpm-pw-icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor" class="hpm-pw-lock"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>' +
+      '<p class="hpm-pw-title">This case study is password-protected.</p>' +
+      '<p class="hpm-pw-sub">Curious? Feel free to <a href="mailto:zaynebcheriff@gmail.com" class="hpm-pw-email">email me!</a></p>' +
+      '<div class="hpm-pw-form"><input type="password" class="hpm-pw-input" placeholder="Enter" /><button class="hpm-pw-btn" aria-label="Submit">&#x2192;</button></div>' +
+      '<p class="hpm-pw-error"></p>';
+    container.appendChild(gate);
+    var input = gate.querySelector(".hpm-pw-input");
+    var btn   = gate.querySelector(".hpm-pw-btn");
+    var errEl = gate.querySelector(".hpm-pw-error");
+    function tryUnlock() {
+      if (input.value === CASE_STUDY_PW) { onUnlock(); }
+      else { errEl.textContent = "Incorrect password."; input.value = ""; input.focus(); }
+    }
+    btn.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+  }
+
   var rawData = document.getElementById("home-proj-data");
   if (!rawData) return;
   var ITEMS = JSON.parse(rawData.textContent);
   var itemMap = {};
   ITEMS.forEach(function (d) { itemMap[d.id] = d; });
 
-  var modal    = document.getElementById("home-proj-modal");
-  var card     = document.getElementById("home-modal-card");
-  var closeBtn = document.getElementById("home-modal-close");
-  var hpmTitle  = document.getElementById("hpm-title");
-  var hpmVenue  = document.getElementById("hpm-venue");
-  var hpmDesc   = document.getElementById("hpm-desc");
-  var hpmMeta   = document.getElementById("hpm-meta");
-  var hpmTags   = document.getElementById("hpm-tags");
-  var hpmLinks  = document.getElementById("hpm-links");
-  var hpmImage  = document.getElementById("hpm-image");
+  var modal      = document.getElementById("home-proj-modal");
+  var card       = document.getElementById("home-modal-card");
+  var hpmVisitBtn  = document.getElementById("hpm-visit-btn");
+  var hpmLogo      = document.getElementById("hpm-logo");
+  var hpmTitleText = document.getElementById("hpm-title-text");
+  var hpmTitleYear = document.getElementById("hpm-title-year");
+  var hpmVenue     = document.getElementById("hpm-venue");
+  var hpmDesc      = document.getElementById("hpm-desc");
+  var hpmStack     = document.getElementById("hpm-stack");
+  var hpmImages    = document.getElementById("hpm-images");
 
   function openModal(id) {
     var d = itemMap[id]; if (!d) return;
-    hpmTitle.textContent = d.title;
-    hpmVenue.textContent = d.venue || ""; hpmVenue.style.display = d.venue ? "" : "none";
-    hpmDesc.textContent  = d.description;
-    hpmImage.src = d.image; hpmImage.alt = d.title;
 
-    hpmMeta.innerHTML = "";
-    (d.meta || []).forEach(function (m) {
-      var row = document.createElement("div"); row.className = "hpm-meta-row";
-      var lbl = document.createElement("span"); lbl.className = "hpm-meta-label"; lbl.textContent = m.label;
-      var val = document.createElement("span"); val.className = "hpm-meta-value"; val.textContent = m.value;
-      row.appendChild(lbl); row.appendChild(val); hpmMeta.appendChild(row);
-    });
-
-    hpmTags.innerHTML = "";
-    (d.tags || []).forEach(function (t) {
-      var s = document.createElement("span"); s.className = "hpm-tag"; s.textContent = t;
-      hpmTags.appendChild(s);
-    });
-
-    hpmLinks.innerHTML = "";
-    if (d.links && d.links.length) {
-      d.links.forEach(function (lnk) {
-        var a = document.createElement("a");
-        a.href = lnk.href; a.target = "_blank"; a.rel = "noopener noreferrer";
-        a.className = "hpm-link"; a.textContent = lnk.label;
-        hpmLinks.appendChild(a);
-      });
+    if (d.logo) {
+      hpmLogo.src = d.logo; hpmLogo.alt = d.venue || d.title;
+      hpmLogo.style.height = d.logoHeight || "36px";
+      hpmLogo.style.marginLeft = d.logoOffset || "0px";
+      hpmLogo.style.display = "";
     } else {
-      var s2 = document.createElement("span");
-      s2.className = "hpm-link hpm-link-muted"; s2.textContent = "Confidential";
-      hpmLinks.appendChild(s2);
+      hpmLogo.style.display = "none";
     }
+    hpmTitleText.textContent = d.title;
+    hpmTitleYear.textContent = d.year || "";
+    hpmVenue.textContent = d.venue || "";
+    hpmVenue.style.display = d.venue ? "" : "none";
+    hpmDesc.textContent = d.description;
+
+    var firstLink = d.links && d.links.length ? d.links[0] : null;
+    if (firstLink) {
+      hpmVisitBtn.href = firstLink.href;
+      var isGithub = firstLink.href.indexOf("github.com") !== -1;
+      var isResearch = d.section === "research";
+      hpmVisitBtn.textContent = isResearch ? "View Publication ↗" : isGithub ? "Visit Repo ↗" : "Visit Site ↗";
+      hpmVisitBtn.style.display = "";
+    } else {
+      hpmVisitBtn.style.display = "none";
+    }
+
+    hpmStack.innerHTML = "";
+    if (d.meta && d.meta.length) {
+      d.meta.forEach(function (m) {
+        var col = document.createElement("div"); col.className = "hpm-cs-col";
+        var lbl = document.createElement("span"); lbl.className = "hpm-cs-col-label"; lbl.textContent = m.label;
+        col.appendChild(lbl);
+        m.value.split(" · ").forEach(function (item) {
+          var p = document.createElement("p"); p.className = "hpm-cs-col-item"; p.textContent = item.trim();
+          col.appendChild(p);
+        });
+        hpmStack.appendChild(col);
+      });
+    } else if (d.tags && d.tags.length) {
+      var col = document.createElement("div"); col.className = "hpm-cs-col";
+      var lbl = document.createElement("span"); lbl.className = "hpm-cs-col-label"; lbl.textContent = "Stack";
+      col.appendChild(lbl);
+      d.tags.forEach(function (t) {
+        var p = document.createElement("p"); p.className = "hpm-cs-col-item"; p.textContent = t;
+        col.appendChild(p);
+      });
+      hpmStack.appendChild(col);
+    }
+
+    hpmImages.innerHTML = "";
+    if (d.confidential) {
+      showPwGate(hpmImages, function () {
+        hpmImages.innerHTML = "";
+        var imgs2 = d.images && d.images.length ? d.images : [d.image];
+        imgs2.forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          hpmImages.appendChild(img);
+        });
+      });
+      // Always show cover image below the gate
+      var coverImg = document.createElement("img");
+      coverImg.src = d.image; coverImg.alt = d.title;
+      coverImg.className = "hpm-cs-image hpm-pw-cover";
+      hpmImages.appendChild(coverImg);
+    } else {
+      var imgs = d.images && d.images.length ? d.images : [d.image];
+      imgs.forEach(function (src) {
+        var img = document.createElement("img");
+        img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+        hpmImages.appendChild(img);
+      });
+    }
+
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
+    card.scrollTop = 0;
   }
 
   function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
@@ -604,30 +717,10 @@ const SKILLS = [
     el.addEventListener("click", function () { openModal(el.dataset.id); });
   });
   modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
-  closeBtn.addEventListener("click", closeModal);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
   });
 
-  // ── Projects image expand-to-navigate ─────────────────────────────────
-  var projTrigger = document.getElementById("about-proj-trigger");
-  if (projTrigger) {
-    projTrigger.addEventListener("click", function (e) {
-      var x = e.clientX, y = e.clientY;
-      var circle = document.createElement("div");
-      var max = Math.sqrt(window.innerWidth * window.innerWidth + window.innerHeight * window.innerHeight) * 2.4;
-      circle.style.cssText = "position:fixed;left:" + x + "px;top:" + y + "px;" +
-        "width:0;height:0;border-radius:50%;background:#1d1d1f;" +
-        "transform:translate(-50%,-50%);pointer-events:none;z-index:99990;" +
-        "transition:width 0.55s cubic-bezier(0.4,0,0.2,1),height 0.55s cubic-bezier(0.4,0,0.2,1);";
-      document.body.appendChild(circle);
-      requestAnimationFrame(function () {
-        circle.style.width  = max + "px";
-        circle.style.height = max + "px";
-      });
-      setTimeout(function () { window.location.href = "/projects"; }, 520);
-    });
-  }
 })();
 </script>
 
@@ -670,7 +763,7 @@ const SKILLS = [
   /* Profile photo in sidebar */
   .sidebar-photo-wrap {
     width: calc(100% - 48px);
-    margin: 0 24px;
+    margin: 0 24px 20px;
     aspect-ratio: 1 / 1;
     overflow: hidden;
     flex-shrink: 0;
@@ -835,7 +928,7 @@ const SKILLS = [
   .about-right { flex: 1; }
 
   .about-projects-preview {
-    margin-top: 28px;
+    margin-top: 34px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -843,6 +936,10 @@ const SKILLS = [
   .about-projects-wrap {
     width: 90%;
     position: relative;
+    display: block;
+    text-decoration: none;
+    border-radius: 6px;
+    overflow: hidden;
   }
   .about-projects-img {
     width: 100%;
@@ -853,6 +950,19 @@ const SKILLS = [
   }
   .about-projects-wrap:hover .about-projects-img {
     box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+  }
+  .about-projects-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.38);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 6px;
+  }
+  .about-projects-wrap:hover .about-projects-overlay { opacity: 1; }
+  .about-projects-overlay-text {
+    color: #fff;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
   }
   .skills-heading {
     font-size: 28px; font-weight: 300; color: #1d1d1f;
@@ -933,7 +1043,7 @@ const SKILLS = [
 
   /* ── Projects section ── */
   .home-proj-header {
-    display: flex; align-items: baseline; justify-content: flex-start; gap: 20px;
+    display: flex; align-items: baseline; justify-content: center; gap: 20px;
     margin-bottom: 0;
     padding-left: 40px;
     padding-right: 40px;
@@ -949,11 +1059,14 @@ const SKILLS = [
     padding-bottom: 60px;
     margin-left: -40px;
     margin-right: -40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .home-proj-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, minmax(0, 220px));
+    gap: 32px;
     margin-top: 8px;
   }
   .home-proj-card {
@@ -1006,54 +1119,57 @@ const SKILLS = [
   }
   .home-modal.open { display: flex; }
   .home-modal-card {
-    position: relative; display: flex;
-    width: min(840px, 92vw); max-height: 82vh;
-    background: #fff; border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.2);
+    position: relative;
+    width: min(1000px, 96vw); max-height: 88vh;
+    background: #fff; border-radius: 18px;
+    overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.22);
     animation: modal-in 0.2s ease-out;
+    padding: 36px 96px 60px;
+    display: flex; flex-direction: column; gap: 0;
+    scrollbar-width: none;
   }
-  .home-modal-close {
-    position: absolute; top: 16px; right: 18px;
-    width: 28px; height: 28px; border: none;
-    background: rgba(0,0,0,0.06); border-radius: 50%; cursor: pointer;
-    font-size: 14px; color: #555; line-height: 1; padding: 0;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 10; transition: background 0.15s;
+  .home-modal-card::-webkit-scrollbar { display: none; }
+  .hpm-topbar {
+    display: flex; align-items: center; justify-content: flex-end;
+    margin-bottom: 28px; flex-shrink: 0;
   }
-  .home-modal-close:hover { background: rgba(0,0,0,0.12); }
-  .home-modal-left {
-    flex: 0 0 42%; padding: 40px 32px 36px;
-    overflow-y: auto; border-right: 1px solid #f0f0f0;
-    display: flex; flex-direction: column;
+  .hpm-visit-btn {
+    display: inline-flex; align-items: center;
+    padding: 8px 18px; border-radius: 100px;
+    background: #2c4470; color: #fff;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
+    text-decoration: none; transition: background 0.15s; flex-shrink: 0;
   }
-  .home-modal-right {
-    flex: 1; padding: 40px 28px 36px;
-    overflow-y: auto; background: #fafafa;
-    display: flex; flex-direction: column;
+  .hpm-visit-btn:hover { background: #1f3257; color: #fff; }
+  .hpm-cs-header { margin-bottom: 22px; }
+  .hpm-logo {
+    height: 36px; width: auto;
+    object-fit: contain; object-position: left center;
+    display: block; margin-bottom: 20px;
   }
-  .hpm-title { font-size: 18px; font-weight: 600; color: #1d1d1f; line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 6px; }
-  .hpm-venue { font-size: 11px; color: #9a9a9a; font-style: italic; margin-bottom: 0; }
-  .hpm-desc  { font-size: 13px; color: #444; line-height: 1.65; margin-top: 16px; margin-bottom: 18px; flex: 1; }
-  .hpm-meta  { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-  .hpm-meta-row { display: flex; flex-direction: column; gap: 1px; }
-  .hpm-meta-label { font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: #b0b0b0; font-weight: 500; }
-  .hpm-meta-value { font-size: 12px; color: #3a3a3a; line-height: 1.5; }
-  .hpm-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
-  .hpm-tag   { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border: 1px solid rgba(0,0,0,0.12); border-radius: 3px; color: #6b7280; }
-  .hpm-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-  .hpm-link  { font-size: 11px; padding: 5px 12px; border: 1px solid #1d1d1f; border-radius: 5px; color: #1d1d1f; text-decoration: none; font-weight: 500; letter-spacing: 0.02em; transition: background 0.15s, color 0.15s; display: inline-block; }
-  .hpm-link:hover { background: #1d1d1f; color: #fff; }
-  .hpm-link-muted { border-color: #ddd; color: #999; cursor: default; }
-  .hpm-link-muted:hover { background: transparent !important; color: #999 !important; }
-  .hpm-image { width: 100%; height: auto; border-radius: 10px; object-fit: cover; display: block; box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px; }
+  .hpm-cs-title {
+    font-size: 26px; font-weight: 300; color: #1a1a1a;
+    letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 8px;
+  }
+  .hpm-cs-title-sep { color: #b0b0b0; font-weight: 300; }
+  .hpm-cs-title-year { color: #9a9a9a; font-weight: 300; }
+  .hpm-cs-venue {
+    font-size: 11.5px; color: #a0a0a0; font-style: italic;
+    letter-spacing: 0.01em; margin-bottom: 14px;
+  }
+  .hpm-cs-desc { font-size: 13.5px; color: #444; line-height: 1.7; margin: 0; }
+  .hpm-cs-stack { display: flex; gap: 0; margin-bottom: 44px; }
+  .hpm-cs-images {
+    background: #f4f4f4; border-radius: 12px;
+    padding: 52px; display: flex; flex-direction: column;
+  }
 
   /* ── Footer ── */
   /* ── Footer ── */
   .home-footer {
     display: flex; align-items: flex-start; justify-content: space-between;
     padding: 36px 0 52px;
-    border-top: 1px solid #f0f0f0;
     gap: 24px;
   }
 
@@ -1118,34 +1234,60 @@ const SKILLS = [
     /* Experience rows: hide date on very small screens */
     .exp-date { display: none; }
 
-    /* Projects grid → horizontal scroll on mobile */
-    .home-proj-section { margin-left: -20px; margin-right: -20px; }
-    .home-proj-header { padding-left: 20px; padding-right: 20px; }
+    /* Projects grid → 2×2 grid on mobile */
+    .home-proj-section { margin-left: 0; margin-right: 0; padding-top: 32px; align-items: stretch; }
+    .home-proj-header { padding-left: 0; padding-right: 0; }
     .home-proj-grid {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 14px;
-      grid-template-columns: unset;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding: 4px 20px 12px;
-      scrollbar-width: none;
+      padding: 4px 0 12px;
+      overflow-x: unset;
     }
-    .home-proj-grid::-webkit-scrollbar { display: none; }
     .home-proj-card {
-      flex: 0 0 72vw;
-      scroll-snap-align: start;
+      flex: unset;
     }
+    .home-proj-title { font-size: 11.5px; }
+    .home-proj-desc  { font-size: 10.5px; -webkit-line-clamp: 3; }
+    .home-proj-tag   { font-size: 8px; padding: 2px 6px; }
 
-    /* Modal stacks on mobile */
-    .home-modal-card { flex-direction: column; max-height: 90vh; width: 92vw; }
-    .home-modal-left { flex: none; border-right: none; border-bottom: 1px solid #f0f0f0; padding: 28px 20px 20px; }
-    .home-modal-right { flex: none; padding: 20px; }
+    /* Modal on mobile */
+    .home-modal-card { max-height: 90vh; width: 92vw; padding: 24px 20px 40px; }
 
     /* Footer stacks on mobile */
     .home-footer { flex-direction: column; gap: 28px; }
     .hf-contact { align-items: flex-start; }
     .hf-name { font-size: 22px; }
   }
+</style>
+
+<style is:global>
+  .hpm-cs-col { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+  .hpm-cs-col-label { font-size: 14px; color: #aaaaaa; }
+  .hpm-cs-col-item { font-size: 15px; color: #2e2e2e; margin: 0; }
+  .hpm-cs-image { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .hpm-cs-image + .hpm-cs-image { margin-top: 14px; }
+
+  /* Password gate */
+  .hpm-pw-gate { display: flex; flex-direction: column; }
+  .hpm-pw-icon-wrap {
+    width: 52px; height: 52px; background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+  }
+  .hpm-pw-lock { width: 22px; height: 22px; color: #555; }
+  .hpm-pw-title { font-size: 22px; font-weight: 400; color: #1a1a1a; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .hpm-pw-sub { font-size: 15px; color: #9a9a9a; margin: 0 0 28px; }
+  .hpm-pw-email { color: #1a1a1a; font-weight: 700; text-decoration: none; }
+  .hpm-pw-email:hover { text-decoration: underline; }
+  .hpm-pw-form {
+    display: flex; align-items: center; background: #fff;
+    border-radius: 100px; padding: 10px 14px 10px 20px;
+    width: fit-content; min-width: 260px; gap: 8px;
+  }
+  .hpm-pw-input { border: none; outline: none; background: none; font-size: 15px; color: #555; flex: 1; font-family: inherit; }
+  .hpm-pw-input::placeholder { color: #bbb; }
+  .hpm-pw-btn { border: none; background: none; cursor: pointer; font-size: 18px; color: #888; padding: 0; line-height: 1; }
+  .hpm-pw-btn:hover { color: #1a1a1a; }
+  .hpm-pw-error { font-size: 12px; color: #d94f4f; margin-top: 10px; min-height: 16px; }
+  .hpm-pw-cover { margin-top: 32px; }
 </style>

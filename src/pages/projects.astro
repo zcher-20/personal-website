@@ -8,6 +8,9 @@ const ITEMS = [
     id: "arena-vis",
     title: "Are.na Visualizer",
     shortTitle: "Are.na Visualizer",
+    year: "2025",
+    section: "design",
+    logo: "/arena_logo.png",
     description: "A visual explorer for Are.na channels — browse collections across multiple layout modes including grid, canvas, and disk views.",
     image: "/design-arena-vis-v2.png",
     venue: "",
@@ -22,6 +25,10 @@ const ITEMS = [
     id: "margiela",
     title: "Maison Margiela Archive",
     shortTitle: "Margiela Archive",
+    year: "2025",
+    section: "design",
+    logo: "/margeila_logo.png",
+    logoHeight: "120px",
     description: "A visual archive of the Maison Margiela folders — browsable gallery with a scrolling filmstrip, rotated hero image, and editorial layout.",
     image: "/design-margiela.jpg",
     venue: "",
@@ -36,14 +43,16 @@ const ITEMS = [
     id: "ai-workspace",
     title: "AI Workspace",
     shortTitle: "Intelligence Workspace",
+    year: "2025",
+    section: "work",
     description: "Built an AI-native workspace combining project planning, research, opportunity tracking, networking, academic planning, and document workflows. Engineered the full-stack application and orchestrated specialized LLM agents for research, writing, planning, and task execution.",
     image: "/ai-workspace-canva.jpg",
     venue: "Pathfinders Challenge",
     tags: ["Multi-Agent", "Full-Stack", "LangGraph", "AI Product"],
     meta: [
-      { label: "ROLE",  value: "Full-Stack Engineering · AI Engineering · Product Design" },
-      { label: "BUILT", value: "Multi-Agent Workflows · Project Canvas · AI Chat · Opportunity Tracker · Network CRM · Degree Planner" },
-      { label: "STACK", value: "React · Python · LangGraph · LLMs" },
+      { label: "Role",  value: "Full-Stack Engineering · AI Engineering · Product Design" },
+      { label: "Built", value: "Multi-Agent Workflows · Project Canvas · AI Chat · Opportunity Tracker · Network CRM · Degree Planner" },
+      { label: "Stack", value: "React · Python · LangGraph · LLMs" },
     ],
     links: [
       { label: "Live site →", href: "https://workspace-os-xi.vercel.app/" },
@@ -55,16 +64,22 @@ const ITEMS = [
   // ── UI/UX · right-top ─────────────────────────────────────────────────────
   {
     id: "healthcare-ai",
+    section: "work",
+    confidential: true,
     title: "Healthcare Agent",
     shortTitle: "Clinical Intelligence AI Agent",
+    year: "2026",
     description: "Built the frontend and backend for an LLM-powered healthcare agent that transforms patient visits into structured clinical intelligence. Integrated real-time transcription, automated clinical notes and summaries, document processing, visit analysis, and contextual Q&A into a unified workflow.",
     image: "/project-healthcare-ui.png",
+    logo: "/startup.webp",
+    logoHeight: "72px",
+    logoOffset: "-18px",
     venue: "MIT-Incubated Stealth AI Startup",
     tags: ["Agentic AI", "Full-Stack", "Voice AI", "Healthcare"],
     meta: [
-      { label: "ROLE",  value: "Full-Stack AI Engineering · Product Design" },
-      { label: "BUILT", value: "Agent Workflows · React Frontend · Backend APIs · Transcription Pipeline · Document Processing" },
-      { label: "STACK", value: "Python · React · LLMs · OpenAI API · GPT-4o Transcribe" },
+      { label: "Role",  value: "Full-Stack AI Engineering · Product Design" },
+      { label: "Built", value: "Agent Workflows · React Frontend · Backend APIs · Transcription Pipeline · Document Processing" },
+      { label: "Stack", value: "Python · React · LLMs · OpenAI API · GPT-4o Transcribe" },
     ],
     links: [],
     left: "70%", top: "10%", width: "134px",
@@ -74,6 +89,7 @@ const ITEMS = [
     hidden: true,
     title: "Cinema Archive",
     shortTitle: "Cinema Archive",
+    year: "2024",
     description: "A personal film archive — browse a curated collection of films with large typographic titles, scrolling movie stills, and an editorial dark aesthetic.",
     image: "/design-cinema-archive-2.png",
     images: ["/design-cinema-archive-2.png", "/design-cinema-archive.png"],
@@ -87,7 +103,9 @@ const ITEMS = [
   {
     id: "film-archive",
     title: "Film Album",
+    section: "design",
     shortTitle: "Film Album",
+    year: "2025",
     description: "An interactive, scroll-driven photo gallery — a single self-contained HTML file with depth-based carousel, real-time caption editing, and full client-side persistence.",
     image: "/design-film-album.png",
     venue: "",
@@ -99,16 +117,21 @@ const ITEMS = [
   },
   {
     id: "skinkit",
+    section: "work",
+    confidential: true,
     title: "SkinKit",
     shortTitle: "SkinKit",
+    year: "2024",
     description: "Prototyped wearable computing concepts using flexible electronic modules assembled directly on the body. Designed use cases, interaction patterns, and physical interface concepts spanning sensing, health, and expressive applications.",
     image: "/project-skinkit.jpg",
+    logo: "/cornell.webp",
+    logoHeight: "65px",
     venue: "Cornell University — Hybrid Body Lab",
     tags: ["HCI", "Wearable Computing", "Interaction Design"],
     meta: [
-      { label: "MY ROLE",       value: "Interaction Design · Prototyping · HCI Research" },
-      { label: "CONTRIBUTIONS", value: "Use Case Design · Interaction Concepts · Physical Prototyping" },
-      { label: "SYSTEM",        value: "Flexible PCB · Modular Electronics · On-Skin Interfaces" },
+      { label: "Role",          value: "Interaction Design · Prototyping · HCI Research" },
+      { label: "Contributions", value: "Use Case Design · Interaction Concepts · Physical Prototyping" },
+      { label: "System",        value: "Flexible PCB · Modular Electronics · On-Skin Interfaces" },
     ],
     links: [
       { label: "View project →", href: "https://www.hybridbody.human.cornell.edu/#/skinkit/" },
@@ -119,10 +142,13 @@ const ITEMS = [
   // ── Research · left-bottom ────────────────────────────────────────────────
   {
     id: "aimc",
+    section: "research",
     title: "Analog In-Memory Computing with Uncertainty Quantification",
     shortTitle: "Analog In-Memory Inference",
+    year: "2024",
     description: "Published at ICLR 2024 (Notable). Benchmarked a deep learning inference pipeline on IBM analog in-memory computing hardware for medical image segmentation at the edge.",
     image: "/project-aimc.jpg",
+    logo: "/ibm.webp",
     venue: "ICLR 2024 · Notable Paper",
     tags: ["IBM Research", "Analog Computing", "Medical Imaging", "Uncertainty Quantification"],
     links: [
@@ -131,11 +157,14 @@ const ITEMS = [
     left: "33%", top: "8%", width: "128px",
   },
   {
+    section: "research",
     id: "nas-survey",
     title: "Medical NAS: Survey and Taxonomy",
     shortTitle: "Medical NAS",
+    year: "2024",
     description: "Published at IJCAI 2024. Co-authored a comprehensive survey of Neural Architecture Search in medical imaging, categorizing 100+ papers. Presented to 200+ researchers at IBM/IEEE AICS 2023.",
     image: "/project-survey.jpg",
+    logo: "/ibm.webp",
     venue: "IJCAI 2024 · pp. 7932–7940",
     tags: ["Neural Architecture Search", "Medical Imaging", "Survey", "IBM Research"],
     links: [
@@ -145,10 +174,15 @@ const ITEMS = [
   },
   {
     id: "ricer",
+    section: "research",
+    confidential: true,
     title: "AI Wildfire Risk Foundation Model",
     shortTitle: "AI Wildfire Risk Foundation Model",
+    year: "2024",
     description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Al Akhawayn University Digital Innovation Lab.",
     image: "/project-ricer-map.png",
+    logo: "/akhawayn.webp",
+    logoHeight: "120px",
     venue: "Al Akhawayn University Digital Innovation Lab",
     tags: ["Computer Vision", "Earth Observation", "GIS", "Python"],
     links: [
@@ -156,11 +190,12 @@ const ITEMS = [
     ],
     left: "12%", top: "21%", width: "118px",
   },
-
   {
     id: "places-archive",
+    section: "design",
     title: "City Scape",
     shortTitle: "City Scape",
+    year: "2025",
     description: "A full-stack personal places archive — a curated map and grid of favorite spots from cities around the world. Pulls live data from a Google Sheet backend, with map view, photo archive, collections, and a journal.",
     image: "/design-places-archive-2.png",
     images: ["/design-places-archive-2.png", "/design-places-archive.png"],
@@ -175,12 +210,18 @@ const ITEMS = [
   // ── Projects · right-bottom ───────────────────────────────────────────────
   {
     id: "enterprise-ai",
+    confidential: true,
     title: "Multi-Domain Agentic AI Platform",
     shortTitle: "Statistical Agentic Systems",
+    year: "2026",
     description: "Developed production-facing AI agents using a custom LLM and modular skill architecture, adapting the system to healthcare, finance, mathematics, and enterprise use cases. Built two agentic workflow interfaces and contributed to backend agent logic, transcription pipelines, document processing, and multimodal data workflows.",
     image: "/project-agentic-eval.png",
+    logo: "/startup.webp",
+    logoHeight: "72px",
+    logoOffset: "-18px",
     venue: "MIT-Incubated Stealth AI Startup",
     tags: ["Agentic AI", "LLMs", "AI Agents", "Full-Stack", "Document AI"],
+    section: "work",
     links: [],
     left: "19%", top: "73%", width: "132px",
   },
@@ -188,9 +229,11 @@ const ITEMS = [
     id: "investment",
     title: "Multi-Agent Investment Research System",
     shortTitle: "Multi-Agent Alpha Engine",
+    year: "2025",
     description: "5-agent LLM pipeline on Azure AI Foundry — Research, Financial Analysis, Risk, News, and Memo agents producing a full investment thesis from a single stock ticker.",
     image: "/project-investment.png",
     venue: "Microsoft Agents League Hackathon",
+    section: "work",
     tags: ["Multi-Agent", "Azure AI Foundry", "LLMs", "Python"],
     links: [
       { label: "GitHub →", href: "https://github.com/zcher-20/Alpha-Research-Agent-" },
@@ -199,8 +242,12 @@ const ITEMS = [
   },
   {
     id: "quantum",
+    section: "research",
     title: "Hybrid Quantum-Classical Medical Imaging",
     shortTitle: "Quantum Imaging",
+    year: "2024",
+    logo: "/nyu.webp",
+    logoHeight: "72px",
     description: "Hybrid quantum-classical U-Net replacing the CNN bottleneck with a 4-qubit PennyLane variational circuit. 95% IoU at 60% fewer parameters.",
     image: "/project-quantum.jpg",
     venue: "NYU Abu Dhabi Hackathon — Quantum Track",
@@ -226,14 +273,20 @@ const ITEMS = [
 
     <!-- Static header -->
     <div class="proj-header">
-      <span class="wordmark-title">Projects</span>
-      <span class="wordmark-sub">Computer Science · Design</span>
-      <div class="wordmark-socials">
-        <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="wordmark-social-link">LinkedIn ↗</a>
-        <span class="wordmark-social-sep">·</span>
-        <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="wordmark-social-link">GitHub ↗</a>
-        <span class="wordmark-social-sep">·</span>
-        <a href="mailto:zaynebcheriff@gmail.com" class="wordmark-social-link">Gmail ↗</a>
+      <div class="proj-header-left">
+        <span class="wordmark-title">Projects</span>
+        <span class="wordmark-sub">Computer Science · Design</span>
+        <div class="wordmark-socials">
+          <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="wordmark-social-link">LinkedIn ↗</a>
+          <span class="wordmark-social-sep">·</span>
+          <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="wordmark-social-link">GitHub ↗</a>
+          <span class="wordmark-social-sep">·</span>
+          <a href="mailto:zaynebcheriff@gmail.com" class="wordmark-social-link">Gmail ↗</a>
+        </div>
+      </div>
+      <div class="view-toggle" id="view-toggle">
+        <button class="vt-btn active" data-view="graph">Graph</button>
+        <button class="vt-btn" data-view="list">List</button>
       </div>
     </div>
 
@@ -297,21 +350,54 @@ const ITEMS = [
     ))}
   </div>
 
+  <!-- ── List view ── -->
+  <div class="list-view" id="proj-list-view">
+    {(["work", "research", "design"] as const).map((sec) => (
+      <div class="lv-section">
+        <h2 class="lv-section-title">{sec === "work" ? "Work" : sec === "research" ? "Research" : "Design"}</h2>
+        <div class="lv-grid">
+          {ITEMS.filter((item) => !(item as any).hidden && (item as any).section === sec).map((item) => (
+            <div class="lv-card" data-id={item.id}>
+              <div class="lv-img-wrap">
+                <img src={item.image} alt={item.shortTitle} class="lv-img" loading="lazy" />
+              </div>
+              <div class="lv-info">
+                <p class="lv-title">{item.shortTitle}</p>
+                {item.venue && <p class="lv-venue">{item.venue}</p>}
+                <p class="lv-year">{(item as any).year}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
     <!-- Detail modal -->
     <div id="proj-modal" class="modal" role="dialog" aria-modal="true">
       <div class="modal-card" id="proj-modal-card">
-        <button id="proj-modal-close" class="modal-close" aria-label="Close">&#x2715;</button>
-        <div class="modal-left">
-          <h2 id="pm-title" class="pm-title"></h2>
-          <p id="pm-venue" class="pm-venue"></p>
-          <p id="pm-desc" class="pm-desc"></p>
-          <div id="pm-meta" class="pm-meta"></div>
-          <div id="pm-tags" class="pm-tags"></div>
-          <div id="pm-links" class="pm-links"></div>
+
+        <!-- Top bar: visit-site right -->
+        <div class="cs-topbar">
+          <a id="cs-visit-btn" class="cs-visit-btn" href="#" target="_blank" rel="noopener noreferrer">Visit Site ↗</a>
         </div>
-        <div class="modal-right">
-          <img id="pm-image" class="pm-image" src="" alt="" />
+
+        <!-- Title / venue / description -->
+        <div class="cs-header">
+          <img id="cs-logo" class="cs-logo" src="" alt="" />
+          <h2 class="cs-title">
+            <span id="cs-title-text"></span><span class="cs-title-sep"> · </span><span id="cs-title-year" class="cs-title-year"></span>
+          </h2>
+          <p id="cs-venue" class="cs-venue"></p>
+          <p id="cs-desc" class="cs-desc"></p>
         </div>
+
+        <!-- Tech-stack columns (filled by JS) -->
+        <div id="cs-stack" class="cs-stack"></div>
+
+        <!-- Project image(s) (filled by JS) -->
+        <div id="cs-images" class="cs-images"></div>
+
       </div>
     </div>
 
@@ -322,6 +408,30 @@ const ITEMS = [
 <script is:inline>
 (function () {
   var STORAGE_KEY = "proj-positions-v4";
+
+  // ── Password gate ─────────────────────────────────────────────────────────
+  var CASE_STUDY_PW = "zayneb"; // change to your preferred password
+
+  function showPwGate(container, d, onUnlock) {
+    var gate = document.createElement("div");
+    gate.className = "cs-pw-gate";
+    gate.innerHTML =
+      '<div class="cs-pw-icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor" class="cs-pw-lock"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>' +
+      '<p class="cs-pw-title">This case study is password-protected.</p>' +
+      '<p class="cs-pw-sub">Curious? Feel free to <a href="mailto:zaynebcheriff@gmail.com" class="cs-pw-email">email me!</a></p>' +
+      '<div class="cs-pw-form"><input type="password" class="cs-pw-input" placeholder="Enter" /><button class="cs-pw-btn" aria-label="Submit">&#x2192;</button></div>' +
+      '<p class="cs-pw-error"></p>';
+    container.appendChild(gate);
+    var input  = gate.querySelector(".cs-pw-input");
+    var btn    = gate.querySelector(".cs-pw-btn");
+    var errEl  = gate.querySelector(".cs-pw-error");
+    function tryUnlock() {
+      if (input.value === CASE_STUDY_PW) { onUnlock(); }
+      else { errEl.textContent = "Incorrect password."; input.value = ""; input.focus(); }
+    }
+    btn.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+  }
 
   function getPos()     { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { return {}; } }
   function savePos(pos) { localStorage.setItem(STORAGE_KEY, JSON.stringify(pos)); }
@@ -430,63 +540,135 @@ const ITEMS = [
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
 
+    // ── View toggle ───────────────────────────────────────────────────────
+    var canvas2   = document.getElementById("proj-canvas");
+    var listView  = document.getElementById("proj-list-view");
+    var toggleBtns = document.querySelectorAll(".vt-btn");
+    var VIEW_KEY  = "proj-view";
+
+    function setView(v) {
+      var isGraph = v !== "list";
+      canvas2.style.display  = isGraph ? "" : "none";
+      listView.style.display = isGraph ? "none" : "block";
+      var wsMain = document.querySelector(".ws-main");
+      if (wsMain) wsMain.classList.toggle("list-mode", !isGraph);
+      toggleBtns.forEach(function (b) {
+        b.classList.toggle("active", b.dataset.view === v);
+      });
+      localStorage.setItem(VIEW_KEY, v);
+    }
+
+    toggleBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () { setView(btn.dataset.view); });
+    });
+
+    var savedView = localStorage.getItem(VIEW_KEY) || "graph";
+    setView(savedView);
+
     // ── Modal ─────────────────────────────────────────────────────────────
     var modal    = document.getElementById("proj-modal");
     var card     = document.getElementById("proj-modal-card");
-    var closeBtn = document.getElementById("proj-modal-close");
-    var pmTitle  = document.getElementById("pm-title");
-    var pmVenue  = document.getElementById("pm-venue");
-    var pmDesc   = document.getElementById("pm-desc");
-    var pmMeta   = document.getElementById("pm-meta");
-    var pmTags   = document.getElementById("pm-tags");
-    var pmLinks  = document.getElementById("pm-links");
-    var pmImage  = document.getElementById("pm-image");
+    var csTitleText = document.getElementById("cs-title-text");
+    var csTitleYear = document.getElementById("cs-title-year");
+    var csVenue     = document.getElementById("cs-venue");
+    var csDesc      = document.getElementById("cs-desc");
+    var csVisitBtn  = document.getElementById("cs-visit-btn");
+    var csLogo      = document.getElementById("cs-logo");
+    var csStack     = document.getElementById("cs-stack");
+    var csImages    = document.getElementById("cs-images");
 
     function openModal(id) {
       var d = itemMap[id]; if (!d) return;
-      pmTitle.textContent = d.title;
-      pmVenue.textContent = d.venue || ""; pmVenue.style.display = d.venue ? "" : "none";
-      pmDesc.textContent  = d.description;
-      var imgs = d.images && d.images.length ? d.images : [d.image];
-      var imgContainer = pmImage.parentElement;
-      imgContainer.querySelectorAll(".pm-image-extra").forEach(function(e){ e.remove(); });
-      pmImage.src = imgs[0]; pmImage.alt = d.title;
-      imgs.slice(1).forEach(function(src) {
-        var ex = document.createElement("img");
-        ex.src = src; ex.alt = d.title; ex.className = "pm-image pm-image-extra";
-        imgContainer.appendChild(ex);
-      });
 
-      pmMeta.innerHTML = "";
-      (d.meta || []).forEach(function (m) {
-        var row = document.createElement("div"); row.className = "pm-meta-row";
-        var lbl = document.createElement("span"); lbl.className = "pm-meta-label"; lbl.textContent = m.label;
-        var val = document.createElement("span"); lbl.className = "pm-meta-label"; val.className = "pm-meta-value"; val.textContent = m.value;
-        row.appendChild(lbl); row.appendChild(val);
-        pmMeta.appendChild(row);
-      });
-
-      pmTags.innerHTML = "";
-      (d.tags || []).forEach(function (t) {
-        var s = document.createElement("span"); s.className = "pm-tag"; s.textContent = t;
-        pmTags.appendChild(s);
-      });
-
-      pmLinks.innerHTML = "";
-      if (d.links && d.links.length) {
-        d.links.forEach(function (lnk) {
-          var a = document.createElement("a");
-          a.href = lnk.href; a.target = "_blank"; a.rel = "noopener noreferrer";
-          a.className = "pm-link"; a.textContent = lnk.label;
-          pmLinks.appendChild(a);
-        });
+      if (d.logo) {
+        csLogo.src = d.logo; csLogo.alt = d.venue || d.title;
+        csLogo.style.height = d.logoHeight || "36px";
+        csLogo.style.marginLeft = d.logoOffset || "0px";
+        csLogo.style.display = "";
       } else {
-        var s2 = document.createElement("span");
-        s2.className = "pm-link pm-link-muted"; s2.textContent = "Confidential";
-        pmLinks.appendChild(s2);
+        csLogo.style.display = "none";
       }
+      csTitleText.textContent = d.title;
+      csTitleYear.textContent = d.year || "";
+      csVenue.textContent = d.venue || "";
+      csVenue.style.display = d.venue ? "" : "none";
+      csDesc.textContent = d.description;
+
+      // Visit button — label depends on link type and project section
+      var firstLink = d.links && d.links.length ? d.links[0] : null;
+      if (firstLink) {
+        csVisitBtn.href = firstLink.href;
+        var isGithub = firstLink.href.indexOf("github.com") !== -1;
+        var isResearch = d.section === "research";
+        csVisitBtn.textContent = isResearch ? "View Publication ↗" : isGithub ? "Visit Repo ↗" : "Visit Site ↗";
+        csVisitBtn.style.display = "";
+      } else {
+        csVisitBtn.style.display = "none";
+      }
+
+      // Stack columns — from meta (split " · "), else from tags
+      csStack.innerHTML = "";
+      if (d.meta && d.meta.length) {
+        d.meta.forEach(function (m) {
+          var col = document.createElement("div");
+          col.className = "cs-col";
+          var lbl = document.createElement("span");
+          lbl.className = "cs-col-label";
+          lbl.textContent = m.label;
+          col.appendChild(lbl);
+          m.value.split(" · ").forEach(function (item) {
+            var p = document.createElement("p");
+            p.className = "cs-col-item";
+            p.textContent = item.trim();
+            col.appendChild(p);
+          });
+          csStack.appendChild(col);
+        });
+      } else if (d.tags && d.tags.length) {
+        var col = document.createElement("div");
+        col.className = "cs-col";
+        var lbl = document.createElement("span");
+        lbl.className = "cs-col-label";
+        lbl.textContent = "Stack";
+        col.appendChild(lbl);
+        d.tags.forEach(function (t) {
+          var p = document.createElement("p");
+          p.className = "cs-col-item";
+          p.textContent = t;
+          col.appendChild(p);
+        });
+        csStack.appendChild(col);
+      }
+
+      // Images (or password gate for confidential projects)
+      csImages.innerHTML = "";
+      if (d.confidential) {
+        showPwGate(csImages, d, function () {
+          csImages.innerHTML = "";
+          var imgs2 = d.images && d.images.length ? d.images : [d.image];
+          imgs2.forEach(function (src) {
+            var img = document.createElement("img");
+            img.src = src; img.alt = d.title; img.className = "cs-image";
+            csImages.appendChild(img);
+          });
+        });
+        // Always show cover image below the gate
+        var coverImg = document.createElement("img");
+        coverImg.src = d.image; coverImg.alt = d.title;
+        coverImg.className = "cs-image cs-pw-cover";
+        csImages.appendChild(coverImg);
+      } else {
+        var imgs = d.images && d.images.length ? d.images : [d.image];
+        imgs.forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "cs-image";
+          csImages.appendChild(img);
+        });
+      }
+
       modal.classList.add("open");
       document.body.style.overflow = "hidden";
+      card.scrollTop = 0;
     }
 
     function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
@@ -495,11 +677,10 @@ const ITEMS = [
       if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
     }
 
-    document.querySelectorAll(".item, .mobile-proj-item").forEach(function (el) {
+    document.querySelectorAll(".item, .mobile-proj-item, .lv-card").forEach(function (el) {
       el.addEventListener("click", function () { openModal(el.dataset.id); });
     });
     modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
-    closeBtn.addEventListener("click", closeModal);
     document.addEventListener("keydown", onKeyDown);
 
     // ── Cleanup before next navigation ────────────────────────────────────
@@ -519,10 +700,16 @@ const ITEMS = [
   /* Fill ws-main, suppress padding, use flex so proj-shell can stack */
   .ws-main {
     padding-top: 0 !important;
-    overflow: hidden !important;
+    overflow-y: auto !important;
     display: flex !important;
     flex-direction: column !important;
   }
+  /* proj-shell never shrinks — always fills viewport, footer scrolls into view below */
+  .proj-shell { flex-shrink: 0 !important; }
+  /* In list mode, collapse shell height so footer follows content */
+  .ws-main.list-mode .proj-shell { height: auto !important; flex-shrink: 1 !important; }
+  /* List view needs scrolling — toggled by JS on ws-main */
+  .ws-main.list-mode { overflow-y: auto !important; }
   @media (max-width: 768px) {
     .ws-main { overflow-y: auto !important; }
   }
@@ -542,23 +729,117 @@ const ITEMS = [
   .pm-link-muted { border-color: #ddd; color: #999; cursor: default; }
   .pm-link-muted:hover { background: transparent !important; color: #999 !important; }
 
-  /* JS-created meta row elements need global scope */
-  .pm-meta-row { display: flex; flex-direction: column; gap: 1px; }
-  .pm-meta-label {
-    font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: #b0b0b0; font-weight: 500;
+  /* JS-created case-study modal elements need global scope */
+  .cs-col {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 14px;
   }
-  .pm-meta-value { font-size: 12px; color: #3a3a3a; line-height: 1.5; }
+  .cs-col-label {
+    font-size: 14px; color: #aaaaaa; font-weight: 400;
+    letter-spacing: 0;
+  }
+  .cs-col-item {
+    font-size: 15px; color: #2e2e2e; line-height: 1.5;
+    font-weight: 400; margin: 0;
+  }
+  .cs-image {
+    width: 100%; height: auto; border-radius: 8px;
+    object-fit: cover; display: block;
+  }
+  .cs-image + .cs-image { margin-top: 14px; }
+
+  /* ── Password gate ── */
+  .cs-pw-gate { display: flex; flex-direction: column; }
+  .cs-pw-icon-wrap {
+    width: 52px; height: 52px; background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+  }
+  .cs-pw-lock { width: 22px; height: 22px; color: #555; }
+  .cs-pw-title {
+    font-size: 22px; font-weight: 400; color: #1a1a1a;
+    letter-spacing: -0.01em; margin: 0 0 8px;
+  }
+  .cs-pw-sub { font-size: 15px; color: #9a9a9a; margin: 0 0 28px; }
+  .cs-pw-email { color: #1a1a1a; font-weight: 700; text-decoration: none; }
+  .cs-pw-email:hover { text-decoration: underline; }
+  .cs-pw-form {
+    display: flex; align-items: center; background: #fff;
+    border-radius: 100px; padding: 10px 14px 10px 20px;
+    width: fit-content; min-width: 260px; gap: 8px;
+  }
+  .cs-pw-input {
+    border: none; outline: none; background: none;
+    font-size: 15px; color: #555; flex: 1; font-family: inherit;
+  }
+  .cs-pw-input::placeholder { color: #bbb; }
+  .cs-pw-btn {
+    border: none; background: none; cursor: pointer;
+    font-size: 18px; color: #888; padding: 0; line-height: 1;
+  }
+  .cs-pw-btn:hover { color: #1a1a1a; }
+  .cs-pw-error { font-size: 12px; color: #d94f4f; margin-top: 10px; min-height: 16px; }
+  .cs-pw-cover { margin-top: 32px; }
 </style>
 
 <style>
   .proj-footer { flex-shrink: 0; height: 48px; }
 
+  /* ── View toggle ── */
+  .proj-header-left { display: flex; flex-direction: column; gap: 8px; }
+  .view-toggle {
+    display: flex; align-items: center; gap: 2px;
+    background: #f2f2f2; border-radius: 8px; padding: 3px;
+    flex-shrink: 0;
+  }
+  .vt-btn {
+    border: none; background: none; cursor: pointer;
+    font-size: 11.5px; color: #8a8a8a; font-weight: 500;
+    padding: 5px 14px; border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .vt-btn.active { background: #fff; color: #1d1d1f; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .vt-btn:hover:not(.active) { color: #3a3a3a; }
+
+  /* ── List view ── */
+  .list-view {
+    display: none;
+    flex: 1; overflow-y: auto;
+    padding: 40px 40px 60px;
+  }
+  .lv-section { margin-bottom: 56px; }
+  .lv-section-title {
+    font-size: 15px; font-weight: 400; color: #1a1a1a;
+    letter-spacing: -0.01em; margin-bottom: 20px;
+  }
+  .lv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .lv-card {
+    cursor: pointer; display: flex; flex-direction: column; gap: 10px;
+    transition: opacity 0.15s;
+  }
+  .lv-card:hover { opacity: 0.8; }
+  .lv-img-wrap {
+    width: 100%; aspect-ratio: 16/10;
+    overflow: hidden; border-radius: 8px; background: #f5f5f7;
+  }
+  .lv-img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.3s ease;
+  }
+  .lv-card:hover .lv-img { transform: scale(1.02); }
+  .lv-info { display: flex; flex-direction: column; gap: 3px; }
+  .lv-title { font-size: 13px; font-weight: 500; color: #1d1d1f; margin: 0; }
+  .lv-venue { font-size: 11px; color: #a0a0a0; font-style: italic; margin: 0; }
+  .lv-year  { font-size: 11px; color: #c0c0c0; margin: 0; }
+
   /* ── Shell: header + canvas stacked ────────────────────────────────────── */
   .proj-shell {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 114vh;
     font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     background: #fff;
@@ -568,8 +849,9 @@ const ITEMS = [
   .proj-header {
     flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
     padding: 52px 32px 6px;
   }
   .wordmark-title {
@@ -700,79 +982,83 @@ const ITEMS = [
   .modal {
     display: none;
     position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,0.38);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.32);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     align-items: center; justify-content: center;
+    padding: 24px;
   }
   .modal.open { display: flex; }
 
   .modal-card {
-    position: relative; display: flex;
-    width: min(840px, 92vw); max-height: 82vh;
-    background: #fff; border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.2);
-    animation: modal-in 0.2s ease-out;
+    position: relative;
+    width: min(1000px, 96vw); max-height: 88vh;
+    background: #fff; border-radius: 18px;
+    overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.22);
+    animation: modal-in 0.22s ease-out;
+    padding: 36px 96px 60px;
+    display: flex; flex-direction: column; gap: 0;
+    scrollbar-width: none;
   }
+  .modal-card::-webkit-scrollbar { display: none; }
+
   @keyframes modal-in {
-    from { opacity: 0; transform: scale(0.96) translateY(10px); }
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
     to   { opacity: 1; transform: scale(1)    translateY(0); }
   }
 
-  .modal-close {
-    position: absolute; top: 16px; right: 18px;
-    width: 28px; height: 28px; border: none;
-    background: rgba(0,0,0,0.06); border-radius: 50%; cursor: pointer;
-    font-size: 14px; color: #555; line-height: 1; padding: 0;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 10; transition: background 0.15s;
-  }
-  .modal-close:hover { background: rgba(0,0,0,0.12); }
-
-  .modal-left {
-    flex: 0 0 42%; padding: 40px 32px 36px;
-    overflow-y: auto; border-right: 1px solid #f0f0f0;
-    display: flex; flex-direction: column;
-  }
-  .modal-right {
-    flex: 1; padding: 40px 28px 36px;
-    overflow-y: auto; background: #fafafa;
-    display: flex; flex-direction: column;
+  /* ── Top bar ── */
+  .cs-topbar {
+    display: flex; align-items: center; justify-content: flex-end;
+    margin-bottom: 28px; flex-shrink: 0;
   }
 
-  .field-label {
-    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: #b0b0b0; margin-bottom: 8px; font-weight: 500;
+  .cs-visit-btn {
+    display: inline-flex; align-items: center;
+    padding: 8px 18px; border-radius: 100px;
+    background: #2c4470; color: #fff;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
+    text-decoration: none; transition: background 0.15s;
+    flex-shrink: 0;
   }
-  .pm-title {
-    font-size: 18px; font-weight: 600; color: #1d1d1f;
-    line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 6px;
+  .cs-visit-btn:hover { background: #1f3257; color: #fff; }
+
+  /* ── Header ── */
+  .cs-header { margin-bottom: 22px; }
+
+  .cs-logo {
+    height: 36px; width: auto;
+    object-fit: contain; object-position: left center;
+    display: block; margin-bottom: 20px;
   }
-  .pm-venue {
-    font-size: 11px; color: #9a9a9a; letter-spacing: 0.01em;
-    font-style: italic; margin-bottom: 0;
+
+  .cs-title {
+    font-size: 26px; font-weight: 300; color: #1a1a1a;
+    letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 8px;
   }
-  .pm-desc {
-    font-size: 13px; color: #444; line-height: 1.65;
-    margin-top: 16px;
-    margin-bottom: 18px; flex: 1;
+  .cs-title-sep { color: #b0b0b0; font-weight: 300; }
+  .cs-title-year { color: #9a9a9a; font-weight: 300; }
+
+  .cs-venue {
+    font-size: 11.5px; color: #a0a0a0; font-style: italic;
+    letter-spacing: 0.01em; margin-bottom: 14px;
   }
-  .pm-meta  { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-  .pm-meta-row { display: flex; flex-direction: column; gap: 1px; }
-  .pm-meta-label {
-    font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase;
-    color: #b0b0b0; font-weight: 500;
+  .cs-desc {
+    font-size: 13.5px; color: #444; line-height: 1.7; margin: 0;
   }
-  .pm-meta-value { font-size: 12px; color: #3a3a3a; line-height: 1.5; }
-  .pm-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
-  .pm-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-  .pm-image {
-    width: 100%; height: auto; border-radius: 10px;
-    object-fit: cover; display: block;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.08); margin-top: 4px;
+
+  /* ── Stack columns ── */
+  .cs-stack {
+    display: flex; gap: 0;
+    margin-bottom: 44px;
   }
-  .pm-image-extra { margin-top: 12px; }
+
+  /* ── Images area ── */
+  .cs-images {
+    background: #f4f4f4; border-radius: 12px;
+    padding: 52px; display: flex; flex-direction: column;
+  }
 
   /* ── Mobile project list ── */
   .mobile-proj-list { display: none; }
@@ -781,33 +1067,11 @@ const ITEMS = [
     .canvas           { display: none; }
     .proj-footer      { display: none; }
     .proj-shell       { height: auto; }
-    .mobile-proj-list {
-      display: flex; flex-direction: column; gap: 0;
-      padding: 0 20px 80px;
-    }
-    .mobile-proj-item {
-      display: flex; gap: 16px; align-items: flex-start;
-      padding: 18px 0; border-bottom: 1px solid #f0f0f0;
-      cursor: pointer;
-    }
-    .mobile-proj-img {
-      width: 90px; height: 68px; object-fit: cover;
-      border-radius: 6px; flex-shrink: 0;
-    }
-    .mobile-proj-info { flex: 1; min-width: 0; }
-    .mobile-proj-title {
-      font-size: 13.5px; font-weight: 500; color: #1d1d1f;
-      margin: 0 0 2px; line-height: 1.3;
-    }
-    .mobile-proj-venue {
-      font-size: 11px; color: #a0a0a0; font-style: italic; margin: 0 0 4px;
-    }
-    .mobile-proj-desc {
-      font-size: 11.5px; color: #6a6a6a; line-height: 1.5; margin: 0 0 8px;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .mobile-proj-tags  { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
-    .mobile-proj-links { display: flex; flex-wrap: wrap; gap: 6px; }
+    .view-toggle      { display: none; }
+    .mobile-proj-list { display: none !important; }
+    .list-view        { display: block !important; padding: 24px 20px 80px; }
+    .lv-grid          { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .lv-section       { margin-bottom: 40px; }
     .proj-header { padding: 28px 20px 12px; }
     .wordmark-title { font-size: 22px; }
   }

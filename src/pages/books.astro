@@ -636,32 +636,46 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
       lazySpines.forEach(function (img) { img.src = img.dataset.src; });
     }
 
-    shelf.addEventListener("click", function (e) {
-      /* ignore clicks inside the text panel so user can select/read */
-      if (e.target.closest(".b-info")) return;
+    var pinned = null;
 
-      var book = e.target.closest(".book");
-      if (!book) return;
+    function showBook(book) {
+      if (active && active !== book) {
+        active.classList.remove("selected");
+        active.style.width = active.dataset.sw + "px";
+      }
+      book.classList.add("selected");
+      book.style.width = PANEL_W + "px";
+      active = book;
+    }
 
-      if (active === book) {
-        /* collapse */
+    shelf.querySelectorAll(".book").forEach(function (book) {
+      book.addEventListener("mouseenter", function () {
+        showBook(book);
+      });
+
+      book.addEventListener("mouseleave", function () {
+        if (book === pinned) return; // stay open if pinned
         book.classList.remove("selected");
         book.style.width = book.dataset.sw + "px";
-        active = null;
-      } else {
-        /* close previous */
-        if (active) {
-          active.classList.remove("selected");
-          active.style.width = active.dataset.sw + "px";
+        if (active === book) active = null;
+        if (pinned) showBook(pinned); // restore pinned if there is one
+      });
+
+      book.addEventListener("click", function () {
+        if (pinned === book) {
+          pinned = null; // unpin — will close on next mouseleave
+        } else {
+          if (pinned && pinned !== book) {
+            pinned.classList.remove("selected");
+            pinned.style.width = pinned.dataset.sw + "px";
+          }
+          pinned = book;
+          showBook(book);
         }
-        /* open new */
-        book.classList.add("selected");
-        book.style.width = PANEL_W + "px";
-        active = book;
-      }
+      });
     });
 
-    /* Auto-open A Room of One's Own on load */
+    /* Auto-open A Room of One's Own until user moves cursor onto shelf */
     var roomOfOnesOwn = shelf.querySelector('[data-id="f05"]');
     if (roomOfOnesOwn) {
       roomOfOnesOwn.classList.add("selected");
