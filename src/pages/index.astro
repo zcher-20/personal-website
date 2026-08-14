@@ -129,7 +129,7 @@ const PROJECTS = [
     shortTitle: "Film Album",
     description: "Designed and built a depth-based carousel with scroll-linked transitions, inline caption editing, local image uploads, and persistent client-side storage. Developed the interaction system from scratch in vanilla JavaScript, using layered transforms and motion to recreate the physical feeling of moving through a film archive.",
     image: "/design-film-album.png",
-    venue: "Film Album · 2025",
+    venue: "Independent Project · 2025",
     tags: ["Interaction Design", "Creative Code", "Frontend", "Motion"],
     meta: [
       { label: "ROLE",  value: "Design · Frontend Engineering · Interaction Design" },
@@ -623,6 +623,7 @@ const SKILLS = [
 
   <!-- Projects modal -->
   <div id="home-proj-modal" class="home-modal" role="dialog" aria-modal="true">
+    <button class="hpm-nav-btn" id="hpm-nav-prev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M7 1L1 6.5L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div class="home-modal-card" id="home-modal-card">
       <div class="hpm-topbar">
         <a id="hpm-visit-btn" class="hpm-visit-btn" href="#" target="_blank" rel="noopener noreferrer">Visit Site ↗</a>
@@ -638,6 +639,7 @@ const SKILLS = [
       <div id="hpm-stack" class="hpm-cs-stack"></div>
       <div id="hpm-images" class="hpm-cs-images"></div>
     </div>
+    <button class="hpm-nav-btn" id="hpm-nav-next"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1L7 6.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </div>
 
   <!-- Mobile bottom nav -->
@@ -782,9 +784,25 @@ const SKILLS = [
   var hpmDesc      = document.getElementById("hpm-desc");
   var hpmStack     = document.getElementById("hpm-stack");
   var hpmImages    = document.getElementById("hpm-images");
+  var hpmNavPrev   = document.getElementById("hpm-nav-prev");
+  var hpmNavNext   = document.getElementById("hpm-nav-next");
+  var currentId  = null;
+  var navIds     = [];
+
+  function updateNavBtns(id) {
+    navIds = Array.from(document.querySelectorAll(".home-proj-card")).map(function (el) { return el.dataset.id; });
+    var idx = navIds.indexOf(id);
+    hpmNavPrev.style.opacity = idx > 0 ? "" : "0.15";
+    hpmNavPrev.style.pointerEvents = idx > 0 ? "" : "none";
+    hpmNavNext.style.opacity = idx < navIds.length - 1 ? "" : "0.15";
+    hpmNavNext.style.pointerEvents = idx < navIds.length - 1 ? "" : "none";
+    hpmNavPrev.style.display = navIds.length > 1 ? "" : "none";
+    hpmNavNext.style.display = navIds.length > 1 ? "" : "none";
+  }
 
   function openModal(id) {
     var d = itemMap[id]; if (!d) return;
+    currentId = id;
 
     if (d.logo) {
       hpmLogo.src = d.logo; hpmLogo.alt = d.venue || d.title;
@@ -862,6 +880,7 @@ const SKILLS = [
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
     card.scrollTop = 0;
+    updateNavBtns(id);
   }
 
   function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
@@ -872,9 +891,25 @@ const SKILLS = [
     });
   }
 
-  modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
+  hpmNavPrev.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var idx = navIds.indexOf(currentId);
+    if (idx > 0) openModal(navIds[idx - 1]);
+  });
+  hpmNavNext.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var idx = navIds.indexOf(currentId);
+    if (idx < navIds.length - 1) openModal(navIds[idx + 1]);
+  });
+
+  modal.addEventListener("click", function (e) {
+    if (!card.contains(e.target) && e.target !== hpmNavPrev && e.target !== hpmNavNext) closeModal();
+  });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    if (!modal.classList.contains("open")) return;
+    if (e.key === "Escape") closeModal();
+    if (e.key === "ArrowLeft") { var i = navIds.indexOf(currentId); if (i > 0) openModal(navIds[i - 1]); }
+    if (e.key === "ArrowRight") { var i = navIds.indexOf(currentId); if (i < navIds.length - 1) openModal(navIds[i + 1]); }
   });
 
   document.addEventListener("astro:page-load", initModalCards);
@@ -1297,6 +1332,18 @@ const SKILLS = [
     align-items: center; justify-content: center;
   }
   .home-modal.open { display: flex; }
+  .hpm-nav-btn {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.9); border: 1px solid #e8e8e8;
+    border-radius: 50%; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: #1d1d1f; cursor: pointer;
+    z-index: 1001; opacity: 0.6; transition: opacity 0.15s;
+    flex-shrink: 0; padding: 0;
+  }
+  .hpm-nav-btn:hover { opacity: 1; }
+  #hpm-nav-prev { left: 20px; }
+  #hpm-nav-next { right: 20px; }
   .home-modal-card {
     position: relative;
     width: min(1000px, 96vw); max-height: 88vh;
