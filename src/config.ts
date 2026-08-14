@@ -209,7 +209,7 @@ export const workPageContent: WorkPageContent = {
   description: `I've worked across AI research labs, startups, and enterprise teams — building systems that range from analog hardware benchmarks to production RAG pipelines.`,
   items: [
     {
-      title: "AI Model Trainer — Codex / Project Vox",
+      title: "AI Model Trainer — Codex",
       company: { name: "OpenAI", image: "/openai.webp", url: "https://openai.com" },
       date: "Jun 2026 - Present",
       description: "Training Codex by crafting targeted prompts and adversarial edge-case sets; providing structured feedback to improve code generation, reasoning, and instruction-following capabilities.",

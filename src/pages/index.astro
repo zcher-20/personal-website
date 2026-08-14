@@ -21,14 +21,14 @@ const SECTIONS = [
 ];
 
 const APP_NAV = [
-  { label: "Home",                icon: "mdi:home-outline",          href: "/" },
-  { label: "About",              icon: "mdi:account-outline",       href: "#about" },
-  { label: "Highlighted Projects", icon: "mdi:star-outline",        href: "#projects" },
-  { label: "Experience",         icon: "mdi:briefcase-outline",     href: "#experience" },
-  { label: "Projects",           icon: "mdi:folder-open-outline",   href: "/projects" },
-  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
-  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
-  { label: "Photography", icon: "mdi:camera-outline",      href: "/photography" },
+  { label: "Home",          icon: "mdi:home-outline",        href: "/" },
+  { label: "About",         icon: "mdi:account-outline",     href: "#about" },
+  { label: "Selected Work", icon: "mdi:star-outline",        href: "#projects" },
+  { label: "Experience",    icon: "mdi:briefcase-outline",   href: "#experience" },
+  { label: "Projects",      icon: "mdi:folder-open-outline", href: "/projects" },
+  { label: "Mind",          icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",     icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photography",   icon: "mdi:camera-outline",      href: "/photography" },
 ];
 
 const MOBILE_NAV = [
@@ -45,6 +45,16 @@ const EXPERIENCE = workPageContent.items
     ...job,
     cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
   }));
+
+const getWrapStyle = (img: string) =>
+  img === "/ibm.webp" || img === "/bch.webp" ? "padding: 7px;" : "";
+
+const getImgStyle = (img: string) =>
+  img === "/startup.webp"
+    ? "transform: scale(1.25); object-fit: cover;"
+    : img === "/ibm.webp" || img === "/bch.webp"
+    ? "object-fit: contain;"
+    : "";
 
 const PROJECTS = [
   {
@@ -358,7 +368,6 @@ const SKILLS = [
                   <div class="exp-date">Jun – Aug 2026</div>
                 </div>
               </div>
-              <a href="/Zayneb_Cherif_Resume.docx" download class="about-resume-btn">Download Resume ↓</a>
             </div>
 
             <div class="about-right">
@@ -375,15 +384,9 @@ const SKILLS = [
                 </div>
               ))}
 
-              <div class="about-projects-preview">
-                <a href="/projects" class="about-projects-wrap" id="about-proj-trigger">
-                  <img src="/projects-preview.png" alt="Projects canvas" class="about-projects-img" />
-                  <div class="about-projects-overlay">
-                    <span class="about-projects-overlay-text">View All Projects</span>
-                  </div>
-                </a>
-              </div>
+              {/* about-projects-preview hidden */}
 
+              <a href="/Zayneb_Cherif_Resume.docx" download class="about-resume-btn">Download Resume ↓</a>
             </div>
 
           </div>
@@ -394,8 +397,16 @@ const SKILLS = [
         <!-- Projects section -->
         <section id="projects" class="home-proj-section">
           <div class="home-proj-header">
-            <h2 class="exp-heading">Highlighted Projects</h2>
-            <a href="/projects" class="view-all-link">View all →</a>
+            <h2 class="exp-heading">Selected Work</h2>
+            <a href="/projects" class="view-all-link">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0">
+                <rect x="0" y="0" width="5" height="5" rx="1" fill="currentColor"/>
+                <rect x="7" y="0" width="5" height="5" rx="1" fill="currentColor"/>
+                <rect x="0" y="7" width="5" height="5" rx="1" fill="currentColor"/>
+                <rect x="7" y="7" width="5" height="5" rx="1" fill="currentColor"/>
+              </svg>
+              View All
+            </a>
           </div>
           <script id="home-proj-data" type="application/json" set:html={JSON.stringify(PROJECTS)} />
           <div class="home-proj-grid">
@@ -419,20 +430,87 @@ const SKILLS = [
 
         <!-- Experience section -->
         <section id="experience" class="exp-section">
-          <h2 class="exp-heading">Experience</h2>
-          {EXPERIENCE.map((job) => (
-            <div class="exp-row">
-              <div class="exp-logo">
-                <img src={job.company.image} alt={job.company.name} draggable="false" />
-              </div>
-              <div class="exp-content">
-                <p class="exp-title">{job.title}</p>
-                <p class="exp-company-name">{job.company.name}</p>
-                {job.cleanDesc && <p class="exp-desc">{job.cleanDesc}</p>}
-              </div>
-              <div class="exp-date">{job.date}</div>
+          <div class="home-exp-header">
+            <h2 class="exp-heading">Experience</h2>
+            <div class="home-exp-controls">
+              <button class="home-tl-btn is-active" id="home-btn-horiz" aria-label="Horizontal view">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                  <line x1="0" y1="6" x2="16" y2="6" stroke="currentColor" stroke-width="1"/>
+                  <circle cx="2.5" cy="6" r="2" fill="currentColor"/>
+                  <circle cx="8" cy="6" r="2" fill="currentColor"/>
+                  <circle cx="13.5" cy="6" r="2" fill="currentColor"/>
+                </svg>
+                Timeline
+              </button>
+              <button class="home-tl-btn" id="home-btn-list" aria-label="List view">
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+                  <line x1="0" y1="1" x2="14" y2="1" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="0" y1="6" x2="14" y2="6" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="0" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                List
+              </button>
             </div>
-          ))}
+          </div>
+
+          <!-- List view -->
+          <div class="home-exp-list" id="home-exp-list" style="display:none">
+            {EXPERIENCE.map((job) => (
+              <div class="exp-row">
+                <div class="exp-logo" style={getWrapStyle(job.company.image)}>
+                  <img src={job.company.image} alt={job.company.name} style={getImgStyle(job.company.image)} />
+                </div>
+                <div class="exp-content">
+                  <p class="exp-title">{job.title}</p>
+                  <p class="exp-company-name">{job.company.name}</p>
+                  {job.cleanDesc && <p class="exp-desc">{job.cleanDesc}</p>}
+                </div>
+                <div class="exp-date">{job.date}</div>
+              </div>
+            ))}
+          </div>
+
+          <div class="home-tl-horiz" id="home-tl-horiz">
+            <div class="home-tl-h-scroll">
+              <div class="home-tl-h-track">
+                <div class="home-tl-h-line"></div>
+                {EXPERIENCE.map((job, i) => (
+                  <div class={`home-tl-h-entry ${i % 2 === 0 ? "h-above" : "h-below"}`}>
+                    <div class="home-tl-h-upper">
+                      {i % 2 === 0 && (
+                        <div class="home-tl-h-card">
+                          <p class="home-tl-date">{job.date}</p>
+                          <div class="home-tl-logo-wrap" style={getWrapStyle(job.company.image)}>
+                            <img src={job.company.image} alt={job.company.name} class="home-tl-logo" style={getImgStyle(job.company.image)} />
+                          </div>
+                          <p class="home-tl-title">{job.title}</p>
+                          <p class="home-tl-company">{job.company.name}</p>
+                          <p class="home-tl-desc">{job.cleanDesc}</p>
+                        </div>
+                      )}
+                    </div>
+                    <div class="home-tl-h-node">
+                      <div class="home-tl-ring"></div>
+                      <div class="home-tl-dot"></div>
+                    </div>
+                    <div class="home-tl-h-lower">
+                      {i % 2 !== 0 && (
+                        <div class="home-tl-h-card">
+                          <p class="home-tl-date">{job.date}</p>
+                          <div class="home-tl-logo-wrap" style={getWrapStyle(job.company.image)}>
+                            <img src={job.company.image} alt={job.company.name} class="home-tl-logo" style={getImgStyle(job.company.image)} />
+                          </div>
+                          <p class="home-tl-title">{job.title}</p>
+                          <p class="home-tl-company">{job.company.name}</p>
+                          <p class="home-tl-desc">{job.cleanDesc}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </section>
 
         <footer class="home-footer">
@@ -489,7 +567,6 @@ const SKILLS = [
       </div>
       <div id="hpm-stack" class="hpm-cs-stack"></div>
       <div id="hpm-images" class="hpm-cs-images"></div>
-      <div id="hpm-also" class="cs-also"></div>
     </div>
   </div>
 
@@ -554,11 +631,16 @@ const SKILLS = [
         var section = document.getElementById(targetId);
         if (section && archiveMain) {
           e.preventDefault();
-          var target = section.getBoundingClientRect().top
+          var sectionTop = section.getBoundingClientRect().top
             - archiveMain.getBoundingClientRect().top
             + archiveMain.scrollTop;
+          var offset = (archiveMain.clientHeight / 2) - (section.offsetHeight / 2);
+          var target = sectionTop - Math.max(offset, 0);
           archiveMain.scrollTo({ top: target, behavior: "smooth" });
         }
+        // Immediately update active highlight
+        document.querySelectorAll("#home-app-nav .app-nav-btn").forEach(function (b) { b.classList.remove("active"); });
+        link.classList.add("active");
         if (flyout) flyout.classList.add("hidden");
       });
     });
@@ -707,38 +789,6 @@ const SKILLS = [
       });
     }
 
-    // Also check out — same section, random picks
-    var hpmAlso = document.getElementById("hpm-also");
-    hpmAlso.innerHTML = "";
-    var others = ITEMS.filter(function (it) { return it.id !== d.id && it.section === d.section; });
-    for (var ai = others.length - 1; ai > 0; ai--) {
-      var aj = Math.floor(Math.random() * (ai + 1));
-      var tmp = others[ai]; others[ai] = others[aj]; others[aj] = tmp;
-    }
-    var picks = others.slice(0, 2);
-    if (picks.length) {
-      var alsoLabel = document.createElement("p");
-      alsoLabel.className = "cs-also-label";
-      alsoLabel.textContent = "Also check out...";
-      hpmAlso.appendChild(alsoLabel);
-      var alsoGrid = document.createElement("div");
-      alsoGrid.className = "cs-also-grid";
-      picks.forEach(function (p) {
-        var ac = document.createElement("div");
-        ac.className = "cs-also-card";
-        var aImg = document.createElement("img");
-        aImg.src = p.image; aImg.alt = p.shortTitle || p.title;
-        aImg.className = "cs-also-img";
-        var aMeta = document.createElement("p");
-        aMeta.className = "cs-also-meta";
-        aMeta.innerHTML = "<strong>" + (p.shortTitle || p.title) + "</strong><span class='cs-also-dot'> • </span><span class='cs-also-yr'>" + (p.year || "") + "</span>";
-        ac.appendChild(aImg); ac.appendChild(aMeta);
-        (function (id) { ac.addEventListener("click", function (e) { e.stopPropagation(); openModal(id); }); })(p.id);
-        alsoGrid.appendChild(ac);
-      });
-      hpmAlso.appendChild(alsoGrid);
-    }
-
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
     card.scrollTop = 0;
@@ -746,13 +796,19 @@ const SKILLS = [
 
   function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
 
-  document.querySelectorAll(".home-proj-card").forEach(function (el) {
-    el.addEventListener("click", function () { openModal(el.dataset.id); });
-  });
+  function initModalCards() {
+    document.querySelectorAll(".home-proj-card").forEach(function (el) {
+      el.addEventListener("click", function () { openModal(el.dataset.id); });
+    });
+  }
+
   modal.addEventListener("click", function (e) { if (!card.contains(e.target)) closeModal(); });
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
   });
+
+  document.addEventListener("astro:page-load", initModalCards);
+  initModalCards();
 
 })();
 </script>
@@ -958,7 +1014,9 @@ const SKILLS = [
   .about-exp-list .exp-row { border-bottom: none; border-top: 1px solid #efefef; }
   .about-exp-list .exp-row:first-child { border-top: none; }
 
-  .about-right { flex: 1; }
+  .about-right { flex: 1; display: flex; flex-direction: column; }
+  .about-right .skill-category:last-of-type { margin-bottom: 0; }
+  .about-right .about-resume-btn { margin-top: 48px; align-self: flex-start; }
 
   .about-projects-preview {
     margin-top: 34px;
@@ -999,9 +1057,9 @@ const SKILLS = [
   }
   .skills-heading {
     font-size: 28px; font-weight: 300; color: #1d1d1f;
-    letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 40px;
   }
-  .skill-category { margin-bottom: 22px; }
+  .skill-category { margin-bottom: 52px; }
   .skill-cat-label {
     font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
     text-transform: uppercase; color: #7a3060; margin: 0 0 5px;
@@ -1018,9 +1076,26 @@ const SKILLS = [
   .exp-section {
     padding-top: 56px;
     padding-bottom: 48px;
-    border-top: 1px solid #e8e8e8;
   }
   .exp-section .exp-row:last-child { border-bottom: none; }
+  .home-exp-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .home-exp-header .exp-heading { margin: 0; }
+  .home-exp-controls { display: flex; gap: 6px; margin-bottom: -4px; }
+  .home-tl-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 14px;
+    border: 1px solid #e8e8e8; border-radius: 20px;
+    background: none; cursor: pointer;
+    font-size: 11.5px; color: #a0a0a0;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .home-tl-btn:hover { color: #1d1d1f; border-color: #ccc; }
+  .home-tl-btn.is-active { color: #1d1d1f; border-color: #1d1d1f; background: #f5f5f7; }
+  .home-exp-list { padding: 20px 40px 0; }
+  .home-exp-list .exp-row:last-child { border-bottom: none; }
   .inter-section-divider {
     border: none;
     border-top: 1px solid #e8e8e8;
@@ -1076,29 +1151,30 @@ const SKILLS = [
 
   /* ── Projects section ── */
   .home-proj-header {
-    display: flex; align-items: baseline; justify-content: center; gap: 20px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 20px;
+    width: 100%;
     margin-bottom: 0;
-    padding-left: 40px;
-    padding-right: 40px;
   }
-  .home-proj-header .exp-heading { margin-bottom: 72px; }
+  .home-proj-header .exp-heading { margin-bottom: 72px; text-align: left; }
   .view-all-link {
-    font-size: 12px; color: #8a8a8a; text-decoration: none;
-    transition: color 0.15s; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 14px;
+    border: 1px solid #e8e8e8; border-radius: 20px;
+    font-size: 11.5px; color: #a0a0a0;
+    font-family: inherit; text-decoration: none;
+    transition: all 0.15s; white-space: nowrap;
   }
-  .view-all-link:hover { color: #1d1d1f; }
+  .view-all-link:hover { color: #1d1d1f; border-color: #ccc; }
   .home-proj-section {
-    padding-top: 48px;
-    padding-bottom: 60px;
-    margin-left: -40px;
-    margin-right: -40px;
+    padding-top: 80px;
+    padding-bottom: 96px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
   .home-proj-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 220px));
+    grid-template-columns: repeat(4, 1fr);
     gap: 32px;
     margin-top: 8px;
   }
@@ -1163,18 +1239,23 @@ const SKILLS = [
     scrollbar-width: none;
   }
   .home-modal-card::-webkit-scrollbar { display: none; }
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
   .hpm-topbar {
     display: flex; align-items: center; justify-content: flex-end;
-    margin-bottom: 28px; flex-shrink: 0;
+    margin-bottom: 52px; flex-shrink: 0; margin-right: -24px;
   }
   .hpm-visit-btn {
     display: inline-flex; align-items: center;
     padding: 8px 18px; border-radius: 100px;
-    background: #2c4470; color: #fff;
+    background: #fff; color: #1d1d1f;
+    border: 1px solid #e8e8e8;
     font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
-    text-decoration: none; transition: background 0.15s; flex-shrink: 0;
+    text-decoration: none; transition: all 0.15s; flex-shrink: 0;
   }
-  .hpm-visit-btn:hover { background: #1f3257; color: #fff; }
+  .hpm-visit-btn:hover { border-color: #ccc; color: #1d1d1f; }
   .hpm-cs-header { margin-bottom: 22px; }
   .hpm-logo {
     height: 36px; width: auto;
@@ -1269,7 +1350,7 @@ const SKILLS = [
 
     /* Projects grid → 2×2 grid on mobile */
     .home-proj-section { margin-left: 0; margin-right: 0; padding-top: 32px; align-items: stretch; }
-    .home-proj-header { padding-left: 0; padding-right: 0; }
+    .home-proj-section { padding-top: 32px; }
     .home-proj-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1291,10 +1372,95 @@ const SKILLS = [
     .home-footer { flex-direction: column; gap: 28px; }
     .hf-contact { align-items: flex-start; }
     .hf-name { font-size: 22px; }
+
+    /* Home exp toggle: hide timeline on mobile, show list */
+    #home-btn-horiz { display: none; }
+    #home-tl-horiz  { display: none !important; }
+    #home-exp-list  { display: block !important; }
+    #home-btn-list  { display: none; }
   }
 </style>
 
 <style is:global>
+  /* ── Home horizontal timeline ── */
+  .home-tl-horiz { margin: 0 -32px; }
+  .home-tl-h-scroll {
+    overflow-x: auto; overflow-y: visible;
+    scrollbar-width: none;
+    padding: 24px 0 16px;
+  }
+  .home-tl-h-scroll::-webkit-scrollbar { display: none; }
+  .home-tl-h-track {
+    display: flex; align-items: flex-start;
+    position: relative; min-width: max-content;
+    padding: 0 32px;
+  }
+  .home-tl-h-line {
+    position: absolute; top: 264px; left: 0; right: 0;
+    height: 1px; background: #d4c8dc; pointer-events: none; z-index: 0;
+  }
+  .home-tl-h-entry {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0; width: 190px; padding: 0 14px;
+    position: relative; z-index: 1;
+  }
+  .home-tl-h-upper {
+    height: 250px; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+  }
+  .home-tl-h-lower {
+    height: 250px; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    overflow: hidden;
+  }
+  .home-tl-h-node {
+    position: relative; width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; z-index: 2;
+  }
+  .home-tl-ring {
+    position: absolute; inset: 0;
+    border: 1px dashed #b89ec0; border-radius: 50%;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .home-tl-dot {
+    width: 7px; height: 7px; background: #9e7fa4; border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .home-tl-h-entry:hover .home-tl-ring { opacity: 1; }
+  .home-tl-h-entry:hover .home-tl-dot  { transform: scale(1.3); }
+  .h-above .home-tl-h-upper::after {
+    content: ''; display: block; width: 1px; height: 12px;
+    background: #d4c8dc; margin: 0 auto; opacity: 0; transition: opacity 0.25s;
+  }
+  .home-tl-h-entry.h-above:hover .home-tl-h-upper::after { opacity: 1; }
+  .h-below .home-tl-h-lower::before {
+    content: ''; display: block; width: 1px; height: 12px;
+    background: #d4c8dc; margin: 0 auto; opacity: 0; transition: opacity 0.25s;
+  }
+  .home-tl-h-entry.h-below:hover .home-tl-h-lower::before { opacity: 1; }
+  .home-tl-h-card {
+    width: 100%; white-space: normal; word-wrap: break-word; text-align: center;
+  }
+  .home-tl-logo-wrap {
+    width: 38px; height: 38px; border-radius: 50%;
+    overflow: hidden; border: 1px solid #efefef; background: #f5f5f7;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px; flex-shrink: 0;
+  }
+  .home-tl-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .home-tl-date {
+    font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+    color: #b8a8a2; margin: 0 0 8px;
+  }
+  .home-tl-title { font-size: 13px; font-weight: 500; color: #1d1d1f; margin: 0 0 2px; line-height: 1.3; }
+  .home-tl-company { font-size: 11px; color: #aaa; margin: 0 0 8px; }
+  .home-tl-desc {
+    font-size: 10.5px; color: #8a8a8a; line-height: 1.55; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .hpm-cs-col { flex: 1; display: flex; flex-direction: column; gap: 14px; }
   .hpm-cs-col-label { font-size: 14px; color: #aaaaaa; }
   .hpm-cs-col-item { font-size: 15px; color: #2e2e2e; margin: 0; }
@@ -1324,14 +1490,39 @@ const SKILLS = [
   .hpm-pw-error { font-size: 12px; color: #d94f4f; margin-top: 10px; min-height: 16px; }
   .hpm-pw-cover { margin-top: 32px; }
 
-  /* Also check out */
-  .cs-also { margin-top: 52px; }
-  .cs-also-label { font-size: 13px; color: #b8b8b8; margin: 0 0 20px; }
-  .cs-also-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .cs-also-card { cursor: pointer; display: flex; flex-direction: column; gap: 10px; transition: opacity 0.15s; }
-  .cs-also-card:hover { opacity: 0.8; }
-  .cs-also-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 12px; display: block; background: #f5f5f7; }
-  .cs-also-meta { font-size: 14px; color: #1a1a1a; margin: 0; }
-  .cs-also-dot { color: #c0c0c0; }
-  .cs-also-yr  { color: #b0b0b0; font-weight: 400; }
 </style>
+
+<script is:inline>
+(function () {
+  function initHomeExpToggle() {
+    var btnHoriz = document.getElementById("home-btn-horiz");
+    var btnList  = document.getElementById("home-btn-list");
+    var tlHoriz  = document.getElementById("home-tl-horiz");
+    var expList  = document.getElementById("home-exp-list");
+    if (!btnHoriz || !btnList) return;
+
+    function showHoriz() {
+      tlHoriz.style.display = "block";
+      expList.style.display = "none";
+      btnHoriz.classList.add("is-active");
+      btnList.classList.remove("is-active");
+      localStorage.setItem("home-exp-view", "horiz");
+    }
+    function showList() {
+      tlHoriz.style.display = "none";
+      expList.style.display = "block";
+      btnHoriz.classList.remove("is-active");
+      btnList.classList.add("is-active");
+      localStorage.setItem("home-exp-view", "list");
+    }
+
+    btnHoriz.addEventListener("click", showHoriz);
+    btnList.addEventListener("click", showList);
+
+    if (localStorage.getItem("home-exp-view") === "list") showList();
+  }
+
+  document.addEventListener("astro:page-load", initHomeExpToggle);
+  initHomeExpToggle();
+})();
+</script>

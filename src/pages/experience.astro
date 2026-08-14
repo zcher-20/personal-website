@@ -1,0 +1,320 @@
+---
+import Layout from "../layouts/WorkspaceLayout.astro";
+import { workPageContent } from "../config";
+
+const seo = { title: "Experience — Zayneb Cherif", description: "Work experience and roles." };
+
+const EXPERIENCE = workPageContent.items
+  .filter((job) => !job.hidden)
+  .map((job) => ({
+    ...job,
+    cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
+  }));
+
+const getWrapStyle = (img: string) =>
+  img === "/ibm.webp" || img === "/bch.webp" ? "padding: 7px;" : "";
+
+const getImgStyle = (img: string) =>
+  img === "/startup.webp"
+    ? "transform: scale(1.25); object-fit: cover;"
+    : img === "/ibm.webp" || img === "/bch.webp"
+    ? "object-fit: contain;"
+    : "";
+---
+
+<Layout seo={seo}>
+  <div class="exp-page">
+
+    <div class="exp-inner">
+      <div class="exp-header">
+        <h1 class="exp-page-title">Experience</h1>
+        <!-- Toggle -->
+        <div class="tl-controls">
+        <button class="tl-btn is-active" id="btn-horiz" aria-label="Horizontal view">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+            <line x1="0" y1="6" x2="16" y2="6" stroke="currentColor" stroke-width="1"/>
+            <circle cx="2.5" cy="6" r="2" fill="currentColor"/>
+            <circle cx="8" cy="6" r="2" fill="currentColor"/>
+            <circle cx="13.5" cy="6" r="2" fill="currentColor"/>
+          </svg>
+          Timeline
+        </button>
+        <button class="tl-btn" id="btn-list" aria-label="List view">
+          <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+            <line x1="0" y1="1" x2="14" y2="1" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="0" y1="6" x2="14" y2="6" stroke="currentColor" stroke-width="1.2"/>
+            <line x1="0" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+          List
+        </button>
+      </div>
+      </div><!-- end .exp-header -->
+
+      <!-- ══ LIST VIEW ══ -->
+      <div class="tl-list" id="tl-list" style="display:none">
+        {EXPERIENCE.map((job) => (
+          <div class="exp-row">
+            <div class="exp-logo" style={getWrapStyle(job.company.image)}>
+              <img src={job.company.image} alt={job.company.name} style={getImgStyle(job.company.image)} />
+            </div>
+            <div class="exp-content">
+              <p class="exp-title">{job.title}</p>
+              <p class="exp-company-name">{job.company.name}</p>
+              {job.cleanDesc && <p class="exp-desc">{job.cleanDesc}</p>}
+            </div>
+            <div class="exp-date">{job.date}</div>
+          </div>
+        ))}
+      </div>
+    </div><!-- end .exp-inner -->
+
+    <!-- ══ HORIZONTAL TIMELINE — full width ══ -->
+    <div class="tl-horiz" id="tl-horiz">
+      <div class="tl-h-scroll">
+        <div class="tl-h-track">
+          <div class="tl-h-line"></div>
+          {EXPERIENCE.map((job, i) => (
+            <div class={`tl-h-entry ${i % 2 === 0 ? "h-above" : "h-below"}`}>
+
+              <div class="tl-h-upper">
+                {i % 2 === 0 && (
+                  <div class="tl-h-card">
+                    <p class="tl-date">{job.date}</p>
+                    <div class="tl-logo-wrap" style={getWrapStyle(job.company.image)}>
+                      <img src={job.company.image} alt={job.company.name} class="tl-logo" style={getImgStyle(job.company.image)} />
+                    </div>
+                    <p class="tl-title">{job.title}</p>
+                    <p class="tl-company">{job.company.name}</p>
+                    <p class="tl-h-desc">{job.cleanDesc}</p>
+                  </div>
+                )}
+              </div>
+
+              <div class="tl-h-node">
+                <div class="tl-ring"></div>
+                <div class="tl-dot"></div>
+              </div>
+
+              <div class="tl-h-lower">
+                {i % 2 !== 0 && (
+                  <div class="tl-h-card">
+                    <p class="tl-date">{job.date}</p>
+                    <div class="tl-logo-wrap" style={getWrapStyle(job.company.image)}>
+                      <img src={job.company.image} alt={job.company.name} class="tl-logo" style={getImgStyle(job.company.image)} />
+                    </div>
+                    <p class="tl-title">{job.title}</p>
+                    <p class="tl-company">{job.company.name}</p>
+                    <p class="tl-h-desc">{job.cleanDesc}</p>
+                  </div>
+                )}
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  .exp-page { padding-bottom: 100px; }
+  .exp-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 72px 40px 0;
+  }
+  .exp-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 80px;
+  }
+  .exp-page-title {
+    font-size: 28px; font-weight: 300; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0;
+  }
+
+  /* ── Toggle ── */
+  .tl-controls { display: flex; gap: 6px; margin-bottom: -10px; }
+  .tl-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 14px;
+    border: 1px solid #e8e8e8; border-radius: 20px;
+    background: none; cursor: pointer;
+    font-size: 11.5px; color: #a0a0a0;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .tl-btn:hover { color: #1d1d1f; border-color: #ccc; }
+  .tl-btn.is-active { color: #1d1d1f; border-color: #1d1d1f; background: #f5f5f7; }
+
+  /* ── Shared logo ── */
+  .tl-logo-wrap {
+    width: 38px; height: 38px; border-radius: 50%;
+    overflow: hidden; border: 1px solid #efefef; background: #f5f5f7;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 10px; flex-shrink: 0;
+  }
+  .tl-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ── Shared text ── */
+  .tl-date {
+    font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+    color: #b8a8a2; margin: 0 0 10px;
+  }
+  .tl-title { font-size: 13px; font-weight: 500; color: #1d1d1f; margin: 0 0 2px; line-height: 1.3; }
+  .tl-company { font-size: 11px; color: #aaa; margin: 0 0 8px; }
+
+  /* ══════════════════════════════
+     LIST VIEW
+  ══════════════════════════════ */
+  .tl-list { padding: 0 40px 40px; }
+  .tl-list .exp-row:last-child { border-bottom: none; }
+
+  .exp-row {
+    display: flex; align-items: flex-start; gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #efefef;
+  }
+  .exp-logo {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid #efefef; background: #f5f5f7;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .exp-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .exp-content { flex: 1; min-width: 0; }
+  .exp-title { font-size: 13.5px; font-weight: 500; color: #1d1d1f; margin: 0 0 2px; }
+  .exp-company-name { font-size: 11.5px; color: #a0a0a0; margin: 0 0 4px; }
+  .exp-desc { font-size: 12px; color: #8a8a8a; line-height: 1.5; margin: 0; }
+  .exp-date { flex-shrink: 0; font-size: 12px; color: #8a8a8a; white-space: nowrap; padding-top: 2px; }
+
+  /* ══════════════════════════════
+     HORIZONTAL TIMELINE
+  ══════════════════════════════ */
+  .tl-horiz { padding: 20px 16px 10px; }
+
+  .tl-h-scroll {
+    overflow-x: auto; overflow-y: visible;
+    scrollbar-width: none;
+    padding: 24px 0 16px;
+  }
+  .tl-h-scroll::-webkit-scrollbar { display: none; }
+
+  .tl-h-track {
+    display: flex; align-items: flex-start;
+    position: relative; min-width: max-content;
+    padding: 0 16px;
+  }
+
+  .tl-h-line {
+    position: absolute;
+    top: 264px;
+    left: 0; right: 0;
+    height: 1px; background: #d4c8dc;
+    pointer-events: none; z-index: 0;
+  }
+
+  .tl-h-entry {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0; width: 190px; padding: 0 14px;
+    position: relative; z-index: 1;
+  }
+
+  .tl-h-upper {
+    height: 250px; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+  }
+  .tl-h-lower {
+    height: 250px; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .tl-h-node {
+    position: relative; width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; z-index: 2;
+  }
+  .tl-ring {
+    position: absolute; inset: 0;
+    border: 1px dashed #b89ec0; border-radius: 50%;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .tl-dot {
+    width: 7px; height: 7px; background: #9e7fa4; border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .tl-h-entry:hover .tl-ring { opacity: 1; }
+  .tl-h-entry:hover .tl-dot  { transform: scale(1.3); }
+
+  .h-above .tl-h-upper::after {
+    content: ''; display: block; width: 1px; height: 12px;
+    background: #d4c8dc; margin: 0 auto; opacity: 0; transition: opacity 0.25s;
+  }
+  .tl-h-entry.h-above:hover .tl-h-upper::after { opacity: 1; }
+
+  .h-below .tl-h-lower::before {
+    content: ''; display: block; width: 1px; height: 12px;
+    background: #d4c8dc; margin: 0 auto; opacity: 0; transition: opacity 0.25s;
+  }
+  .tl-h-entry.h-below:hover .tl-h-lower::before { opacity: 1; }
+
+  .tl-h-card {
+    width: 100%; white-space: normal; word-wrap: break-word; text-align: center;
+  }
+  .tl-h-card .tl-date { margin-bottom: 8px; }
+  .tl-h-card .tl-logo-wrap { margin: 0 auto 10px; }
+
+  .tl-h-desc {
+    font-size: 10.5px; color: #8a8a8a; line-height: 1.55; margin: 0;
+    white-space: normal;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .exp-page { padding-bottom: 80px; }
+    .exp-inner { padding: 32px 20px 0; }
+    .tl-controls { margin-bottom: 32px; }
+    #btn-horiz { display: none; }
+    .tl-horiz { display: none !important; }
+    .tl-list { display: block !important; }
+    #btn-list { display: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    function initTimeline() {
+      var btnHoriz = document.getElementById("btn-horiz");
+      var btnList  = document.getElementById("btn-list");
+      var tlHoriz  = document.getElementById("tl-horiz");
+      var tlList   = document.getElementById("tl-list");
+      if (!btnHoriz || !btnList) return;
+
+      function showHoriz() {
+        tlHoriz.style.display = "block";
+        tlList.style.display  = "none";
+        btnHoriz.classList.add("is-active");
+        btnList.classList.remove("is-active");
+        localStorage.setItem("exp-view", "horiz");
+      }
+      function showList() {
+        tlHoriz.style.display = "none";
+        tlList.style.display  = "block";
+        btnHoriz.classList.remove("is-active");
+        btnList.classList.add("is-active");
+        localStorage.setItem("exp-view", "list");
+      }
+
+      btnHoriz.addEventListener("click", showHoriz);
+      btnList.addEventListener("click",  showList);
+
+      if (localStorage.getItem("exp-view") === "list") showList();
+    }
+
+    document.addEventListener("astro:page-load", initTimeline);
+    initTimeline();
+  })();
+</script>

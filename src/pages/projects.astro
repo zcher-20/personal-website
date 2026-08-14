@@ -8,7 +8,7 @@ const ITEMS = [
     id: "arena-vis",
     title: "Are.na Visualizer",
     shortTitle: "Are.na Visualizer",
-    year: "2025",
+    year: "2026",
     section: "design",
     logo: "/arena_logo.png",
     description: "A visual explorer for Are.na channels — browse collections across multiple layout modes including grid, canvas, and disk views.",
@@ -25,7 +25,7 @@ const ITEMS = [
     id: "margiela",
     title: "Maison Margiela Archive",
     shortTitle: "Margiela Archive",
-    year: "2025",
+    year: "2026",
     section: "design",
     logo: "/margeila_logo.png",
     logoHeight: "120px",
@@ -43,7 +43,7 @@ const ITEMS = [
     id: "ai-workspace",
     title: "AI Workspace",
     shortTitle: "Intelligence Workspace",
-    year: "2025",
+    year: "2026",
     section: "work",
     description: "Built an AI-native workspace combining project planning, research, opportunity tracking, networking, academic planning, and document workflows. Engineered the full-stack application and orchestrated specialized LLM agents for research, writing, planning, and task execution.",
     image: "/ai-workspace-canva.jpg",
@@ -121,7 +121,7 @@ const ITEMS = [
     confidential: true,
     title: "SkinKit",
     shortTitle: "SkinKit",
-    year: "2024",
+    year: "2026",
     description: "Prototyped wearable computing concepts using flexible electronic modules assembled directly on the body. Designed use cases, interaction patterns, and physical interface concepts spanning sensing, health, and expressive applications.",
     image: "/project-skinkit.jpg",
     logo: "/cornell.webp",
@@ -178,7 +178,7 @@ const ITEMS = [
     confidential: true,
     title: "AI Wildfire Risk Foundation Model",
     shortTitle: "AI Wildfire Risk Foundation Model",
-    year: "2024",
+    year: "2026",
     description: "ML models for wildfire risk assessment in Morocco using satellite imagery, GIS, and Earth Observation data. Al Akhawayn University Digital Innovation Lab.",
     image: "/project-ricer-map.png",
     logo: "/akhawayn.webp",
@@ -195,7 +195,7 @@ const ITEMS = [
     section: "design",
     title: "City Scape",
     shortTitle: "City Scape",
-    year: "2025",
+    year: "2026",
     description: "A full-stack personal places archive — a curated map and grid of favorite spots from cities around the world. Pulls live data from a Google Sheet backend, with map view, photo archive, collections, and a journal.",
     image: "/design-places-archive-2.png",
     images: ["/design-places-archive-2.png", "/design-places-archive.png"],
@@ -229,7 +229,7 @@ const ITEMS = [
     id: "investment",
     title: "Multi-Agent Investment Research System",
     shortTitle: "Multi-Agent Alpha Engine",
-    year: "2025",
+    year: "2026",
     description: "5-agent LLM pipeline on Azure AI Foundry — Research, Financial Analysis, Risk, News, and Memo agents producing a full investment thesis from a single stock ticker.",
     image: "/project-investment.png",
     venue: "Microsoft Agents League Hackathon",
@@ -1067,18 +1067,19 @@ const ITEMS = [
   /* ── Top bar ── */
   .cs-topbar {
     display: flex; align-items: center; justify-content: flex-end;
-    margin-bottom: 28px; flex-shrink: 0;
+    margin-bottom: 52px; margin-right: -24px; flex-shrink: 0;
   }
 
   .cs-visit-btn {
     display: inline-flex; align-items: center;
     padding: 8px 18px; border-radius: 100px;
-    background: #2c4470; color: #fff;
+    background: #fff; color: #1d1d1f;
+    border: 1px solid #e8e8e8;
     font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
-    text-decoration: none; transition: background 0.15s;
+    text-decoration: none; transition: all 0.15s;
     flex-shrink: 0;
   }
-  .cs-visit-btn:hover { background: #1f3257; color: #fff; }
+  .cs-visit-btn:hover { border-color: #ccc; color: #1d1d1f; }
 
   /* ── Header ── */
   .cs-header { margin-bottom: 22px; }
