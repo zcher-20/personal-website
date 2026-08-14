@@ -5,7 +5,8 @@
     "**/*"
   ],
   "exclude": [
-    "dist"
+    "dist",
+    "enterprise-agent"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
