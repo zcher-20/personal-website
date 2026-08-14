@@ -398,6 +398,9 @@ const ITEMS = [
         <!-- Project image(s) (filled by JS) -->
         <div id="cs-images" class="cs-images"></div>
 
+        <!-- Also check out (filled by JS) -->
+        <div id="cs-also" class="cs-also"></div>
+
       </div>
     </div>
 
@@ -666,6 +669,38 @@ const ITEMS = [
         });
       }
 
+      // Also check out — same section, random picks
+      var csAlso = document.getElementById("cs-also");
+      csAlso.innerHTML = "";
+      var others = ITEMS.filter(function (it) { return !it.hidden && it.id !== d.id && it.section === d.section; });
+      for (var ai = others.length - 1; ai > 0; ai--) {
+        var aj = Math.floor(Math.random() * (ai + 1));
+        var tmp = others[ai]; others[ai] = others[aj]; others[aj] = tmp;
+      }
+      var picks = others.slice(0, 2);
+      if (picks.length) {
+        var alsoLabel = document.createElement("p");
+        alsoLabel.className = "cs-also-label";
+        alsoLabel.textContent = "Also check out...";
+        csAlso.appendChild(alsoLabel);
+        var alsoGrid = document.createElement("div");
+        alsoGrid.className = "cs-also-grid";
+        picks.forEach(function (p) {
+          var ac = document.createElement("div");
+          ac.className = "cs-also-card";
+          var aImg = document.createElement("img");
+          aImg.src = p.image; aImg.alt = p.shortTitle || p.title;
+          aImg.className = "cs-also-img";
+          var aMeta = document.createElement("p");
+          aMeta.className = "cs-also-meta";
+          aMeta.innerHTML = "<strong>" + (p.shortTitle || p.title) + "</strong><span class='cs-also-dot'> • </span><span class='cs-also-yr'>" + (p.year || "") + "</span>";
+          ac.appendChild(aImg); ac.appendChild(aMeta);
+          (function (id) { ac.addEventListener("click", function (e) { e.stopPropagation(); openModal(id); }); })(p.id);
+          alsoGrid.appendChild(ac);
+        });
+        csAlso.appendChild(alsoGrid);
+      }
+
       modal.classList.add("open");
       document.body.style.overflow = "hidden";
       card.scrollTop = 0;
@@ -779,6 +814,27 @@ const ITEMS = [
   .cs-pw-btn:hover { color: #1a1a1a; }
   .cs-pw-error { font-size: 12px; color: #d94f4f; margin-top: 10px; min-height: 16px; }
   .cs-pw-cover { margin-top: 32px; }
+
+  /* ── Also check out ── */
+  .cs-also { margin-top: 52px; }
+  .cs-also-label {
+    font-size: 13px; color: #b8b8b8; margin: 0 0 20px;
+  }
+  .cs-also-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  .cs-also-card {
+    cursor: pointer; display: flex; flex-direction: column; gap: 10px;
+    transition: opacity 0.15s;
+  }
+  .cs-also-card:hover { opacity: 0.8; }
+  .cs-also-img {
+    width: 100%; aspect-ratio: 16/10; object-fit: cover;
+    border-radius: 12px; display: block; background: #f5f5f7;
+  }
+  .cs-also-meta { font-size: 14px; color: #1a1a1a; margin: 0; }
+  .cs-also-dot { color: #c0c0c0; }
+  .cs-also-yr  { color: #b0b0b0; font-weight: 400; }
 </style>
 
 <style>
