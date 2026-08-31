@@ -235,6 +235,7 @@ const PROJECTS = [
     shortTitle: "Pfizer AI Externship",
     description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer—combining OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
     image: "/pfizer-hero.jpg",
+    images: ["/pfizer-hero.jpg", "/pfizer-ui.png"],
     grayscaleImage: true,
     logo: "/pfizer.svg",
     logoHeight: "36px",
@@ -969,16 +970,16 @@ const SKILLS = [
         sideRow.appendChild(firstImg);
         hpmImages.appendChild(sideRow);
 
-        imgs.slice(1).forEach(function (src) {
-          var img = document.createElement("img");
-          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
-          if (d.grayscaleImage) img.style.filter = "grayscale(100%)";
-          hpmImages.appendChild(img);
-        });
-
         if (d.pdfPreviewUrl) {
           renderPdfViewer(hpmImages, d.pdfPreviewUrl);
         }
+
+        imgs.slice(1).forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          img.style.marginTop = "14px";
+          hpmImages.appendChild(img);
+        });
       } else {
         var imgs = d.images && d.images.length ? d.images : [d.image];
         imgs.forEach(function (src) {

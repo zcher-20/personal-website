@@ -316,6 +316,7 @@ const ITEMS = [
     year: "2026",
     description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer. Combined OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
     image: "/pfizer-hero.jpg",
+    images: ["/pfizer-hero.jpg", "/pfizer-ui.png"],
     grayscaleImage: true,
     logo: "/pfizer.svg",
     logoHeight: "32px",
@@ -874,16 +875,17 @@ const ITEMS = [
           sideRow.appendChild(firstImg);
           csImages.appendChild(sideRow);
 
-          // Remaining images below
-          imgs.slice(1).forEach(function (src) {
-            var img = document.createElement("img");
-            img.src = src; img.alt = d.title; img.className = "cs-image";
-            csImages.appendChild(img);
-          });
-
           if (d.pdfPreviewUrl) {
             renderPdfViewer(csImages, d.pdfPreviewUrl);
           }
+
+          // Remaining images below PDF
+          imgs.slice(1).forEach(function (src) {
+            var img = document.createElement("img");
+            img.src = src; img.alt = d.title; img.className = "cs-image";
+            img.style.marginTop = "14px";
+            csImages.appendChild(img);
+          });
         } else {
           var imgs = d.images && d.images.length ? d.images : [d.image];
           imgs.forEach(function (src) {
