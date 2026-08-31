@@ -945,6 +945,10 @@ const SKILLS = [
       hpmImages.appendChild(coverImg);
     } else {
       if (d.caseStudyUrl) {
+        var csLabel = document.createElement("p");
+        csLabel.textContent = "Case Study";
+        csLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:0 0 8px;";
+        hpmImages.appendChild(csLabel);
         var sideRow = document.createElement("div");
         sideRow.style.cssText = "display:flex; gap:14px; align-items:stretch;";
 
@@ -971,13 +975,20 @@ const SKILLS = [
         hpmImages.appendChild(sideRow);
 
         if (d.pdfPreviewUrl) {
+          var pdfLabel = document.createElement("p");
+          pdfLabel.textContent = "Final Presentation";
+          pdfLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+          hpmImages.appendChild(pdfLabel);
           renderPdfViewer(hpmImages, d.pdfPreviewUrl);
         }
 
-        imgs.slice(1).forEach(function (src) {
+        imgs.slice(1).forEach(function (src, i) {
+          var imgLabel = document.createElement("p");
+          imgLabel.textContent = "Project Interface";
+          imgLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+          hpmImages.appendChild(imgLabel);
           var img = document.createElement("img");
           img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
-          img.style.marginTop = "14px";
           hpmImages.appendChild(img);
         });
       } else {

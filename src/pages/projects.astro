@@ -850,6 +850,10 @@ const ITEMS = [
       } else {
         if (d.caseStudyUrl) {
           // Side-by-side wrapper: preview card + image
+          var csLabel = document.createElement("p");
+          csLabel.textContent = "Case Study";
+          csLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:0 0 8px;";
+          csImages.appendChild(csLabel);
           var sideRow = document.createElement("div");
           sideRow.style.cssText = "display:flex; gap:14px; align-items:stretch;";
 
@@ -876,14 +880,21 @@ const ITEMS = [
           csImages.appendChild(sideRow);
 
           if (d.pdfPreviewUrl) {
+            var pdfLabel = document.createElement("p");
+            pdfLabel.textContent = "Final Presentation";
+            pdfLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+            csImages.appendChild(pdfLabel);
             renderPdfViewer(csImages, d.pdfPreviewUrl);
           }
 
           // Remaining images below PDF
           imgs.slice(1).forEach(function (src) {
+            var imgLabel = document.createElement("p");
+            imgLabel.textContent = "Project Interface";
+            imgLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+            csImages.appendChild(imgLabel);
             var img = document.createElement("img");
             img.src = src; img.alt = d.title; img.className = "cs-image";
-            img.style.marginTop = "14px";
             csImages.appendChild(img);
           });
         } else {
