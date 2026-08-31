@@ -228,26 +228,27 @@ const PROJECTS = [
     links: [{ label: "GitHub →", href: "https://github.com/zcher-20/wildfire_data_pipeline" }],
   },
   {
-    id: "enterprise-ai",
+    id: "pfizer",
     section: "work",
-    confidential: true,
     year: "2026",
-    title: "Agentic AI Platform",
-    shortTitle: "Statistical Agentic Systems",
-    description: "Engineered production-facing AI agents built on a custom LLM and modular skill architecture. Developed full-stack agentic workflows and contributed across agent logic, transcription, document processing, multimodal data pipelines, and product interfaces.",
-    image: "/project-agentic-eval.png",
-    logo: "/startup.webp",
-    logoHeight: "72px",
-    logoOffset: "-18px",
-    venue: "MIT-Incubated Stealth AI Startup",
-    tags: ["LLM Agents", "Agentic AI", "Full-Stack", "Document AI"],
+    title: "AI-Powered Document Insights & Data Extraction",
+    shortTitle: "Pfizer AI Externship",
+    description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer—combining OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
+    image: "/pfizer-hero.jpg",
+    grayscaleImage: true,
+    logo: "/pfizer.svg",
+    logoHeight: "36px",
+    caseStudyUrl: "/projects/pfizer",
+    pdfPreviewUrl: "/pfizer-presentation.pdf",
+    venue: "Pfizer · AI Externship · 2026",
+    tags: ["OCR", "RAG", "LLMs", "Python", "Document Intelligence"],
     meta: [
-      { label: "ROLE",    value: "AI/ML Engineering · Full-Stack Engineering · Product Design" },
-      { label: "BUILT",   value: "Agent Workflows · Skill Integrations · Frontend · Backend · Document Processing · Transcription" },
-      { label: "SYSTEM",  value: "Custom LLM · Modular Skills · Multimodal Pipelines · Human-in-the-Loop Workflows" },
-      { label: "DOMAINS", value: "Healthcare · Finance · Mathematics · Enterprise" },
+      { label: "ROLE",   value: "AI Engineering · Document Intelligence" },
+      { label: "BUILT",  value: "OCR Pipeline · RAG System · Data Extraction · Image Denoising · Gradio Chatbot" },
+      { label: "STACK",  value: "Python · LlamaIndex · Gradio · OCR · LLMs" },
+      { label: "DOMAIN", value: "Pharmaceutical · Enterprise PDF Workflows" },
     ],
-    links: [],
+    links: [{ label: "View Project →", href: "/projects/pfizer" }],
   },
   {
     id: "investment",
@@ -296,7 +297,7 @@ const PROJECTS = [
     ],
     links: [],
   },
-].filter((item: any) => ["aimc", "enterprise-ai", "healthcare-ai", "ricer"].includes(item.id));
+].filter((item: any) => ["aimc", "pfizer", "healthcare-ai", "ricer"].includes(item.id));
 
 const SKILLS = [
   {
@@ -487,7 +488,7 @@ const SKILLS = [
             {PROJECTS.map((item) => (
               <div class="home-proj-card" data-id={item.id}>
                 <div class="home-proj-img-wrap">
-                  <img src={item.image} alt={item.title} loading="lazy" draggable="false" />
+                  <img src={item.image} alt={item.title} loading="lazy" draggable="false" style={item.grayscaleImage ? "filter: grayscale(100%);" : ""} />
                 </div>
                 <p class="home-proj-title">{item.shortTitle}</p>
                 {item.venue && <p class="home-proj-venue">{item.venue}</p>}
@@ -751,6 +752,77 @@ const SKILLS = [
 (function () {
   var CASE_STUDY_PW = "zayneb"; // change to your preferred password
 
+  function renderPdfViewer(container, pdfUrl) {
+    var wrap = document.createElement("div");
+    wrap.style.cssText = "margin-top:20px; border:1px solid rgba(0,0,0,0.1); border-radius:12px; overflow:hidden; background:#f5f5f7;";
+
+    var canvasWrap = document.createElement("div");
+    canvasWrap.style.cssText = "overflow-y:auto; max-height:480px; padding:16px; display:flex; flex-direction:column; gap:12px; align-items:center;";
+
+    var nav = document.createElement("div");
+    nav.style.cssText = "display:flex; align-items:center; justify-content:center; gap:16px; padding:10px 16px; border-top:1px solid rgba(0,0,0,0.08); background:#fff;";
+
+    var prevBtn = document.createElement("button");
+    prevBtn.textContent = "←";
+    prevBtn.style.cssText = "background:none; border:1px solid #ddd; border-radius:6px; padding:4px 14px; cursor:pointer; font-size:14px; color:#444;";
+
+    var pageInfo = document.createElement("span");
+    pageInfo.style.cssText = "font-size:12px; opacity:0.5; min-width:50px; text-align:center;";
+    pageInfo.textContent = "…";
+
+    var nextBtn = document.createElement("button");
+    nextBtn.textContent = "→";
+    nextBtn.style.cssText = "background:none; border:1px solid #ddd; border-radius:6px; padding:4px 14px; cursor:pointer; font-size:14px; color:#444;";
+
+    nav.appendChild(prevBtn); nav.appendChild(pageInfo); nav.appendChild(nextBtn);
+    wrap.appendChild(canvasWrap); wrap.appendChild(nav);
+    container.appendChild(wrap);
+
+    var pdfDoc = null, currentPage = 1, rendering = false;
+
+    function loadPdfJs(cb) {
+      if (window.pdfjsLib) { cb(); return; }
+      var s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      s.onload = function() {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        cb();
+      };
+      document.head.appendChild(s);
+    }
+
+    function renderPage(num) {
+      if (!pdfDoc || rendering) return;
+      rendering = true;
+      pdfDoc.getPage(num).then(function(page) {
+        var dpr = window.devicePixelRatio || 1;
+        var scale = (canvasWrap.clientWidth - 32) / page.getViewport({ scale: 1 }).width;
+        var vp = page.getViewport({ scale: scale * dpr });
+        var canvas = document.createElement("canvas");
+        canvas.width = vp.width; canvas.height = vp.height;
+        canvas.style.cssText = "border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); max-width:100%; width:" + (vp.width / dpr) + "px; height:" + (vp.height / dpr) + "px;";
+        canvasWrap.innerHTML = "";
+        canvasWrap.appendChild(canvas);
+        page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise.then(function() {
+          rendering = false;
+          pageInfo.textContent = num + " / " + pdfDoc.numPages;
+          prevBtn.style.opacity = num <= 1 ? "0.3" : "1";
+          nextBtn.style.opacity = num >= pdfDoc.numPages ? "0.3" : "1";
+        });
+      });
+    }
+
+    prevBtn.addEventListener("click", function(e) { e.stopPropagation(); if (currentPage > 1) { currentPage--; renderPage(currentPage); } });
+    nextBtn.addEventListener("click", function(e) { e.stopPropagation(); if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); } });
+
+    loadPdfJs(function() {
+      window.pdfjsLib.getDocument(pdfUrl).promise.then(function(doc) {
+        pdfDoc = doc;
+        renderPage(1);
+      });
+    });
+  }
+
   function showPwGate(container, onUnlock) {
     var gate = document.createElement("div");
     gate.className = "hpm-pw-gate";
@@ -825,9 +897,7 @@ const SKILLS = [
     var firstLink = d.links && d.links.length ? d.links[0] : null;
     if (firstLink) {
       hpmVisitBtn.href = firstLink.href;
-      var isGithub = firstLink.href.indexOf("github.com") !== -1;
-      var isResearch = d.section === "research";
-      hpmVisitBtn.textContent = isResearch ? "View Publication ↗" : isGithub ? "Visit Repo ↗" : "Visit Site ↗";
+      hpmVisitBtn.textContent = firstLink.label || "Visit ↗";
       hpmVisitBtn.style.display = "";
     } else {
       hpmVisitBtn.style.display = "none";
@@ -873,12 +943,51 @@ const SKILLS = [
       coverImg.className = "hpm-cs-image hpm-pw-cover";
       hpmImages.appendChild(coverImg);
     } else {
-      var imgs = d.images && d.images.length ? d.images : [d.image];
-      imgs.forEach(function (src) {
-        var img = document.createElement("img");
-        img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
-        hpmImages.appendChild(img);
-      });
+      if (d.caseStudyUrl) {
+        var sideRow = document.createElement("div");
+        sideRow.style.cssText = "display:flex; gap:14px; align-items:stretch;";
+
+        var previewCard = document.createElement("a");
+        previewCard.href = d.caseStudyUrl;
+        previewCard.style.cssText = "flex:1; min-width:0; display:flex; flex-direction:column; justify-content:space-between; text-decoration:none; color:inherit; border:1px solid rgba(0,0,0,0.1); border-radius:12px; padding:20px; background:#fff; transition:border-color 0.15s, box-shadow 0.15s;";
+        previewCard.addEventListener("click", function(e) { e.stopPropagation(); });
+        previewCard.innerHTML = '<p style="font-size:16px; font-weight:700; line-height:1.4; margin:0 0 16px;">' + (d.shortTitle || d.title) + ' — Case Study</p>' +
+          '<div style="display:flex; flex-direction:column; gap:8px; flex:1;">' +
+            '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.45;"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;flex-shrink:0;display:inline-block;"></span><span>Overview</span></div>' +
+            '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.45;"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;flex-shrink:0;display:inline-block;"></span><span>What I\'ve accomplished</span></div>' +
+            '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.85; font-weight:500;"><span style="width:6px;height:6px;border-radius:50%;background:#0050d8;flex-shrink:0;display:inline-block;"></span><span>Project breakdown · 8 modules</span></div>' +
+          '</div>' +
+          '<div style="display:flex; justify-content:flex-end; margin-top:16px;"><span style="font-size:12px; font-weight:600; letter-spacing:0.02em; color:#0050d8;">View full breakdown →</span></div>';
+
+        var imgs = d.images && d.images.length ? d.images : [d.image];
+        var firstImg = document.createElement("img");
+        firstImg.src = imgs[0]; firstImg.alt = d.title;
+        firstImg.style.cssText = "flex:1; min-width:0; object-fit:cover; border-radius:12px; display:block; max-height:220px;";
+        if (d.grayscaleImage) firstImg.style.filter = "grayscale(100%)";
+
+        sideRow.appendChild(previewCard);
+        sideRow.appendChild(firstImg);
+        hpmImages.appendChild(sideRow);
+
+        imgs.slice(1).forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          if (d.grayscaleImage) img.style.filter = "grayscale(100%)";
+          hpmImages.appendChild(img);
+        });
+
+        if (d.pdfPreviewUrl) {
+          renderPdfViewer(hpmImages, d.pdfPreviewUrl);
+        }
+      } else {
+        var imgs = d.images && d.images.length ? d.images : [d.image];
+        imgs.forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          if (d.grayscaleImage) img.style.filter = "grayscale(100%)";
+          hpmImages.appendChild(img);
+        });
+      }
     }
 
     modal.classList.add("open");

@@ -5,7 +5,7 @@ import {marked} from "marked"
 
 type Props = Project;
 
-const { title, description, image, year, url, demoUrl, pdfUrl, tags, venue, skills, learnings, focus, links: projectLinks, linkLabel: customLinkLabel } = Astro.props;
+const { title, description, image, year, url, demoUrl, pdfUrl, tags, venue, skills, learnings, focus, links: projectLinks, linkLabel: customLinkLabel, grayscaleImage } = Astro.props;
 const htmlDescription = marked.parse(description);
 const cardId = Math.random().toString(36).slice(2, 8);
 const displaySkills = skills || tags || [];
@@ -33,6 +33,7 @@ const linkLabel = customLinkLabel || (pdfUrl || url.includes('openreview') || ur
             src={image}
             alt={title}
             class="w-full h-full object-cover"
+            style={grayscaleImage ? "filter: grayscale(100%);" : ""}
           />
         )}
       </div>

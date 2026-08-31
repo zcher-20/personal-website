@@ -101,6 +101,7 @@ export type Project = {
   focus?: string[];
   links?: { label: string; url: string }[];
   linkLabel?: string;
+  grayscaleImage?: boolean;
 };
 
 export type ProjectPageContent = {

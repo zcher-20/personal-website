@@ -316,6 +316,7 @@ const ITEMS = [
     year: "2026",
     description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer. Combined OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
     image: "/pfizer-hero.jpg",
+    grayscaleImage: true,
     logo: "/pfizer.svg",
     logoHeight: "32px",
     venue: "Pfizer · AI Externship",
@@ -326,6 +327,7 @@ const ITEMS = [
       { label: "STACK", value: "Python · LlamaIndex · OCR Engines · LLMs · Gradio" },
     ],
     caseStudyUrl: "/projects/pfizer",
+    pdfPreviewUrl: "/pfizer-presentation.pdf",
     linkLabel: "Project Details",
     links: [
       { label: "Project Details →", href: "/projects/pfizer" },
@@ -512,6 +514,77 @@ const ITEMS = [
 
   // ── Password gate ─────────────────────────────────────────────────────────
   var CASE_STUDY_PW = "zayneb"; // change to your preferred password
+
+  function renderPdfViewer(container, pdfUrl) {
+    var wrap = document.createElement("div");
+    wrap.style.cssText = "margin-top:20px; border:1px solid rgba(0,0,0,0.1); border-radius:12px; overflow:hidden; background:#f5f5f7;";
+
+    var canvasWrap = document.createElement("div");
+    canvasWrap.style.cssText = "overflow-y:auto; max-height:480px; padding:16px; display:flex; flex-direction:column; gap:12px; align-items:center;";
+
+    var nav = document.createElement("div");
+    nav.style.cssText = "display:flex; align-items:center; justify-content:center; gap:16px; padding:10px 16px; border-top:1px solid rgba(0,0,0,0.08); background:#fff;";
+
+    var prevBtn = document.createElement("button");
+    prevBtn.textContent = "←";
+    prevBtn.style.cssText = "background:none; border:1px solid #ddd; border-radius:6px; padding:4px 14px; cursor:pointer; font-size:14px; color:#444;";
+
+    var pageInfo = document.createElement("span");
+    pageInfo.style.cssText = "font-size:12px; opacity:0.5; min-width:50px; text-align:center;";
+    pageInfo.textContent = "…";
+
+    var nextBtn = document.createElement("button");
+    nextBtn.textContent = "→";
+    nextBtn.style.cssText = "background:none; border:1px solid #ddd; border-radius:6px; padding:4px 14px; cursor:pointer; font-size:14px; color:#444;";
+
+    nav.appendChild(prevBtn); nav.appendChild(pageInfo); nav.appendChild(nextBtn);
+    wrap.appendChild(canvasWrap); wrap.appendChild(nav);
+    container.appendChild(wrap);
+
+    var pdfDoc = null, currentPage = 1, rendering = false;
+
+    function loadPdfJs(cb) {
+      if (window.pdfjsLib) { cb(); return; }
+      var s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      s.onload = function() {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        cb();
+      };
+      document.head.appendChild(s);
+    }
+
+    function renderPage(num) {
+      if (!pdfDoc || rendering) return;
+      rendering = true;
+      pdfDoc.getPage(num).then(function(page) {
+        var dpr = window.devicePixelRatio || 1;
+        var scale = (canvasWrap.clientWidth - 32) / page.getViewport({ scale: 1 }).width;
+        var vp = page.getViewport({ scale: scale * dpr });
+        var canvas = document.createElement("canvas");
+        canvas.width = vp.width; canvas.height = vp.height;
+        canvas.style.cssText = "border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); max-width:100%; width:" + (vp.width / dpr) + "px; height:" + (vp.height / dpr) + "px;";
+        canvasWrap.innerHTML = "";
+        canvasWrap.appendChild(canvas);
+        page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise.then(function() {
+          rendering = false;
+          pageInfo.textContent = num + " / " + pdfDoc.numPages;
+          prevBtn.style.opacity = num <= 1 ? "0.3" : "1";
+          nextBtn.style.opacity = num >= pdfDoc.numPages ? "0.3" : "1";
+        });
+      });
+    }
+
+    prevBtn.addEventListener("click", function(e) { e.stopPropagation(); if (currentPage > 1) { currentPage--; renderPage(currentPage); } });
+    nextBtn.addEventListener("click", function(e) { e.stopPropagation(); if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); } });
+
+    loadPdfJs(function() {
+      window.pdfjsLib.getDocument(pdfUrl).promise.then(function(doc) {
+        pdfDoc = doc;
+        renderPage(1);
+      });
+    });
+  }
 
   function showPwGate(container, d, onUnlock) {
     var gate = document.createElement("div");
@@ -795,6 +868,7 @@ const ITEMS = [
           var firstImg = document.createElement("img");
           firstImg.src = imgs[0]; firstImg.alt = d.title;
           firstImg.style.cssText = "flex:1; min-width:0; object-fit:cover; border-radius:12px; display:block; max-height:220px;";
+          if (d.grayscaleImage) firstImg.style.filter = "grayscale(100%)";
 
           sideRow.appendChild(previewCard);
           sideRow.appendChild(firstImg);
@@ -806,6 +880,10 @@ const ITEMS = [
             img.src = src; img.alt = d.title; img.className = "cs-image";
             csImages.appendChild(img);
           });
+
+          if (d.pdfPreviewUrl) {
+            renderPdfViewer(csImages, d.pdfPreviewUrl);
+          }
         } else {
           var imgs = d.images && d.images.length ? d.images : [d.image];
           imgs.forEach(function (src) {

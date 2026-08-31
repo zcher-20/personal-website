@@ -112,6 +112,7 @@ export const projectsPageContent: ProjectPageContent = {
       title: "Pfizer: AI-Powered Document Insights & Data Extraction Externship",
       description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer—combining OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
       image: "/pfizer-hero.jpg",
+      grayscaleImage: true,
       url: "/projects/pfizer",
       linkLabel: "View project",
       featured: true,
