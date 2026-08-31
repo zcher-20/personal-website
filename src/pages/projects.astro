@@ -852,7 +852,7 @@ const ITEMS = [
           // Side-by-side wrapper: preview card + image
           var csLabel = document.createElement("p");
           csLabel.textContent = "Case Study";
-          csLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:0 0 8px;";
+          csLabel.style.cssText = "font-size:26px; font-weight:300; letter-spacing:-0.025em; line-height:1.2; color:#1a1a1a; text-align:center; margin:0 0 14px;";
           csImages.appendChild(csLabel);
           var sideRow = document.createElement("div");
           sideRow.style.cssText = "display:flex; gap:14px; align-items:stretch;";
@@ -882,7 +882,7 @@ const ITEMS = [
           if (d.pdfPreviewUrl) {
             var pdfLabel = document.createElement("p");
             pdfLabel.textContent = "Final Presentation";
-            pdfLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+            pdfLabel.style.cssText = "font-size:26px; font-weight:300; letter-spacing:-0.025em; line-height:1.2; color:#1a1a1a; text-align:center; margin:28px 0 14px;";
             csImages.appendChild(pdfLabel);
             renderPdfViewer(csImages, d.pdfPreviewUrl);
           }
@@ -891,7 +891,7 @@ const ITEMS = [
           imgs.slice(1).forEach(function (src) {
             var imgLabel = document.createElement("p");
             imgLabel.textContent = "Project Interface";
-            imgLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+            imgLabel.style.cssText = "font-size:26px; font-weight:300; letter-spacing:-0.025em; line-height:1.2; color:#1a1a1a; text-align:center; margin:28px 0 14px;";
             csImages.appendChild(imgLabel);
             var img = document.createElement("img");
             img.src = src; img.alt = d.title; img.className = "cs-image";
