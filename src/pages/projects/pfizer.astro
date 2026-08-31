@@ -83,7 +83,18 @@ const tags = ["AI & ML", "Python", "Document Intelligence", "Presentation Skills
       <p class="pfizer-body">
         I delivered cleaned CSV and flattened JSON outputs, produced normalized date and metadata lists from multi-record SDFs, documented multiple inconsistent OCR date formats in a supplier PDF, applied CLAHE denoising and contrast enhancement to noisy scans, assembled end-to-end RAG pipelines that returned grounded answers with citations, implemented page-level splitting with prompt-based routing, and built a Gradio chatbot demonstrating retrieval-backed document Q&A.
       </p>
-      <a href="/certifications/pfizer.pdf" target="_blank" class="pfizer-cert-btn">View certificate</a>
+    </section>
+
+    <!-- Presentation PDF -->
+    <section class="pfizer-pdf-section">
+      <div class="pfizer-pdf-viewer" id="pfizer-pdf-viewer">
+        <div class="pfizer-pdf-canvas-wrap" id="pfizer-pdf-canvas-wrap"></div>
+        <div class="pfizer-pdf-nav">
+          <button id="pfizer-pdf-prev">←</button>
+          <span id="pfizer-pdf-info">…</span>
+          <button id="pfizer-pdf-next">→</button>
+        </div>
+      </div>
     </section>
 
     <!-- Breakdown -->
@@ -108,7 +119,6 @@ const tags = ["AI & ML", "Python", "Document Intelligence", "Presentation Skills
     </section>
 
   </article>
-</WorkspaceLayout>
 
 <style>
   .pfizer-page {
@@ -455,6 +465,74 @@ const tags = ["AI & ML", "Python", "Document Intelligence", "Presentation Skills
     margin-top: 2px;
   }
 
+  /* PDF viewer */
+  .pfizer-pdf-section {
+    margin-bottom: 56px;
+  }
+
+  .pfizer-pdf-viewer {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f5f5f7;
+  }
+
+  :global(.dark) .pfizer-pdf-viewer {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .pfizer-pdf-canvas-wrap {
+    overflow-y: auto;
+    max-height: 520px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pfizer-pdf-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    background: #fff;
+  }
+
+  :global(.dark) .pfizer-pdf-nav {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .pfizer-pdf-nav button {
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    padding: 5px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: inherit;
+    transition: background 0.15s;
+  }
+
+  .pfizer-pdf-nav button:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  :global(.dark) .pfizer-pdf-nav button {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  #pfizer-pdf-info {
+    font-size: 12px;
+    opacity: 0.45;
+    min-width: 50px;
+    text-align: center;
+  }
+
   /* Mobile */
   @media (max-width: 640px) {
     .pfizer-page {
@@ -480,3 +558,65 @@ const tags = ["AI & ML", "Python", "Document Intelligence", "Presentation Skills
     }
   }
 </style>
+
+<script is:inline>
+(function () {
+  var canvasWrap = document.getElementById("pfizer-pdf-canvas-wrap");
+  var prevBtn    = document.getElementById("pfizer-pdf-prev");
+  var nextBtn    = document.getElementById("pfizer-pdf-next");
+  var pageInfo   = document.getElementById("pfizer-pdf-info");
+
+  var pdfDoc = null, currentPage = 1, rendering = false;
+
+  function loadPdfJs(cb) {
+    if (window.pdfjsLib) { cb(); return; }
+    var s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    s.onload = function () {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      cb();
+    };
+    document.head.appendChild(s);
+  }
+
+  function renderPage(num) {
+    if (!pdfDoc || rendering) return;
+    rendering = true;
+    pdfDoc.getPage(num).then(function (page) {
+      var dpr   = window.devicePixelRatio || 1;
+      var scale = (canvasWrap.clientWidth - 40) / page.getViewport({ scale: 1 }).width;
+      var vp    = page.getViewport({ scale: scale * dpr });
+      var canvas = document.createElement("canvas");
+      canvas.width  = vp.width;
+      canvas.height = vp.height;
+      canvas.style.cssText =
+        "border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1); max-width:100%;" +
+        "width:" + (vp.width / dpr) + "px; height:" + (vp.height / dpr) + "px;";
+      canvasWrap.innerHTML = "";
+      canvasWrap.appendChild(canvas);
+      page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise.then(function () {
+        rendering = false;
+        pageInfo.textContent = num + " / " + pdfDoc.numPages;
+        prevBtn.style.opacity = num <= 1 ? "0.3" : "1";
+        nextBtn.style.opacity = num >= pdfDoc.numPages ? "0.3" : "1";
+      });
+    });
+  }
+
+  prevBtn.addEventListener("click", function () {
+    if (currentPage > 1) { currentPage--; renderPage(currentPage); }
+  });
+  nextBtn.addEventListener("click", function () {
+    if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); }
+  });
+
+  loadPdfJs(function () {
+    window.pdfjsLib.getDocument("/pfizer-presentation.pdf").promise.then(function (doc) {
+      pdfDoc = doc;
+      renderPage(1);
+    });
+  });
+})();
+</script>
+</WorkspaceLayout>
