@@ -309,6 +309,30 @@ const ITEMS = [
     left: "37%", top: "60%", width: "118px",
   },
   {
+    id: "pfizer",
+    section: "work",
+    title: "Pfizer AI Document Intelligence Externship",
+    shortTitle: "Pfizer Externship",
+    year: "2026",
+    description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer. Combined OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
+    image: "/pfizer-hero.jpg",
+    logo: "/pfizer.svg",
+    logoHeight: "32px",
+    venue: "Pfizer · AI Externship",
+    tags: ["OCR", "RAG", "LLMs", "Python", "Document Intelligence"],
+    meta: [
+      { label: "ROLE",  value: "AI Engineering · Document Intelligence · Research" },
+      { label: "BUILT", value: "OCR Pipeline · RAG System · Data Extraction · Gradio Chatbot" },
+      { label: "STACK", value: "Python · LlamaIndex · OCR Engines · LLMs · Gradio" },
+    ],
+    caseStudyUrl: "/projects/pfizer",
+    linkLabel: "Project Details",
+    links: [
+      { label: "Project Details →", href: "/projects/pfizer" },
+    ],
+    left: "38%", top: "80%", width: "118px",
+  },
+  {
     id: "hmxb",
     section: "research",
     confidential: true,
@@ -676,7 +700,10 @@ const ITEMS = [
         csLogo.style.marginLeft = d.logoOffset || "0px";
         csLogo.style.display = "";
       } else {
-        csLogo.style.display = "none";
+        csLogo.src = "/favicon.png"; csLogo.alt = "Zayneb Cherif";
+        csLogo.style.height = "32px";
+        csLogo.style.marginLeft = "0px";
+        csLogo.style.display = "";
       }
       csTitleText.textContent = d.title;
       csTitleYear.textContent = d.year || "";
@@ -690,7 +717,7 @@ const ITEMS = [
         csVisitBtn.href = firstLink.href;
         var isGithub = firstLink.href.indexOf("github.com") !== -1;
         var isResearch = d.section === "research";
-        csVisitBtn.textContent = isResearch ? "View Publication ↗" : isGithub ? "Visit Repo ↗" : "Visit Site ↗";
+        csVisitBtn.textContent = d.linkLabel ? d.linkLabel + " ↗" : isResearch ? "View Publication ↗" : isGithub ? "Visit Repo ↗" : "Visit Site ↗";
         csVisitBtn.style.display = "";
       } else {
         csVisitBtn.style.display = "none";
@@ -698,36 +725,35 @@ const ITEMS = [
 
       // Stack columns — from meta (split " · "), else from tags
       csStack.innerHTML = "";
-      if (d.meta && d.meta.length) {
-        d.meta.forEach(function (m) {
-          var col = document.createElement("div");
-          col.className = "cs-col";
-          var lbl = document.createElement("span");
-          lbl.className = "cs-col-label";
-          lbl.textContent = m.label;
-          col.appendChild(lbl);
-          m.value.split(" · ").forEach(function (item) {
-            var p = document.createElement("p");
-            p.className = "cs-col-item";
-            p.textContent = item.trim();
-            col.appendChild(p);
-          });
-          csStack.appendChild(col);
-        });
-      } else if (d.tags && d.tags.length) {
+      var isMobile = window.innerWidth <= 768;
+      function buildCol(label, items) {
         var col = document.createElement("div");
         col.className = "cs-col";
         var lbl = document.createElement("span");
         lbl.className = "cs-col-label";
-        lbl.textContent = "Stack";
+        lbl.textContent = label;
         col.appendChild(lbl);
-        d.tags.forEach(function (t) {
-          var p = document.createElement("p");
-          p.className = "cs-col-item";
-          p.textContent = t;
-          col.appendChild(p);
+        if (isMobile) {
+          var row = document.createElement("p");
+          row.className = "cs-col-item";
+          row.textContent = items.join(" · ");
+          col.appendChild(row);
+        } else {
+          items.forEach(function (item) {
+            var p = document.createElement("p");
+            p.className = "cs-col-item";
+            p.textContent = item;
+            col.appendChild(p);
+          });
+        }
+        return col;
+      }
+      if (d.meta && d.meta.length) {
+        d.meta.forEach(function (m) {
+          csStack.appendChild(buildCol(m.label, m.value.split(" · ").map(function(s){ return s.trim(); })));
         });
-        csStack.appendChild(col);
+      } else if (d.tags && d.tags.length) {
+        csStack.appendChild(buildCol("Stack", d.tags));
       }
 
       // Images (or password gate for confidential projects)
@@ -748,12 +774,46 @@ const ITEMS = [
         coverImg.className = "cs-image cs-pw-cover";
         csImages.appendChild(coverImg);
       } else {
-        var imgs = d.images && d.images.length ? d.images : [d.image];
-        imgs.forEach(function (src) {
-          var img = document.createElement("img");
-          img.src = src; img.alt = d.title; img.className = "cs-image";
-          csImages.appendChild(img);
-        });
+        if (d.caseStudyUrl) {
+          // Side-by-side wrapper: preview card + image
+          var sideRow = document.createElement("div");
+          sideRow.style.cssText = "display:flex; gap:14px; align-items:stretch;";
+
+          var previewCard = document.createElement("a");
+          previewCard.href = d.caseStudyUrl;
+          previewCard.style.cssText = "flex:1; min-width:0; display:flex; flex-direction:column; justify-content:space-between; text-decoration:none; color:inherit; border:1px solid rgba(0,0,0,0.1); border-radius:12px; padding:20px; background:#fff; transition:border-color 0.15s, box-shadow 0.15s;";
+          previewCard.addEventListener("click", function(e) { e.stopPropagation(); });
+          previewCard.innerHTML = '<p style="font-size:16px; font-weight:700; line-height:1.4; margin:0 0 16px;">' + (d.shortTitle || d.title) + ' — Case Study</p>' +
+            '<div style="display:flex; flex-direction:column; gap:8px; flex:1;">' +
+              '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.45;"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;flex-shrink:0;display:inline-block;"></span><span>Overview</span></div>' +
+              '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.45;"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;flex-shrink:0;display:inline-block;"></span><span>What I\'ve accomplished</span></div>' +
+              '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.85; font-weight:500;"><span style="width:6px;height:6px;border-radius:50%;background:#0050d8;flex-shrink:0;display:inline-block;"></span><span>Project breakdown · 8 modules</span></div>' +
+            '</div>' +
+            '<div style="display:flex; justify-content:flex-end; margin-top:16px;"><span style="font-size:12px; font-weight:600; letter-spacing:0.02em; color:#0050d8;">View full breakdown →</span></div>';
+
+          var imgs = d.images && d.images.length ? d.images : [d.image];
+          var firstImg = document.createElement("img");
+          firstImg.src = imgs[0]; firstImg.alt = d.title;
+          firstImg.style.cssText = "flex:1; min-width:0; object-fit:cover; border-radius:12px; display:block; max-height:220px;";
+
+          sideRow.appendChild(previewCard);
+          sideRow.appendChild(firstImg);
+          csImages.appendChild(sideRow);
+
+          // Remaining images below
+          imgs.slice(1).forEach(function (src) {
+            var img = document.createElement("img");
+            img.src = src; img.alt = d.title; img.className = "cs-image";
+            csImages.appendChild(img);
+          });
+        } else {
+          var imgs = d.images && d.images.length ? d.images : [d.image];
+          imgs.forEach(function (src) {
+            var img = document.createElement("img");
+            img.src = src; img.alt = d.title; img.className = "cs-image";
+            csImages.appendChild(img);
+          });
+        }
       }
 
       // Also check out — same section, random picks
@@ -786,6 +846,60 @@ const ITEMS = [
           alsoGrid.appendChild(ac);
         });
         csAlso.appendChild(alsoGrid);
+      }
+
+      // Mobile drawer: restructure card as hero-image-first with scrollable body + sticky footer
+      var existingMobileHeroWrap = card.querySelector("[data-mobile-hero]");
+      var existingMobileBody = card.querySelector(".cs-mobile-body");
+      var existingMobileFooter = card.querySelector(".cs-mobile-footer");
+      if (existingMobileHeroWrap) existingMobileHeroWrap.remove();
+      if (existingMobileFooter) existingMobileFooter.remove();
+      if (existingMobileBody) {
+        while (existingMobileBody.firstChild) card.appendChild(existingMobileBody.firstChild);
+        existingMobileBody.remove();
+      }
+
+      if (window.innerWidth <= 768) {
+        // Back button pinned to top of card
+        var mobileHeroWrap = document.createElement("div");
+        mobileHeroWrap.setAttribute("data-mobile-hero", "1");
+        mobileHeroWrap.style.cssText = "position:absolute; top:16px; left:16px; z-index:10;";
+
+        var mobileBack = document.createElement("button");
+        mobileBack.innerHTML = "<svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'/></svg>";
+        mobileBack.style.cssText = "width:36px; height:36px; border-radius:50%; background:rgba(0,0,0,0.06); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;";
+        mobileBack.addEventListener("click", function(e) { e.stopPropagation(); closeModal(); });
+
+        mobileHeroWrap.appendChild(mobileBack);
+        card.style.position = "relative";
+        card.insertBefore(mobileHeroWrap, card.firstChild);
+
+        // Wrap content in scrollable body
+        var mobileBody = document.createElement("div");
+        mobileBody.className = "cs-mobile-body";
+        mobileBody.style.cssText = "flex:1; overflow-y:auto; padding:64px 24px 0; -webkit-overflow-scrolling:touch;";
+        var children = Array.prototype.slice.call(card.childNodes);
+        children.forEach(function(child) {
+          if (child !== mobileHeroWrap) mobileBody.appendChild(child);
+        });
+        card.appendChild(mobileBody);
+
+        // Sticky footer CTA
+        var mobileFooter = document.createElement("div");
+        mobileFooter.className = "cs-mobile-footer";
+        mobileFooter.style.cssText = "display:flex; padding:14px 24px 36px; flex-shrink:0; border-top:1px solid rgba(0,0,0,0.06); background:#fff;";
+        var ctaHref = d.caseStudyUrl || d.links && d.links[0] && d.links[0].href || "#";
+        var ctaLabel = d.linkLabel ? d.linkLabel + " ↗" : "View Project ↗";
+        var ctaBtn = document.createElement("a");
+        ctaBtn.href = ctaHref;
+        ctaBtn.target = "_blank";
+        ctaBtn.rel = "noopener noreferrer";
+        ctaBtn.className = "cs-mobile-cta";
+        ctaBtn.style.cssText = "display:block; width:100%; text-align:center; text-decoration:none; background:#111; color:#fff; font-size:13px; font-weight:600; letter-spacing:0.02em; padding:14px; border-radius:12px;";
+        ctaBtn.textContent = ctaLabel;
+        ctaBtn.addEventListener("click", function(e) { e.stopPropagation(); });
+        mobileFooter.appendChild(ctaBtn);
+        card.appendChild(mobileFooter);
       }
 
       modal.classList.add("open");
@@ -1233,6 +1347,35 @@ const ITEMS = [
     padding: 52px; display: flex; flex-direction: column;
   }
 
+  .cs-case-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    align-self: flex-start;
+    margin-bottom: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid rgba(0, 80, 216, 0.3);
+    border-radius: 100px;
+    color: #0050d8;
+    text-decoration: none;
+    background: rgba(0, 80, 216, 0.05);
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .cs-case-pill:hover {
+    background: rgba(0, 80, 216, 0.1);
+    border-color: rgba(0, 80, 216, 0.5);
+  }
+
+  .cs-case-arrow {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
   /* ── Mobile project list ── */
   .mobile-proj-list { display: none; }
 
@@ -1245,7 +1388,119 @@ const ITEMS = [
     .list-view        { display: block !important; padding: 24px 20px 80px; }
     .lv-grid          { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .lv-section       { margin-bottom: 40px; }
-    .proj-header { padding: 28px 20px 12px; }
-    .wordmark-title { font-size: 22px; }
+    .proj-header      { padding: 28px 20px 12px; }
+    .wordmark-title   { font-size: 22px; }
+
+    /* ── Modal → full-page slide-in on mobile ── */
+    .modal {
+      align-items: stretch;
+      justify-content: stretch;
+      padding: 0;
+      animation: none;
+    }
+
+    .cs-nav-btn { display: none; }
+
+    .modal-card {
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      border-radius: 0;
+      padding: 0;
+      animation: mobile-slide-in 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    @keyframes mobile-slide-in {
+      from { transform: translateX(100%); opacity: 0.6; }
+      to   { transform: translateX(0); opacity: 1; }
+    }
+
+    .modal-card::before { display: none; }
+    .modal-card::after { display: none; }
+
+    /* Scrollable content area */
+    .cs-mobile-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 24px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Sticky footer CTA */
+    .cs-mobile-footer {
+      display: flex;
+      padding: 14px 24px 36px;
+      flex-shrink: 0;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      background: #fff;
+    }
+
+    .cs-mobile-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      background: #111;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 14px;
+      border-radius: 12px;
+    }
+
+    /* Hide desktop topbar on mobile */
+    .cs-topbar { display: none; }
+
+    .cs-logo { height: 22px; margin-bottom: 12px; }
+
+    .cs-title { font-size: 17px; }
+
+    .cs-title-sep,
+    .cs-title-year { display: none; }
+
+    .cs-venue { margin-bottom: 8px; font-size: 11px; }
+
+    .cs-desc { font-size: 12px; line-height: 1.65; }
+
+    .cs-header { margin-bottom: 20px; }
+
+    .cs-stack {
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .cs-col {
+      flex: none;
+      width: 100%;
+      display: block;
+      padding: 0;
+    }
+
+    .cs-col-label {
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+      opacity: 0.45;
+    }
+
+    .cs-col-item {
+      font-size: 12px;
+      color: #1a1a1a;
+      line-height: 1.5;
+      margin: 0;
+      display: block;
+    }
+
+    .cs-images { padding: 0; }
+
+    .cs-also { margin-top: 24px; }
+
+    .cs-also-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   }
 </style>

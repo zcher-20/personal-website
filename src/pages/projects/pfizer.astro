@@ -1,0 +1,482 @@
+---
+import WorkspaceLayout from "../../layouts/WorkspaceLayout.astro";
+
+const modules = [
+  {
+    num: 1,
+    title: "How AI Reads Pharmaceutical Documents",
+    summary: "I explained how large language models learn from text and generate token-by-token responses based on learned patterns and context.",
+  },
+  {
+    num: 2,
+    title: "Learn to Work with Python for AI-Powered Document Processing",
+    summary: "I cleaned structured data, normalized nested JSON, and applied image preprocessing to improve OCR readiness for pharmaceutical documents during the externship module.",
+  },
+  {
+    num: 3,
+    title: "Data Extraction from Documents Using Python",
+    summary: "I extracted and structured field data from pharmaceutical SDFs, focusing on inconsistent date formats and metadata fields.",
+  },
+  {
+    num: 4,
+    title: "Advanced OCR Comparison and Layout-Aware Extraction",
+    summary: "I compared three OCR engines and analyzed extracted text and metadata behavior on scanned pharmaceutical supplier documents.",
+  },
+  {
+    num: 5,
+    title: "Introduction to Retrieval-Augmented Generation (RAG)",
+    summary: "I built a RAG pipeline using LlamaIndex, implementing chunking, embeddings, retrieval, and re-ranking to produce grounded answers from documents.",
+  },
+  {
+    num: 6,
+    title: "Advanced RAG and Open-Source Experiments",
+    summary: "I ran experiments comparing embedding models, retriever settings, and open-source LLMs inside a RAG pipeline and documented the configurations and outputs.",
+  },
+  {
+    num: 7,
+    title: "Blob Processing, Classification, and Routing",
+    summary: "I built a page-level segmentation and routing prototype that split bundled PDFs, tagged pages with metadata, and used prompts to route queries to the best document.",
+  },
+  {
+    num: 8,
+    title: "Gradio Chatbot with RAG Integration",
+    summary: "I built a Gradio chatbot frontend and connected it to a retrieval-backed prompt handler, then demonstrated it running in Colab.",
+  },
+];
+
+const tags = ["AI & ML", "Python", "Document Intelligence", "Presentation Skills"];
+---
+
+<WorkspaceLayout seo={{ title: "Pfizer Externship | Zayneb Cherif", description: "AI-Powered Document Insights & Data Extraction Externship with Pfizer.", image: "/pfizer-hero.jpg" }}>
+  <article class="pfizer-page">
+
+    <!-- Hero -->
+    <header class="pfizer-hero">
+      <div class="pfizer-hero-logo">
+        <img src="/pfizer.svg" alt="Pfizer" class="pfizer-logo-img" />
+      </div>
+      <h1 class="pfizer-title">Pfizer Advanced: AI-Powered Document Insights &amp; Data Extraction Externship</h1>
+      <p class="pfizer-subtitle">Prototype AI-powered document intelligence with Pfizer—using OCR, LLMs, and RAG to automate real enterprise PDF workflows and build a standout portfolio project.</p>
+      <div class="pfizer-tags">
+        {tags.map(t => <span class="pfizer-tag">{t}</span>)}
+      </div>
+    </header>
+
+    <div class="pfizer-divider" />
+
+    <!-- Overview -->
+    <section class="pfizer-overview">
+      <div class="pfizer-overview-text">
+        <h2 class="pfizer-section-title">Overview</h2>
+        <p class="pfizer-body">
+          The externship prototyped an AI document-intelligence pipeline for pharmaceutical PDFs, combining OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation. Deliverables included cleaned CSV and flattened JSON outputs, normalized date and metadata lists, documented OCR date inconsistencies in a supplier PDF, enhanced noisy scans, and an end-to-end RAG pipeline returning grounded answers with citations.
+        </p>
+      </div>
+      <div class="pfizer-overview-right">
+        <img src="/pfizer-hero.jpg" alt="Pfizer AI Document Intelligence" class="pfizer-hero-img" />
+      </div>
+    </section>
+
+    <!-- Accomplished -->
+    <section class="pfizer-accomplished">
+      <h2 class="pfizer-section-title">What I've accomplished</h2>
+      <p class="pfizer-body">
+        I delivered cleaned CSV and flattened JSON outputs, produced normalized date and metadata lists from multi-record SDFs, documented multiple inconsistent OCR date formats in a supplier PDF, applied CLAHE denoising and contrast enhancement to noisy scans, assembled end-to-end RAG pipelines that returned grounded answers with citations, implemented page-level splitting with prompt-based routing, and built a Gradio chatbot demonstrating retrieval-backed document Q&A.
+      </p>
+      <a href="/certifications/pfizer.pdf" target="_blank" class="pfizer-cert-btn">View certificate</a>
+    </section>
+
+    <!-- Breakdown -->
+    <section class="pfizer-breakdown" id="breakdown">
+      <h2 class="pfizer-section-title">Project breakdown</h2>
+      <div class="pfizer-modules">
+        {modules.map(m => (
+          <div class="pfizer-module">
+            <div class="pfizer-module-inner">
+              <span class="pfizer-module-num">{m.num}</span>
+              <div class="pfizer-module-body">
+                <p class="pfizer-module-title">{m.title}</p>
+                <p class="pfizer-module-summary">{m.summary}</p>
+              </div>
+              <button class="pfizer-module-toggle" aria-label="Toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </article>
+</WorkspaceLayout>
+
+<style>
+  .pfizer-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Hero */
+  .pfizer-hero {
+    text-align: center;
+    padding-bottom: 40px;
+  }
+
+  .pfizer-hero-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .pfizer-logo-img {
+    height: 36px;
+    opacity: 0.85;
+  }
+
+  .pfizer-title {
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+
+  .pfizer-subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.6;
+    max-width: 640px;
+    margin: 0 auto 20px;
+  }
+
+  .pfizer-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .pfizer-tag {
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 100px;
+    background: transparent;
+    color: inherit;
+    letter-spacing: 0.01em;
+  }
+
+  :global(.dark) .pfizer-tag {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .pfizer-divider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin-bottom: 48px;
+  }
+
+  :global(.dark) .pfizer-divider {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Overview */
+  .pfizer-overview {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    margin-bottom: 56px;
+  }
+
+  .pfizer-overview-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pfizer-overview-right {
+    flex: 0 0 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pfizer-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+  }
+
+  /* Case study preview card */
+  .pfizer-case-preview {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .pfizer-case-preview:hover {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  :global(.dark) .pfizer-case-preview {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.09);
+  }
+
+  :global(.dark) .pfizer-case-preview:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .pfizer-case-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .pfizer-case-logo {
+    height: 20px;
+    opacity: 0.8;
+  }
+
+  .pfizer-case-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 100px;
+    opacity: 0.6;
+  }
+
+  :global(.dark) .pfizer-case-label {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .pfizer-case-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0 0 14px;
+  }
+
+  .pfizer-case-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 16px;
+  }
+
+  .pfizer-case-section-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    opacity: 0.45;
+  }
+
+  .pfizer-case-section-row.pfizer-case-section-active {
+    opacity: 0.85;
+    font-weight: 500;
+  }
+
+  .pfizer-case-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.35;
+    flex-shrink: 0;
+  }
+
+  .pfizer-case-dot.active {
+    opacity: 1;
+    background: #0050d8;
+  }
+
+  .pfizer-case-cta {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #0050d8;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  :global(.dark) .pfizer-case-cta {
+    color: #6fa3ff;
+  }
+
+  /* Accomplished */
+  .pfizer-accomplished {
+    margin-bottom: 56px;
+    padding: 36px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.015);
+  }
+
+  :global(.dark) .pfizer-accomplished {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .pfizer-cert-btn {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 12px;
+    padding: 8px 18px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .pfizer-cert-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  :global(.dark) .pfizer-cert-btn {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  :global(.dark) .pfizer-cert-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Shared text */
+  .pfizer-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .pfizer-body {
+    font-size: 14px;
+    line-height: 1.75;
+    opacity: 0.65;
+    margin: 0;
+  }
+
+  /* Breakdown */
+  .pfizer-breakdown {}
+
+  .pfizer-modules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .pfizer-module {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    background: #fff;
+    transition: border-color 0.15s;
+  }
+
+  .pfizer-module:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  :global(.dark) .pfizer-module {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+
+  :global(.dark) .pfizer-module:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .pfizer-module-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 16px;
+  }
+
+  .pfizer-module-num {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: inherit;
+    opacity: 0.6;
+  }
+
+  :global(.dark) .pfizer-module-num {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .pfizer-module-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pfizer-module-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+
+  .pfizer-module-summary {
+    font-size: 12px;
+    line-height: 1.6;
+    opacity: 0.55;
+    margin: 0;
+  }
+
+  .pfizer-module-toggle {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.4;
+    color: inherit;
+    margin-top: 2px;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .pfizer-page {
+      padding: 32px 16px 80px;
+    }
+
+    .pfizer-overview {
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .pfizer-overview-right {
+      flex: none;
+      width: 100%;
+    }
+
+    .pfizer-accomplished {
+      padding: 24px 20px;
+    }
+
+    .pfizer-modules {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

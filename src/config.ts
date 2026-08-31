@@ -109,6 +109,19 @@ export const projectsPageContent: ProjectPageContent = {
   subtitle: "AI research, full-stack apps, and systems that push the edge.",
   projects: [
     {
+      title: "Pfizer: AI-Powered Document Insights & Data Extraction Externship",
+      description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer—combining OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
+      image: "/pfizer-hero.jpg",
+      url: "/projects/pfizer",
+      linkLabel: "View project",
+      featured: true,
+      venue: "Pfizer · AI Externship · 2026",
+      tags: ["OCR", "RAG", "LLMs", "Python", "Document Intelligence"],
+      skills: ["OCR Pipeline", "RAG System", "Data Extraction", "Image Denoising", "LlamaIndex", "Gradio"],
+      learnings: "Built an end-to-end document-intelligence pipeline from OCR preprocessing to retrieval-augmented generation for pharmaceutical PDFs.",
+      focus: ["OCR comparison & layout-aware extraction", "RAG pipeline with LlamaIndex", "Blob processing, classification & routing", "Gradio chatbot with retrieval backend"],
+    },
+    {
       title: "Enterprise AI Document Processing Agent",
       description: "Building an intelligent document processing agent for a stealth startup that connects to enterprise data sources (emails, attachments, SharePoint, databases) to read, search, summarize, and reason over fragmented information. Follows a read-reason-draft-approve-act model with human oversight.",
       image: "/project-agent-new.png",
