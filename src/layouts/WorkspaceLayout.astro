@@ -399,9 +399,32 @@ const path = Astro.url.pathname;
 
   /* ── Mobile overrides ── */
   @media (max-width: 768px) {
-    .app-sidebar   { display: none !important; }
+    .app-sidebar    { display: none !important; }
     .sidebar-flyout { display: none !important; }
-    .mobile-nav    { display: flex; }
-    .ws-main       { padding-bottom: 72px; padding-top: 0; }
+    .mobile-nav     { display: flex; }
+    .ws-main        { padding-bottom: 72px; padding-top: 0; }
+
+    /* Header: stack name/nav vertically, tighten padding */
+    .ws-page-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 20px 20px 10px;
+    }
+    .ws-page-name  { font-size: 20px; }
+    .ws-page-sub   { font-size: 13px; }
+    .ws-page-socials { gap: 4px; }
+    .ws-page-social-link { font-size: 11px; }
+
+    /* Nav: smaller, hide dropdown arrow, fit in one row */
+    .site-nav { gap: 2px; padding-bottom: 0; align-self: auto; }
+    .site-nav-link { font-size: 12px; padding: 4px 8px; }
+    .site-nav-dropdown-menu { display: none !important; }
+    .site-nav-caret { display: none; }
+
+    /* Footer stacks on mobile */
+    .ws-footer { flex-direction: column; gap: 20px; padding: 28px 20px 32px; }
+    .wsf-contact { align-items: flex-start; }
+    .wsf-name { font-size: 16px; }
   }
 </style>

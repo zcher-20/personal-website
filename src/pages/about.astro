@@ -1542,29 +1542,34 @@ const SKILLS = [
     .sidebar-flyout { display: none !important; }
     .mobile-nav     { display: flex; }
 
-    .archive-main   { padding-bottom: 72px; }
-    .archive-content { padding: 28px 20px 0; }
-
-    /* Header stacks */
-    .archive-header { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 32px; }
-    .archive-identity { text-align: left; }
-    .archive-socials  { justify-content: flex-start; }
-    .archive-name  { font-size: 22px; }
-
-    /* 3-col → 2-col grid */
-    .sections-grid { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 32px; margin-bottom: 48px; }
+    /* Content padding */
+    .archive-content { padding: 24px 20px 80px; }
+    .about-page-wrap { overflow: visible; }
 
     /* About: side-by-side → stack */
-    .about-layout { flex-direction: column; gap: 32px; }
+    .about-layout { flex-direction: column; gap: 24px; }
     .about-left   { flex: none; width: 100%; }
     .about-right  { flex: none; width: 100%; }
 
-    /* Experience rows: hide date on very small screens */
+    /* Float image: clear float, center above bio on mobile */
+    .about-float-img {
+      float: none;
+      width: 120px;
+      margin: 0 0 20px 0;
+    }
+
+    /* Section headings scale down */
+    .about-heading { font-size: 20px; }
+    .exp-heading   { font-size: 18px; }
+    .skills-heading { font-size: 18px; }
+
+    /* Experience rows: hide date on small screens */
     .exp-date { display: none; }
 
-    /* Projects grid → 2×2 grid on mobile */
-    .home-proj-section { margin-left: 0; margin-right: 0; padding-top: 32px; align-items: stretch; }
-    .home-proj-section { padding-top: 32px; }
+    /* Interests: 1-col on mobile */
+    .interests-grid { grid-template-columns: 1fr; gap: 16px; }
+
+    /* Projects grid on mobile */
     .home-proj-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1572,9 +1577,7 @@ const SKILLS = [
       padding: 4px 0 12px;
       overflow-x: unset;
     }
-    .home-proj-card {
-      flex: unset;
-    }
+    .home-proj-card  { flex: unset; }
     .home-proj-title { font-size: 11.5px; }
     .home-proj-desc  { font-size: 10.5px; -webkit-line-clamp: 3; }
     .home-proj-tag   { font-size: 8px; padding: 2px 6px; }
@@ -1582,16 +1585,24 @@ const SKILLS = [
     /* Modal on mobile */
     .home-modal-card { max-height: 90vh; width: 92vw; padding: 24px 20px 40px; }
 
-    /* Footer stacks on mobile */
-    .home-footer { flex-direction: column; gap: 28px; }
-    .hf-contact { align-items: flex-start; }
-    .hf-name { font-size: 22px; }
-
     /* Home exp toggle: hide timeline on mobile, show list */
     #home-btn-horiz { display: none; }
     #home-tl-horiz  { display: none !important; }
     #home-exp-list  { display: block !important; }
     #home-btn-list  { display: none; }
+
+    /* Hide scroll spy on mobile */
+    .scroll-spy-wrap { display: none; }
+
+    /* Sections spacing */
+    .about-section { padding-bottom: 32px; }
+    .inter-section-divider { margin: 0 0 32px; }
+    .exp-section { padding-top: 32px; }
+    .interests-section { padding-top: 32px; padding-bottom: 60px; }
+
+    /* Skills */
+    .skill-pills { gap: 6px; }
+    .skill-pill  { font-size: 10px; padding: 3px 8px; }
   }
 
   /* ── Scroll spy ── */
