@@ -1,0 +1,1831 @@
+---
+import Layout from "../layouts/WorkspaceLayout.astro";
+import { Icon } from "astro-icon/components";
+import { homePageContent, workPageContent } from "../config";
+
+const now = new Date();
+const dateStr = now.toLocaleDateString("en-US", {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+
+const SECTIONS = [
+  { num: "001", label: "About",       image: "/about-cover.png",               href: "#about" },
+  { num: "002", label: "Projects",    image: "/projects-canvas-cover.png",     href: "/projects" },
+  { num: "003", label: "Experience",  image: "/experience-cover.png",          href: "#experience" },
+  { num: "004", label: "Mind",        image: "/ws-network.png",                 href: "/mind" },
+  { num: "005", label: "Bookshelf",   image: "/bookshelf-cover.jpg",            href: "/books" },
+  { num: "006", label: "Photography", image: "/photography-cover.png",           href: "/photography" },
+];
+
+const APP_NAV = [
+  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
+  { label: "About",       icon: "mdi:account-outline",     href: "#about" },
+  { label: "Selected Work", icon: "mdi:star-outline",      href: "#projects" },
+  { label: "Experience",  icon: "mdi:briefcase-outline",   href: "#experience" },
+  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photography", icon: "mdi:camera-outline",      href: "/photography" },
+];
+
+const MOBILE_NAV = [
+  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
+  { label: "About",       icon: "mdi:account-outline",     href: "#about" },
+  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
+  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
+  { label: "Photos",      icon: "mdi:camera-outline",      href: "/photography" },
+  { label: "Resume",      icon: "mdi:download-outline",    href: "/resume" },
+];
+
+const EXPERIENCE = workPageContent.items
+  .filter((job) => !job.hidden)
+  .map((job) => ({
+    ...job,
+    cleanDesc: (job.description ?? "").replace(/<[^>]*>/g, ""),
+  }));
+
+const getWrapStyle = (img: string) =>
+  img === "/ibm.webp" || img === "/bch.webp" ? "padding: 7px;" : "";
+
+const getImgStyle = (img: string) =>
+  img === "/startup.webp"
+    ? "transform: scale(1.25); object-fit: cover;"
+    : img === "/ibm.webp" || img === "/bch.webp"
+    ? "object-fit: contain;"
+    : "";
+
+const PROJECTS = [
+  {
+    id: "arena-vis",
+    title: "Are.na Visualizer",
+    shortTitle: "Are.na Visualizer",
+    description: "Designed and engineered an alternative interface for Are.na, transforming channel data into three distinct spatial experiences: Canvas, Grid, and Disk. Built dynamic collection browsing, curated channel switching, responsive image layouts, and interactive navigation on top of the Are.na API.",
+    image: "/design-arena-vis-v2.png",
+    venue: "Independent Project · 2026",
+    tags: ["Creative Development", "Data Visualization", "Interaction Design", "API"],
+    meta: [
+      { label: "ROLE",  value: "Frontend Engineering · Product Design · Interaction Design" },
+      { label: "BUILT", value: "Multi-View Interface · Dynamic Layouts · Channel Browser · API Integration · Interactive Navigation" },
+      { label: "STACK", value: "Next.js · React · TypeScript · Tailwind CSS · Are.na API" },
+    ],
+    links: [{ label: "Live site →", href: "https://arena-vis.vercel.app" }, { label: "GitHub →", href: "https://github.com/zcher-20/arena-vis" }],
+  },
+  {
+    id: "places-archive",
+    title: "City Scape",
+    shortTitle: "City Scape",
+    description: "Designed and engineered a full-stack location platform that transforms a personal database of places into an interactive map, visual archive, and curated collections. Built dynamic geospatial views, place detail interactions, image-based browsing, and a lightweight content backend powered by Google Sheets.",
+    image: "/design-places-archive-2.png",
+    images: ["/design-places-archive-2.png", "/design-cityscape-cs.png"],
+    venue: "Independent Project · 2026",
+    tags: ["Full-Stack", "Geospatial UI", "Product Design", "API Integration"],
+    meta: [
+      { label: "ROLE",  value: "Full-Stack Engineering · Product Design · Interaction Design" },
+      { label: "BUILT", value: "Interactive Map · Place Database · Visual Archive · Collections · Dynamic Place Cards · Data Pipeline" },
+      { label: "STACK", value: "Next.js · React · TypeScript · Mapbox · Google Sheets API" },
+    ],
+    links: [{ label: "Live site →", href: "https://places-archive.vercel.app/" }],
+  },
+  {
+    id: "margiela",
+    title: "Margiela Archive",
+    shortTitle: "Margiela Archive",
+    description: "Designed and developed an interactive archive for Maison Margiela's Folders collection, translating its editorial language into a web experience with a continuous filmstrip, image-led navigation, responsive layouts, and custom interactions.",
+    image: "/design-margiela.jpg",
+    images: ["/design-margiela.jpg", "/design-margiela-2.png"],
+    venue: "Independent Project · 2026",
+    tags: ["Creative Development", "Interaction Design", "Frontend"],
+    meta: [
+      { label: "ROLE",  value: "Frontend Engineering · Interaction Design · Visual Design" },
+      { label: "BUILT", value: "Gallery System · Filmstrip Navigation · Responsive UI · Custom Interactions" },
+      { label: "STACK", value: "Next.js · React · TypeScript · Vercel" },
+    ],
+    links: [{ label: "Live site →", href: "https://margiela-archive.vercel.app/" }, { label: "GitHub →", href: "https://github.com/zcher-20/margiela-archive" }],
+  },
+  {
+    id: "ai-workspace",
+    title: "AI Workspace",
+    shortTitle: "Intelligence Workspace",
+    description: "Built an AI-native workspace combining project planning, research, opportunity tracking, networking, academic planning, and document workflows. Engineered the full-stack application and orchestrated specialized LLM agents for research, writing, planning, and task execution.",
+    image: "/ai-workspace-canva.jpg",
+    venue: "Pathfinders Challenge",
+    tags: ["Multi-Agent", "Full-Stack", "LangGraph", "AI Product"],
+    meta: [
+      { label: "ROLE",  value: "Full-Stack Engineering · AI Engineering · Product Design" },
+      { label: "BUILT", value: "Multi-Agent Workflows · Project Canvas · AI Chat · Opportunity Tracker · Network CRM · Degree Planner" },
+      { label: "STACK", value: "React · Python · LangGraph · LLMs" },
+    ],
+    links: [{ label: "Live site →", href: "https://workspace-os-xi.vercel.app/" }, { label: "GitHub →", href: "https://github.com/zcher-20/ai-workspace" }],
+  },
+  {
+    id: "healthcare-ai",
+    section: "work",
+    confidential: true,
+    year: "2026",
+    title: "Healthcare Agent",
+    shortTitle: "Clinical Intelligence AI Agent",
+    description: "Built the frontend and backend for an LLM-powered healthcare agent that transforms patient visits into structured clinical intelligence. Integrated real-time transcription, automated clinical notes and summaries, document processing, visit analysis, and contextual Q&A into a unified workflow.",
+    image: "/project-healthcare-ui.png",
+    logo: "/startup.webp",
+    logoHeight: "72px",
+    logoOffset: "-18px",
+    venue: "MIT-Incubated Stealth AI Startup",
+    tags: ["Agentic AI", "Full-Stack", "Voice AI", "Healthcare"],
+    meta: [
+      { label: "ROLE",  value: "Full-Stack AI Engineering · Product Design" },
+      { label: "BUILT", value: "Agent Workflows · React Frontend · Backend APIs · Transcription Pipeline · Document Processing" },
+      { label: "STACK", value: "Python · React · LLMs · OpenAI API · GPT-4o Transcribe" },
+    ],
+    links: [],
+  },
+  {
+    id: "film-archive",
+    hidden: true,
+    title: "Film Album",
+    shortTitle: "Film Album",
+    description: "Designed and built a depth-based carousel with scroll-linked transitions, inline caption editing, local image uploads, and persistent client-side storage. Developed the interaction system from scratch in vanilla JavaScript, using layered transforms and motion to recreate the physical feeling of moving through a film archive.",
+    image: "/design-film-album.png",
+    venue: "Independent Project · 2025",
+    tags: ["Interaction Design", "Creative Code", "Frontend", "Motion"],
+    meta: [
+      { label: "ROLE",  value: "Design · Frontend Engineering · Interaction Design" },
+      { label: "BUILT", value: "Depth Carousel · Scroll Interactions · Inline Editing · Local Persistence" },
+      { label: "STACK", value: "JavaScript · IndexedDB · File API · CSS Transforms" },
+    ],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/Film-Album" }],
+  },
+  {
+    id: "skinkit",
+    title: "SkinKit",
+    shortTitle: "SkinKit",
+    description: "Prototyped wearable computing concepts using flexible electronic modules assembled directly on the body. Designed use cases, interaction patterns, and physical interface concepts spanning sensing, health, and expressive applications.",
+    image: "/project-skinkit.jpg",
+    venue: "Cornell University — Hybrid Body Lab",
+    tags: ["HCI", "Wearable Computing", "Interaction Design"],
+    meta: [
+      { label: "MY ROLE",       value: "Interaction Design · Prototyping · HCI Research" },
+      { label: "CONTRIBUTIONS", value: "Use Case Design · Interaction Concepts · Physical Prototyping" },
+      { label: "SYSTEM",        value: "Flexible PCB · Modular Electronics · On-Skin Interfaces" },
+    ],
+    links: [{ label: "View project →", href: "https://www.hybridbody.human.cornell.edu/#/skinkit/" }],
+  },
+  {
+    id: "aimc",
+    section: "research",
+    year: "2024",
+    title: "Analog In-Memory Computing with Uncertainty Quantification",
+    shortTitle: "Analog In-Memory Inference",
+    description: "Co-authored research evaluating deep learning inference on IBM analog in-memory computing hardware for medical image segmentation. Benchmarked model performance under hardware-induced noise and investigated uncertainty quantification for reliable, efficient inference at the edge.",
+    image: "/project-aimc.jpg",
+    logo: "/ibm.webp",
+    venue: "IBM Research · ICLR 2024 — Notable Paper",
+    tags: ["Analog AI", "Deep Learning", "Medical Imaging", "Uncertainty"],
+    meta: [
+      { label: "ROLE",        value: "ML Research · Experimental Evaluation" },
+      { label: "RESEARCH",    value: "Analog AI · Uncertainty Quantification · Medical Image Segmentation" },
+      { label: "METHODS",     value: "Deep Learning Inference · Hardware-Aware Evaluation · Model Benchmarking" },
+      { label: "RECOGNITION", value: "ICLR 2024 · Notable Paper" },
+    ],
+    links: [{ label: "OpenReview →", href: "https://openreview.net/forum?id=hvp5I4dDya" }],
+  },
+  {
+    id: "nas-survey",
+    title: "Medical NAS: Survey and Taxonomy",
+    shortTitle: "Medical NAS",
+    description: "Co-authored an IJCAI 2024 survey synthesizing 100+ research papers on Neural Architecture Search across medical imaging and healthcare. Analyzed NAS search spaces, optimization strategies, and evaluation methods to develop a structured taxonomy of the field.",
+    image: "/project-survey.jpg",
+    venue: "IBM Research · IJCAI 2024",
+    tags: ["Neural Architecture Search", "Medical AI", "Deep Learning", "Research"],
+    meta: [
+      { label: "ROLE",     value: "Research · Literature Analysis · Taxonomy Development" },
+      { label: "RESEARCH", value: "Neural Architecture Search · Deep Learning · Medical Imaging" },
+      { label: "IMPACT",   value: "100+ Papers Analyzed · IJCAI 2024 · Presented to 200+ Researchers" },
+    ],
+    links: [{ label: "IJCAI 2024 →", href: "https://www.ijcai.org/proceedings/2024/878" }],
+  },
+  {
+    id: "ricer",
+    section: "research",
+    confidential: true,
+    year: "2024",
+    title: "AI Wildfire Risk Foundation Model",
+    shortTitle: "AI Wildfire Risk Foundation Model",
+    description: "Foundation-model research for geospatial wildfire risk prediction. Developing a geospatial ML pipeline for wildfire risk assessment in Morocco using satellite imagery, environmental data, and Earth observation foundation models. Working with IBM/NASA Prithvi to investigate how pretrained geospatial representations can be adapted for regional wildfire-risk modeling.",
+    image: "/project-ricer-map.png",
+    logo: "/akhawayn.webp",
+    logoHeight: "120px",
+    venue: "Al Akhawayn University — Digital Innovation Lab",
+    tags: ["Foundation Models", "Remote Sensing", "Computer Vision", "GIS", "Python"],
+    meta: [
+      { label: "ROLE",    value: "ML Research · Geospatial AI" },
+      { label: "WORK",    value: "Data Pipeline · Preprocessing · Model Adaptation · Evaluation" },
+      { label: "METHODS", value: "Foundation Models · Remote Sensing · Computer Vision · GIS" },
+      { label: "STACK",   value: "Python · Prithvi · Geospatial Data" },
+    ],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/wildfire_data_pipeline" }],
+  },
+  {
+    id: "pfizer",
+    section: "work",
+    year: "2026",
+    title: "AI-Powered Document Insights & Data Extraction",
+    shortTitle: "Pfizer AI Externship",
+    description: "Prototyped an AI document-intelligence pipeline for pharmaceutical PDFs at Pfizer—combining OCR preprocessing, image denoising, Python parsing of multi-record SDFs, and retrieval-augmented generation to automate real enterprise PDF workflows.",
+    image: "/pfizer-hero.jpg",
+    images: ["/pfizer-hero.jpg", "/pfizer-ui.png"],
+    grayscaleImage: true,
+    logo: "/pfizer.svg",
+    logoHeight: "36px",
+    caseStudyUrl: "/projects/pfizer",
+    pdfPreviewUrl: "/pfizer-presentation.pdf",
+    venue: "Pfizer · AI Externship · 2026",
+    tags: ["OCR", "RAG", "LLMs", "Python", "Document Intelligence"],
+    meta: [
+      { label: "ROLE",   value: "AI Engineering · Document Intelligence" },
+      { label: "BUILT",  value: "OCR Pipeline · RAG System · Data Extraction · Image Denoising · Gradio Chatbot" },
+      { label: "STACK",  value: "Python · LlamaIndex · Gradio · OCR · LLMs" },
+      { label: "DOMAIN", value: "Pharmaceutical · Enterprise PDF Workflows" },
+    ],
+    links: [{ label: "View Project →", href: "/projects/pfizer" }],
+  },
+  {
+    id: "investment",
+    title: "Alpha Research",
+    shortTitle: "Multi-Agent Alpha Engine",
+    description: "Built an investment research system in Azure AI Foundry that orchestrates specialized agents for macro, fundamental, risk, and sentiment analysis. Agents use web search and code execution to independently reason over evidence before a committee-style workflow aggregates their findings through voting and synthesis.",
+    image: "/project-investment.png",
+    venue: "Microsoft AI Agents League · 2026",
+    tags: ["Multi-Agent", "LLM Orchestration", "Tool Use", "Reasoning"],
+    meta: [
+      { label: "ROLE",   value: "AI Engineering · Agent Architecture" },
+      { label: "BUILT",  value: "Multi-Agent Orchestration · Tool-Using Agents · Committee Workflow · Synthesis Pipeline" },
+      { label: "AGENTS", value: "Macro · Fundamental · Risk · Sentiment · Committee Chair" },
+      { label: "STACK",  value: "Python · Azure AI Foundry · LLMs · Web Search · Code Interpreter" },
+    ],
+    links: [{ label: "View Repository →", href: "https://github.com/zcher-20/Alpha-Research-Agent-" }],
+  },
+  {
+    id: "quantum",
+    hidden: true,
+    title: "Hybrid Quantum-Classical Medical Imaging",
+    shortTitle: "Quantum Imaging",
+    description: "Hybrid quantum-classical U-Net replacing the CNN bottleneck with a 4-qubit PennyLane variational circuit. 95% IoU at 60% fewer parameters.",
+    image: "/project-quantum.jpg",
+    venue: "NYU Abu Dhabi Hackathon — Quantum Track",
+    tags: ["Quantum ML", "PennyLane", "Medical Imaging", "PyTorch"],
+    links: [{ label: "GitHub →", href: "https://github.com/zcher-20/SihaSansFrontieres" }],
+  },
+  {
+    id: "hmxb",
+    section: "research",
+    confidential: true,
+    year: "2025",
+    title: "HMXB Orbital Analysis",
+    shortTitle: "HMXB Orbital Analysis",
+    logo: "/nyu.webp",
+    logoHeight: "72px",
+    venue: "New York University — Astrophysics Research",
+    description: "Time-series analysis of high-mass X-ray binary systems using archival orbital measurements and astronomical light curves. Extracted and validated orbital-period measurements across scientific literature, analyzed photometric time-series data, and compared historical and observed periodicities to characterize orbital behavior in HMXB systems.",
+    image: "/project-hmxb.png",
+    tags: ["Time-Series Analysis", "Scientific Computing", "Astrophysics", "Python"],
+    meta: [
+      { label: "ROLE",    value: "Research · Data Analysis · Scientific Computing" },
+      { label: "METHODS", value: "Time-Series Analysis · Light Curves · Period Analysis · Literature Mining" },
+      { label: "STACK",   value: "Python · Astropy · Lightkurve · NumPy · Matplotlib" },
+    ],
+    links: [],
+  },
+].filter((item: any) => ["aimc", "pfizer", "healthcare-ai", "ricer"].includes(item.id));
+
+const SKILLS = [
+  {
+    label: "Design & Creative",
+    desc: "Building visual systems and interfaces that make complex ideas feel clear and natural.",
+    tags: ["React", "TypeScript", "Next.js", "Tailwind CSS", "Editorial Design", "CSS Animations", "Vanilla JS", "Creative Coding", "Information Architecture", "Visual Systems"],
+  },
+  {
+    label: "AI & Engineering",
+    desc: "Building intelligent systems — from RAG pipelines to multi-agent workflows and LLM applications.",
+    tags: ["Python", "Java", "JavaScript", "Node.js", "FastAPI", "REST APIs", "Git", "Data Analytics", "RAG", "LangGraph", "Azure", "Microsoft Excel"],
+  },
+  {
+    label: "Research & Publication",
+    desc: "Publishing peer-reviewed research across machine learning, hardware, and medical imaging.",
+    tags: ["Research Design", "Experimental Design", "Technical Writing", "Data Analysis", "Literature Review", "Critical Analysis"],
+  },
+];
+---
+
+<Layout seo={homePageContent.seo}>
+  <div class="scroll-spy-wrap">
+    <button class="spy-toggle" id="spy-toggle" aria-label="Toggle section nav">
+      <span class="spy-dot"></span>
+      <span class="spy-dot"></span>
+      <span class="spy-dot"></span>
+    </button>
+    <nav class="scroll-spy" id="scroll-spy">
+      <a href="#about"      class="spy-item" data-section="about">About</a>
+      <a href="#experience" class="spy-item" data-section="experience">Experience</a>
+      <a href="#projects"   class="spy-item" data-section="projects">Selected Work</a>
+      <a href="#interests"  class="spy-item" data-section="interests">Interests</a>
+    </nav>
+  </div>
+  <div class="about-page-wrap">
+    <div class="archive-content">
+
+        <!-- About section -->
+        <section id="about" class="about-section">
+          <div class="about-layout">
+
+            <div class="about-left">
+              <h2 class="about-heading">About</h2>
+              <img src="/headshot.jpg" alt="Zayneb Cherif" class="about-float-img" draggable="false" />
+              <div class="about-bio">
+                <p>I'm Zayneb Cherif, a B.A. Computer Science &amp; Design student at Columbia University (Class of 2028). I transferred from NYU in 2025. I'm currently studying at the University of Oxford studying AI &amp; Machine Learning as a part of their summer program. I work at the intersection of AI research, full-stack engineering, and human-centered design.</p>
+                <p>My research spans analog in-memory computing, RAG systems, agentic AI pipelines, and quantum-classical ML — with publications at ICLR 2024 (Notable) and IJCAI 2024. On the engineering side I build everything from FastAPI backends and LLM applications to multimodal AI civic platforms.</p>
+                <p>I speak English, Arabic, Italian, and Spanish, and I'm driven by the belief that the best technology is both rigorous and humane.</p>
+                <p>Recognized as a IEEE WISC Scholar 2026, at ICLR 2024, IBM/IEEE AICS 2023, Best Research Award at the University of Sharjah, Genius Olympiad Finalist, and WESEF Finalist.</p>
+              </div>
+              <div class="about-exp-list">
+                <div class="exp-row">
+                  <div class="exp-logo"><img src="/openai.webp" alt="OpenAI" /></div>
+                  <div class="exp-content">
+                    <p class="exp-title">AI Model Trainer — Codex</p>
+                    <p class="exp-company-name">OpenAI</p>
+                    <p class="exp-desc">Training Codex by crafting targeted prompts and adversarial edge-case sets; providing structured feedback to improve code generation, reasoning, and instruction-following capabilities.</p>
+                  </div>
+                  <div class="exp-date">Jun 2026 – Present</div>
+                </div>
+                <div class="exp-row">
+                  <div class="exp-logo"><img src="/startup.webp" alt="Stealth AI Startup" /></div>
+                  <div class="exp-content">
+                    <p class="exp-title">Agentic AI & ML Intern</p>
+                    <p class="exp-company-name">MIT-Incubated Stealth AI Startup</p>
+                    <p class="exp-desc">Building and evaluating production-facing AI agents with prompt engineering, model evaluation, and workflow design. Running large-scale testing of agentic AI systems and identifying optimization opportunities.</p>
+                  </div>
+                  <div class="exp-date">Jun – Aug 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-right">
+              <h2 class="skills-heading">Skills</h2>
+              {SKILLS.map((cat) => (
+                <div class="skill-category">
+                  <p class="skill-cat-label">{cat.label}</p>
+                  <p class="skill-cat-desc">{cat.desc}</p>
+                  <div class="skill-pills">
+                    {cat.tags.map((tag) => (
+                      <span class="skill-pill">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              {/* about-projects-preview hidden */}
+
+              <a href="/resume" class="about-resume-btn">View Resume ↗</a>
+            </div>
+
+
+          </div>
+        </section>
+
+        <hr class="inter-section-divider" />
+
+        <!-- Experience section -->
+        <section id="experience" class="exp-section">
+          <div class="home-exp-header">
+            <h2 class="exp-heading">Experience</h2>
+            <div class="home-exp-controls">
+              <button class="home-tl-btn is-active" id="home-btn-horiz" aria-label="Horizontal view">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                  <line x1="0" y1="6" x2="16" y2="6" stroke="currentColor" stroke-width="1"/>
+                  <circle cx="2.5" cy="6" r="2" fill="currentColor"/>
+                  <circle cx="8" cy="6" r="2" fill="currentColor"/>
+                  <circle cx="13.5" cy="6" r="2" fill="currentColor"/>
+                </svg>
+                Timeline
+              </button>
+              <button class="home-tl-btn" id="home-btn-list" aria-label="List view">
+                <svg width="14" height="12" viewBox="0 0 14 12" fill="none">
+                  <line x1="0" y1="1" x2="14" y2="1" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="0" y1="6" x2="14" y2="6" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="0" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                List
+              </button>
+            </div>
+          </div>
+
+          <!-- List view -->
+          <div class="home-exp-list" id="home-exp-list" style="display:none">
+            {EXPERIENCE.map((job) => (
+              <div class="exp-row">
+                <div class="exp-logo" style={getWrapStyle(job.company.image)}>
+                  <img src={job.company.image} alt={job.company.name} style={getImgStyle(job.company.image)} />
+                </div>
+                <div class="exp-content">
+                  <p class="exp-title">{job.title}</p>
+                  <p class="exp-company-name">{job.company.name}</p>
+                  {job.cleanDesc && <p class="exp-desc">{job.cleanDesc}</p>}
+                </div>
+                <div class="exp-date">{job.date}</div>
+              </div>
+            ))}
+          </div>
+
+          <div class="home-tl-horiz" id="home-tl-horiz">
+            <div class="home-tl-h-scroll">
+              <div class="home-tl-h-track">
+                <div class="home-tl-h-line"></div>
+                {EXPERIENCE.map((job, i) => (
+                  <div class={`home-tl-h-entry ${i % 2 === 0 ? "h-above" : "h-below"}`}>
+                    <div class="home-tl-h-upper">
+                      {i % 2 === 0 && (
+                        <div class="home-tl-h-card">
+                          <p class="home-tl-date">{job.date}</p>
+                          <div class="home-tl-logo-wrap" style={getWrapStyle(job.company.image)}>
+                            <img src={job.company.image} alt={job.company.name} class="home-tl-logo" style={getImgStyle(job.company.image)} />
+                          </div>
+                          <p class="home-tl-title">{job.title}</p>
+                          <p class="home-tl-company">{job.company.name}</p>
+                          <p class="home-tl-desc">{job.cleanDesc}</p>
+                        </div>
+                      )}
+                    </div>
+                    <div class="home-tl-h-node">
+                      <div class="home-tl-ring"></div>
+                      <div class="home-tl-dot"></div>
+                    </div>
+                    <div class="home-tl-h-lower">
+                      {i % 2 !== 0 && (
+                        <div class="home-tl-h-card">
+                          <p class="home-tl-date">{job.date}</p>
+                          <div class="home-tl-logo-wrap" style={getWrapStyle(job.company.image)}>
+                            <img src={job.company.image} alt={job.company.name} class="home-tl-logo" style={getImgStyle(job.company.image)} />
+                          </div>
+                          <p class="home-tl-title">{job.title}</p>
+                          <p class="home-tl-company">{job.company.name}</p>
+                          <p class="home-tl-desc">{job.cleanDesc}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <hr class="inter-section-divider" />
+
+        <!-- Projects section -->
+        <section id="projects" class="home-proj-section">
+          <div class="home-proj-header">
+            <h2 class="exp-heading">Selected Work</h2>
+            <a href="/" class="view-all-link">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0">
+                <rect x="0" y="0" width="5" height="5" rx="1" fill="currentColor"/>
+                <rect x="7" y="0" width="5" height="5" rx="1" fill="currentColor"/>
+                <rect x="0" y="7" width="5" height="5" rx="1" fill="currentColor"/>
+                <rect x="7" y="7" width="5" height="5" rx="1" fill="currentColor"/>
+              </svg>
+              View All
+            </a>
+          </div>
+          <script id="home-proj-data" type="application/json" set:html={JSON.stringify(PROJECTS)} />
+          <div class="home-proj-grid">
+            {PROJECTS.map((item) => (
+              <div class="home-proj-card" data-id={item.id}>
+                <div class="home-proj-img-wrap">
+                  <img src={item.image} alt={item.title} loading="lazy" draggable="false" style={item.grayscaleImage ? "filter: grayscale(100%);" : ""} />
+                </div>
+                <p class="home-proj-title">{item.shortTitle}</p>
+                {item.venue && <p class="home-proj-venue">{item.venue}</p>}
+                <p class="home-proj-desc">{item.description}</p>
+                <div class="home-proj-tags">
+                  {item.tags.map((t: string) => <span class="home-proj-tag">{t}</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <hr class="inter-section-divider" />
+
+        <!-- Interests section -->
+        <section id="interests" class="interests-section">
+          <h2 class="exp-heading">Interests</h2>
+          <div class="interests-grid">
+            <a href="/photography" class="interest-card">
+              <img src="/photography-cover-2.png" alt="Photography" class="interest-img" />
+              <span class="interest-label">Photography ↗</span>
+            </a>
+            <a href="/mind" class="interest-card">
+              <img src="/ws-network.png" alt="Mind" class="interest-img" />
+              <span class="interest-label">Mind ↗</span>
+            </a>
+            <a href="/books" class="interest-card">
+              <img src="/bookshelf-cover-2.png" alt="Bookshelf" class="interest-img" />
+              <span class="interest-label">Bookshelf ↗</span>
+            </a>
+          </div>
+        </section>
+
+
+    </div>
+
+  </div>
+
+  <!-- Projects modal -->
+  <div id="home-proj-modal" class="home-modal" role="dialog" aria-modal="true">
+    <button class="hpm-nav-btn" id="hpm-nav-prev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M7 1L1 6.5L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="home-modal-card" id="home-modal-card">
+      <div class="hpm-topbar">
+        <a id="hpm-visit-btn" class="hpm-visit-btn" href="#" target="_blank" rel="noopener noreferrer">Visit Site ↗</a>
+      </div>
+      <div class="hpm-cs-header">
+        <img id="hpm-logo" class="hpm-logo" src="" alt="" />
+        <h2 class="hpm-cs-title">
+          <span id="hpm-title-text"></span><span class="hpm-cs-title-sep"> · </span><span id="hpm-title-year" class="hpm-cs-title-year"></span>
+        </h2>
+        <p id="hpm-venue" class="hpm-cs-venue"></p>
+        <p id="hpm-desc" class="hpm-cs-desc"></p>
+      </div>
+      <div id="hpm-stack" class="hpm-cs-stack"></div>
+      <div id="hpm-images" class="hpm-cs-images"></div>
+    </div>
+    <button class="hpm-nav-btn" id="hpm-nav-next"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1L7 6.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="mobile-nav">
+    {MOBILE_NAV.map((item) => (
+      <a href={item.href} class={`mobile-nav-btn${item.href === "/" ? " mobile-nav-active" : ""}`}>
+        <Icon name={item.icon} class="mobile-nav-icon" />
+        <span class="mobile-nav-label">{item.label}</span>
+      </a>
+    ))}
+  </nav>
+
+</Layout>
+
+<script is:inline>
+  (function () {
+    var sidebar     = document.getElementById("app-sidebar");
+    var toggleBtn   = document.getElementById("sidebar-toggle-btn");
+    var iconClose   = document.getElementById("toggle-icon-close");
+    var iconOpen    = document.getElementById("toggle-icon-open");
+    var flyout      = document.getElementById("sidebar-flyout");
+    var archiveMain = document.getElementById("archive-main");
+
+    function collapse() {
+      sidebar.classList.remove("open");
+      sidebar.classList.add("collapsed");
+      iconClose.classList.add("hidden");
+      iconOpen.classList.remove("hidden");
+    }
+    function expand() {
+      sidebar.classList.remove("collapsed");
+      sidebar.classList.add("open");
+      iconClose.classList.remove("hidden");
+      iconOpen.classList.add("hidden");
+      flyout.classList.add("hidden");
+    }
+
+    toggleBtn.addEventListener("click", function () {
+      sidebar.classList.contains("open") ? collapse() : expand();
+    });
+
+    var flyoutTimer;
+    sidebar.addEventListener("mouseenter", function () {
+      if (!sidebar.classList.contains("collapsed")) return;
+      clearTimeout(flyoutTimer);
+      flyout.classList.remove("hidden");
+    });
+    sidebar.addEventListener("mouseleave", function () {
+      if (!sidebar.classList.contains("collapsed")) return;
+      flyoutTimer = setTimeout(function () { flyout.classList.add("hidden"); }, 150);
+    });
+    flyout.addEventListener("mouseenter", function () { clearTimeout(flyoutTimer); });
+    flyout.addEventListener("mouseleave", function () {
+      flyoutTimer = setTimeout(function () { flyout.classList.add("hidden"); }, 150);
+    });
+
+    // Smooth scroll to anchored sections
+    document.querySelectorAll(".section-scroll-link").forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        var targetId = link.getAttribute("data-target");
+        var section = document.getElementById(targetId);
+        if (section && archiveMain) {
+          e.preventDefault();
+          var sectionTop = section.getBoundingClientRect().top
+            - archiveMain.getBoundingClientRect().top
+            + archiveMain.scrollTop;
+          var offset = (archiveMain.clientHeight / 2) - (section.offsetHeight / 2);
+          var target = sectionTop - Math.max(offset, 0);
+          archiveMain.scrollTo({ top: target, behavior: "smooth" });
+        }
+        // Immediately update active highlight
+        document.querySelectorAll("#home-app-nav .app-nav-btn").forEach(function (b) { b.classList.remove("active"); });
+        link.classList.add("active");
+        if (flyout) flyout.classList.add("hidden");
+      });
+    });
+
+    // Active nav highlight based on visible section
+    var sectionIds = ["about", "projects", "experience"];
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var id = entry.target.id;
+        var link = document.querySelector("#home-app-nav [data-section='" + id + "']");
+        var homeLink = document.querySelector("#home-app-nav [href='/']");
+        if (!link) return;
+        if (entry.isIntersecting) {
+          document.querySelectorAll("#home-app-nav .app-nav-btn").forEach(function (b) { b.classList.remove("active"); });
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+          var anyActive = document.querySelector("#home-app-nav .app-nav-btn.active");
+          if (!anyActive && homeLink) homeLink.classList.add("active");
+        }
+      });
+    }, { root: archiveMain, threshold: 0.3 });
+
+    sectionIds.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+  })();
+</script>
+
+<script is:inline>
+(function () {
+  var CASE_STUDY_PW = "zayneb"; // change to your preferred password
+
+  function renderPdfViewer(container, pdfUrl) {
+    var wrap = document.createElement("div");
+    wrap.style.cssText = "margin-top:20px; border:1px solid rgba(0,0,0,0.1); border-radius:12px; overflow:hidden; background:#f5f5f7;";
+
+    var canvasWrap = document.createElement("div");
+    canvasWrap.style.cssText = "overflow-y:auto; max-height:480px; padding:16px; display:flex; flex-direction:column; gap:12px; align-items:center;";
+
+    var nav = document.createElement("div");
+    nav.style.cssText = "display:flex; align-items:center; justify-content:center; gap:16px; padding:10px 16px; border-top:1px solid rgba(0,0,0,0.08); background:#fff;";
+
+    var prevBtn = document.createElement("button");
+    prevBtn.textContent = "←";
+    prevBtn.style.cssText = "background:none; border:1px solid #ddd; border-radius:6px; padding:4px 14px; cursor:pointer; font-size:14px; color:#444;";
+
+    var pageInfo = document.createElement("span");
+    pageInfo.style.cssText = "font-size:12px; opacity:0.5; min-width:50px; text-align:center;";
+    pageInfo.textContent = "…";
+
+    var nextBtn = document.createElement("button");
+    nextBtn.textContent = "→";
+    nextBtn.style.cssText = "background:none; border:1px solid #ddd; border-radius:6px; padding:4px 14px; cursor:pointer; font-size:14px; color:#444;";
+
+    nav.appendChild(prevBtn); nav.appendChild(pageInfo); nav.appendChild(nextBtn);
+    wrap.appendChild(canvasWrap); wrap.appendChild(nav);
+    container.appendChild(wrap);
+
+    var pdfDoc = null, currentPage = 1, rendering = false;
+
+    function loadPdfJs(cb) {
+      if (window.pdfjsLib) { cb(); return; }
+      var s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+      s.onload = function() {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        cb();
+      };
+      document.head.appendChild(s);
+    }
+
+    function renderPage(num) {
+      if (!pdfDoc || rendering) return;
+      rendering = true;
+      pdfDoc.getPage(num).then(function(page) {
+        var dpr = window.devicePixelRatio || 1;
+        var scale = (canvasWrap.clientWidth - 32) / page.getViewport({ scale: 1 }).width;
+        var vp = page.getViewport({ scale: scale * dpr });
+        var canvas = document.createElement("canvas");
+        canvas.width = vp.width; canvas.height = vp.height;
+        canvas.style.cssText = "border-radius:6px; box-shadow:0 2px 8px rgba(0,0,0,0.1); max-width:100%; width:" + (vp.width / dpr) + "px; height:" + (vp.height / dpr) + "px;";
+        canvasWrap.innerHTML = "";
+        canvasWrap.appendChild(canvas);
+        page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise.then(function() {
+          rendering = false;
+          pageInfo.textContent = num + " / " + pdfDoc.numPages;
+          prevBtn.style.opacity = num <= 1 ? "0.3" : "1";
+          nextBtn.style.opacity = num >= pdfDoc.numPages ? "0.3" : "1";
+        });
+      });
+    }
+
+    prevBtn.addEventListener("click", function(e) { e.stopPropagation(); if (currentPage > 1) { currentPage--; renderPage(currentPage); } });
+    nextBtn.addEventListener("click", function(e) { e.stopPropagation(); if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); } });
+
+    loadPdfJs(function() {
+      window.pdfjsLib.getDocument(pdfUrl).promise.then(function(doc) {
+        pdfDoc = doc;
+        renderPage(1);
+      });
+    });
+  }
+
+  function showPwGate(container, onUnlock) {
+    var gate = document.createElement("div");
+    gate.className = "hpm-pw-gate";
+    gate.innerHTML =
+      '<div class="hpm-pw-icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor" class="hpm-pw-lock"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>' +
+      '<p class="hpm-pw-title">This case study is password-protected.</p>' +
+      '<p class="hpm-pw-sub">Curious? Feel free to <a href="mailto:zaynebcheriff@gmail.com" class="hpm-pw-email">email me!</a></p>' +
+      '<div class="hpm-pw-form"><input type="password" class="hpm-pw-input" placeholder="Enter" /><button class="hpm-pw-btn" aria-label="Submit">&#x2192;</button></div>' +
+      '<p class="hpm-pw-error"></p>';
+    container.appendChild(gate);
+    var input = gate.querySelector(".hpm-pw-input");
+    var btn   = gate.querySelector(".hpm-pw-btn");
+    var errEl = gate.querySelector(".hpm-pw-error");
+    function tryUnlock() {
+      if (input.value === CASE_STUDY_PW) { onUnlock(); }
+      else { errEl.textContent = "Incorrect password."; input.value = ""; input.focus(); }
+    }
+    btn.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+  }
+
+  var rawData = document.getElementById("home-proj-data");
+  if (!rawData) return;
+  var ITEMS = JSON.parse(rawData.textContent);
+  var itemMap = {};
+  ITEMS.forEach(function (d) { itemMap[d.id] = d; });
+
+  var modal      = document.getElementById("home-proj-modal");
+  var card       = document.getElementById("home-modal-card");
+  var hpmVisitBtn  = document.getElementById("hpm-visit-btn");
+  var hpmLogo      = document.getElementById("hpm-logo");
+  var hpmTitleText = document.getElementById("hpm-title-text");
+  var hpmTitleYear = document.getElementById("hpm-title-year");
+  var hpmVenue     = document.getElementById("hpm-venue");
+  var hpmDesc      = document.getElementById("hpm-desc");
+  var hpmStack     = document.getElementById("hpm-stack");
+  var hpmImages    = document.getElementById("hpm-images");
+  var hpmNavPrev   = document.getElementById("hpm-nav-prev");
+  var hpmNavNext   = document.getElementById("hpm-nav-next");
+  var currentId  = null;
+  var navIds     = [];
+
+  function updateNavBtns(id) {
+    navIds = Array.from(document.querySelectorAll(".home-proj-card")).map(function (el) { return el.dataset.id; });
+    var idx = navIds.indexOf(id);
+    hpmNavPrev.style.opacity = idx > 0 ? "" : "0.15";
+    hpmNavPrev.style.pointerEvents = idx > 0 ? "" : "none";
+    hpmNavNext.style.opacity = idx < navIds.length - 1 ? "" : "0.15";
+    hpmNavNext.style.pointerEvents = idx < navIds.length - 1 ? "" : "none";
+    hpmNavPrev.style.display = navIds.length > 1 ? "" : "none";
+    hpmNavNext.style.display = navIds.length > 1 ? "" : "none";
+  }
+
+  function openModal(id) {
+    var d = itemMap[id]; if (!d) return;
+    currentId = id;
+
+    if (d.logo) {
+      hpmLogo.src = d.logo; hpmLogo.alt = d.venue || d.title;
+      hpmLogo.style.height = d.logoHeight || "36px";
+      hpmLogo.style.marginLeft = d.logoOffset || "0px";
+      hpmLogo.style.display = "";
+    } else {
+      hpmLogo.style.display = "none";
+    }
+    hpmTitleText.textContent = d.title;
+    hpmTitleYear.textContent = d.year || "";
+    hpmVenue.textContent = d.venue || "";
+    hpmVenue.style.display = d.venue ? "" : "none";
+    hpmDesc.textContent = d.description;
+
+    var firstLink = d.links && d.links.length ? d.links[0] : null;
+    if (firstLink) {
+      hpmVisitBtn.href = firstLink.href;
+      hpmVisitBtn.textContent = firstLink.label || "Visit ↗";
+      hpmVisitBtn.style.display = "";
+    } else {
+      hpmVisitBtn.style.display = "none";
+    }
+
+    hpmStack.innerHTML = "";
+    if (d.meta && d.meta.length) {
+      d.meta.forEach(function (m) {
+        var col = document.createElement("div"); col.className = "hpm-cs-col";
+        var lbl = document.createElement("span"); lbl.className = "hpm-cs-col-label"; lbl.textContent = m.label;
+        col.appendChild(lbl);
+        m.value.split(" · ").forEach(function (item) {
+          var p = document.createElement("p"); p.className = "hpm-cs-col-item"; p.textContent = item.trim();
+          col.appendChild(p);
+        });
+        hpmStack.appendChild(col);
+      });
+    } else if (d.tags && d.tags.length) {
+      var col = document.createElement("div"); col.className = "hpm-cs-col";
+      var lbl = document.createElement("span"); lbl.className = "hpm-cs-col-label"; lbl.textContent = "Stack";
+      col.appendChild(lbl);
+      d.tags.forEach(function (t) {
+        var p = document.createElement("p"); p.className = "hpm-cs-col-item"; p.textContent = t;
+        col.appendChild(p);
+      });
+      hpmStack.appendChild(col);
+    }
+
+    hpmImages.innerHTML = "";
+    if (d.confidential) {
+      showPwGate(hpmImages, function () {
+        hpmImages.innerHTML = "";
+        var imgs2 = d.images && d.images.length ? d.images : [d.image];
+        imgs2.forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          hpmImages.appendChild(img);
+        });
+      });
+      // Always show cover image below the gate
+      var coverImg = document.createElement("img");
+      coverImg.src = d.image; coverImg.alt = d.title;
+      coverImg.className = "hpm-cs-image hpm-pw-cover";
+      hpmImages.appendChild(coverImg);
+    } else {
+      if (d.caseStudyUrl) {
+        var csLabel = document.createElement("p");
+        csLabel.textContent = "Case Study";
+        csLabel.style.cssText = "font-size:26px; font-weight:300; letter-spacing:-0.025em; line-height:1.2; color:#1a1a1a; text-align:center; margin:0 0 14px;";
+        hpmImages.appendChild(csLabel);
+        var sideRow = document.createElement("div");
+        sideRow.style.cssText = "display:flex; gap:14px; align-items:stretch;";
+
+        var previewCard = document.createElement("a");
+        previewCard.href = d.caseStudyUrl;
+        previewCard.style.cssText = "flex:1; min-width:0; display:flex; flex-direction:column; justify-content:space-between; text-decoration:none; color:inherit; border:1px solid rgba(0,0,0,0.1); border-radius:12px; padding:20px; background:#fff; transition:border-color 0.15s, box-shadow 0.15s;";
+        previewCard.addEventListener("click", function(e) { e.stopPropagation(); });
+        previewCard.innerHTML = '<p style="font-size:16px; font-weight:700; line-height:1.4; margin:0 0 16px;">' + (d.shortTitle || d.title) + ' — Case Study</p>' +
+          '<div style="display:flex; flex-direction:column; gap:8px; flex:1;">' +
+            '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.45;"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;flex-shrink:0;display:inline-block;"></span><span>Overview</span></div>' +
+            '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.45;"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;flex-shrink:0;display:inline-block;"></span><span>What I\'ve accomplished</span></div>' +
+            '<div style="display:flex; align-items:center; gap:8px; font-size:13px; opacity:0.85; font-weight:500;"><span style="width:6px;height:6px;border-radius:50%;background:#0050d8;flex-shrink:0;display:inline-block;"></span><span>Project breakdown · 8 modules</span></div>' +
+          '</div>' +
+          '<div style="display:flex; justify-content:flex-end; margin-top:16px;"><span style="font-size:12px; font-weight:600; letter-spacing:0.02em; color:#0050d8;">View full breakdown →</span></div>';
+
+        var imgs = d.images && d.images.length ? d.images : [d.image];
+        var firstImg = document.createElement("img");
+        firstImg.src = imgs[0]; firstImg.alt = d.title;
+        firstImg.style.cssText = "flex:1; min-width:0; object-fit:cover; border-radius:12px; display:block; max-height:220px;";
+        if (d.grayscaleImage) firstImg.style.filter = "grayscale(100%)";
+
+        sideRow.appendChild(previewCard);
+        sideRow.appendChild(firstImg);
+        hpmImages.appendChild(sideRow);
+
+        if (d.pdfPreviewUrl) {
+          var pdfLabel = document.createElement("p");
+          pdfLabel.textContent = "Final Presentation";
+          pdfLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+          hpmImages.appendChild(pdfLabel);
+          renderPdfViewer(hpmImages, d.pdfPreviewUrl);
+        }
+
+        imgs.slice(1).forEach(function (src, i) {
+          var imgLabel = document.createElement("p");
+          imgLabel.textContent = "Project Interface";
+          imgLabel.style.cssText = "font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; opacity:0.4; margin:20px 0 8px;";
+          hpmImages.appendChild(imgLabel);
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          hpmImages.appendChild(img);
+        });
+      } else {
+        var imgs = d.images && d.images.length ? d.images : [d.image];
+        imgs.forEach(function (src) {
+          var img = document.createElement("img");
+          img.src = src; img.alt = d.title; img.className = "hpm-cs-image";
+          if (d.grayscaleImage) img.style.filter = "grayscale(100%)";
+          hpmImages.appendChild(img);
+        });
+      }
+    }
+
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    card.scrollTop = 0;
+    updateNavBtns(id);
+  }
+
+  function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
+
+  function initModalCards() {
+    document.querySelectorAll(".home-proj-card").forEach(function (el) {
+      el.addEventListener("click", function () { openModal(el.dataset.id); });
+    });
+  }
+
+  hpmNavPrev.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var idx = navIds.indexOf(currentId);
+    if (idx > 0) openModal(navIds[idx - 1]);
+  });
+  hpmNavNext.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var idx = navIds.indexOf(currentId);
+    if (idx < navIds.length - 1) openModal(navIds[idx + 1]);
+  });
+
+  modal.addEventListener("click", function (e) {
+    if (!card.contains(e.target) && e.target !== hpmNavPrev && e.target !== hpmNavNext) closeModal();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (!modal.classList.contains("open")) return;
+    if (e.key === "Escape") closeModal();
+    if (e.key === "ArrowLeft") { var i = navIds.indexOf(currentId); if (i > 0) openModal(navIds[i - 1]); }
+    if (e.key === "ArrowRight") { var i = navIds.indexOf(currentId); if (i < navIds.length - 1) openModal(navIds[i + 1]); }
+  });
+
+  document.addEventListener("astro:page-load", initModalCards);
+  initModalCards();
+
+})();
+</script>
+
+<style>
+  .about-page-wrap {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .archive-content {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding: 40px 120px 0;
+  }
+
+  .about-float-img {
+    float: right;
+    width: 170px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: 60% center;
+    margin: 4px 0 20px 28px;
+  }
+  .about-left::after { content: ""; display: table; clear: both; }
+
+  /* ── App Sidebar ── */
+  .app-sidebar {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+    transition: width 0.2s ease;
+    flex-shrink: 0;
+    padding-bottom: 24px;
+  }
+  .app-sidebar.open      { width: 220px; padding-top: 8px; align-items: stretch; }
+  .app-sidebar.collapsed { width: 48px;  padding-top: 8px; align-items: center; }
+
+  .app-sidebar-header {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 16px 6px; flex-shrink: 0;
+  }
+
+  .sidebar-icon-btn {
+    background: none; border: none; cursor: pointer;
+    color: #c0c0c0; padding: 2px;
+    display: flex; align-items: center; transition: color 0.15s;
+  }
+  .sidebar-icon-btn:hover { color: #5a5a5a; }
+
+  /* Profile photo column */
+  .sidebar-photo-wrap {
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 88px 24px 0;
+    background: #fff;
+    gap: 24px;
+  }
+  .sidebar-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover; object-position: 60% center; display: block;
+  }
+  .interests-section {
+    padding-top: 48px; padding-bottom: 48px;
+  }
+  .interests-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 48px;
+  }
+  .interest-card {
+    display: flex; flex-direction: column; gap: 8px;
+    text-decoration: none; color: #3a3a3a;
+  }
+  .interest-img {
+    width: 100%; aspect-ratio: 4/3;
+    object-fit: cover; border-radius: 10px; display: block;
+    transition: opacity 0.15s;
+  }
+  .interest-card:hover .interest-img { opacity: 0.85; }
+  .interest-label { font-size: 13px; font-weight: 700; color: #3a3a3a; }
+
+  .sidebar-divider {
+    height: 1px; background: #f0f0f0;
+    margin: 10px 16px 14px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .sidebar-divider { display: none; }
+
+  .app-nav {
+    display: flex; flex-direction: column;
+    gap: 2px; padding: 0 4px 0 12px; flex: 1;
+  }
+  .app-sidebar.collapsed .app-nav { padding: 0; align-items: center; gap: 4px; }
+
+  .app-nav-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; color: #7a7a7a;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap; width: 100%;
+  }
+  .app-nav-btn:hover { background: rgba(0,0,0,0.04); color: var(--mauve); }
+  .app-sidebar.collapsed .app-nav-btn { padding: 8px; width: auto; }
+
+  .app-nav-icon { width: 15px; height: 15px; flex-shrink: 0; }
+  .app-nav-label { flex: 1; }
+  .app-sidebar.collapsed .app-nav-label { display: none; }
+
+  .sidebar-resume-wrap {
+    margin-top: auto; padding: 0 4px 0 12px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .sidebar-resume-wrap { padding: 0; display: flex; justify-content: center; }
+
+  .sidebar-resume-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; color: #7a7a7a;
+    text-decoration: none; width: 100%;
+    transition: background 0.15s, color 0.15s;
+  }
+  .sidebar-resume-btn:hover { background: rgba(0,0,0,0.04); color: var(--mauve); }
+  .app-sidebar.collapsed .sidebar-resume-btn { padding: 8px; width: auto; }
+
+  /* Flyout */
+  .sidebar-flyout {
+    position: absolute; left: 48px; top: 0; z-index: 50;
+    background: #fff; border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column; min-width: 160px;
+  }
+  .sidebar-flyout.hidden { display: none; }
+
+  .flyout-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 6px 0; text-decoration: none;
+  }
+  .flyout-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #d0d0d0; flex-shrink: 0;
+  }
+  .flyout-label { font-size: 12px; color: #7a7a7a; }
+
+  /* ── Main content ── */
+
+  .archive-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 48px;
+  }
+
+  /* ── Shared site nav ── */
+  .site-nav {
+    display: flex; align-items: center; gap: 4px;
+    padding-bottom: 16px;
+  }
+  .site-nav-link {
+    font-size: 14px; color: #2a2a2a; font-weight: 600; text-decoration: none;
+    padding: 5px 10px; border-radius: 6px;
+    display: flex; align-items: center; gap: 3px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .site-nav-link:hover { background: rgba(0,0,0,0.04); color: #000; }
+  .site-nav-link.active { color: #000; }
+  .site-nav-caret { font-size: 9px; opacity: 0.5; }
+  .site-nav-dropdown { position: relative; }
+  .site-nav-dropdown-menu {
+    display: none;
+    position: absolute; top: calc(100% + 4px); right: 0;
+    background: #fff; border: 1px solid #efefef;
+    border-radius: 10px; padding: 6px; min-width: 140px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 200;
+    flex-direction: column;
+  }
+  .site-nav-dropdown:hover .site-nav-dropdown-menu { display: flex; }
+  .site-nav-dropdown-item {
+    font-size: 12px; color: #7a7a7a; text-decoration: none;
+    padding: 7px 12px; border-radius: 6px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .site-nav-dropdown-item:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+  .archive-date { font-size: 11px; color: #b0b0b0; font-weight: 300; padding-top: 4px; }
+  .archive-identity { text-align: right; }
+  .archive-name {
+    font-size: 28px; font-weight: 600; letter-spacing: -0.02em;
+    color: #1d1d1f; line-height: 1;
+  }
+  .archive-role { font-size: 15px; color: #7a3060; margin-top: 10px; }
+  .archive-socials {
+    display: flex; align-items: center; gap: 6px;
+    justify-content: flex-end; margin-top: 8px;
+  }
+  .social-link { font-size: 13px; color: #7a7a7a; font-weight: 600; text-decoration: none; transition: color 0.15s; }
+  .social-link:hover { color: var(--mauve); }
+  .social-sep { font-size: 13px; color: #c0c0c0; }
+
+  /* Grid */
+  .sections-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    column-gap: 32px; row-gap: 48px;
+    margin-bottom: 80px;
+  }
+  .section-card { display: flex; flex-direction: column; gap: 12px; }
+  .section-card-top { border-top: 1px solid #e8e8e8; padding-top: 12px; }
+  .section-num { font-size: 11px; color: #b0b0b0; font-weight: 300; }
+  .section-img {
+    display: block; aspect-ratio: 4/3;
+    overflow: hidden; border-radius: 12px; background: #f5f5f7;
+  }
+  .section-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .section-card:nth-child(1) .section-img img { object-position: 60% center; }
+  .section-card:nth-child(2) .section-img img { object-position: 35% center; }
+  .section-card:nth-child(3) .section-img { background: #ffffff; }
+  .section-card:nth-child(3) .section-img img { object-fit: contain; object-position: center center; }
+  .section-card:nth-child(5) .section-img { background: #ffffff; }
+  .section-card:nth-child(5) .section-img img { object-fit: cover; object-position: center center; filter: saturate(35%) brightness(1.08); }
+  .section-card:nth-child(6) .section-img img { object-position: center top; transform: scale(1.18); transform-origin: center 20%; }
+  .section-label {
+    font-size: 13px; font-weight: 600; color: #1d1d1f;
+    text-decoration: none; letter-spacing: -0.01em;
+  }
+
+  /* ── About section ── */
+  .about-section {
+    margin-top: 0;
+    padding-top: 48px;
+    padding-bottom: 50px;
+  }
+  .about-layout { display: flex; gap: 56px; align-items: flex-start; }
+  .about-left { flex: 0 0 54%; }
+
+  .about-heading {
+    font-size: 28px; font-weight: 600; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 40px;
+  }
+
+  .about-bio { display: block; margin-bottom: 32px; }
+  .about-bio p { font-size: 13px; color: #3a3a3a; line-height: 2; margin: 0 0 24px 0; }
+  .about-exp-list { margin-bottom: 20px; }
+  .about-resume-btn {
+    display: block; width: fit-content; margin-top: 48px; margin-left: auto; margin-right: auto;
+    font-size: 13px; color: #7a3060; font-weight: 600;
+    text-decoration: none;
+    border: 1px solid #e0e0e0; border-radius: 6px;
+    padding: 7px 14px; transition: border-color 0.15s, color 0.15s;
+  }
+  .about-resume-btn:hover { border-color: #7a3060; }
+
+  .nav-divider {
+    height: 1px; background: #f0f0f0;
+    margin: 6px 8px; flex-shrink: 0;
+  }
+  .app-sidebar.collapsed .nav-divider { margin: 6px 4px; }
+
+  .about-exp-list { margin-top: 48px; }
+  .about-exp-list .exp-row { border-bottom: none; border-top: 1px solid #efefef; }
+  .about-exp-list .exp-row:first-child { border-top: none; }
+
+  .about-right { flex: 1; display: flex; flex-direction: column; }
+  .about-right .skill-category:last-of-type { margin-bottom: 0; }
+  .about-right .about-resume-btn { margin-top: 48px; align-self: flex-start; }
+
+  .about-projects-preview {
+    margin-top: 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .about-projects-wrap {
+    width: 90%;
+    position: relative;
+    display: block;
+    text-decoration: none;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .about-projects-img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #efefef;
+    display: block;
+    transition: box-shadow 0.22s;
+  }
+  .about-projects-wrap:hover .about-projects-img {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+  }
+  .about-projects-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.38);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 6px;
+  }
+  .about-projects-wrap:hover .about-projects-overlay { opacity: 1; }
+  .about-projects-overlay-text {
+    color: #fff;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.04em;
+  }
+  .skills-heading {
+    font-size: 28px; font-weight: 600; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 40px;
+  }
+  .skill-category { margin-bottom: 52px; }
+  .skill-cat-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #7a3060; margin: 0 0 5px;
+  }
+  .skill-cat-desc { font-size: 12px; color: #8a8a8a; line-height: 1.5; margin: 0 0 10px; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-pill {
+    font-size: 11px; padding: 4px 11px;
+    border: 1px solid #d8d8d8; border-radius: 4px;
+    color: #3a3a3a; background: #fafafa; white-space: nowrap;
+  }
+
+  /* ── Experience section ── */
+  .exp-section {
+    padding-top: 32px;
+    padding-bottom: 24px;
+  }
+  .exp-section .exp-row:last-child { border-bottom: none; }
+  .home-exp-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .home-exp-header .exp-heading { margin: 0; }
+  .home-exp-controls { display: flex; gap: 6px; margin-bottom: -4px; }
+  .home-tl-btn {
+    display: flex; align-items: center; gap: 7px;
+    padding: 6px 14px;
+    border: 1px solid #e8e8e8; border-radius: 20px;
+    background: none; cursor: pointer;
+    font-size: 11.5px; color: #a0a0a0;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .home-tl-btn:hover { color: #1d1d1f; border-color: #ccc; }
+  .home-tl-btn.is-active { color: #1d1d1f; border-color: #1d1d1f; background: #f5f5f7; }
+  .home-exp-list { padding: 20px 40px 0; }
+  .home-exp-list .exp-row:last-child { border-bottom: none; }
+  .inter-section-divider {
+    border: none;
+    border-top: 1px solid #e8e8e8;
+    margin: 0;
+  }
+  .exp-heading {
+    font-size: 28px; font-weight: 600; color: #1d1d1f;
+    letter-spacing: -0.02em; line-height: 1; margin: 0 0 24px;
+  }
+  .exp-row {
+    display: flex; align-items: flex-start; gap: 18px;
+    padding: 18px 0;
+    border-bottom: 1px solid #efefef;
+  }
+  .exp-logo {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 50%; overflow: hidden;
+    border: 1px solid #efefef; background: #f5f5f7;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .exp-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .exp-content { flex: 1; min-width: 0; }
+  .exp-title { font-size: 13.5px; font-weight: 500; color: #1d1d1f; margin: 0 0 2px; }
+  .exp-company-name { font-size: 11.5px; color: #a0a0a0; margin: 0 0 4px; }
+  .exp-desc { font-size: 12px; color: #8a8a8a; line-height: 1.5; margin: 0; }
+  .exp-date {
+    flex-shrink: 0; font-size: 12px; color: #8a8a8a;
+    white-space: nowrap; padding-top: 2px;
+  }
+
+  /* ── Mobile bottom nav ── */
+  .mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 60px;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid #f0f0f0;
+    z-index: 200;
+    align-items: stretch;
+  }
+  .mobile-nav-btn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; text-decoration: none;
+    color: #b0b0b0; transition: color 0.15s;
+  }
+  .mobile-nav-btn.mobile-nav-active { color: #1d1d1f; }
+  .mobile-nav-icon { width: 20px; height: 20px; }
+  .mobile-nav-label { font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* ── Projects section ── */
+  .home-proj-header {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 20px;
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .home-proj-header .exp-heading { margin-bottom: 72px; text-align: left; }
+  .view-all-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 14px;
+    border: 1px solid #e8e8e8; border-radius: 20px;
+    font-size: 11.5px; color: #a0a0a0;
+    font-family: inherit; text-decoration: none;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .view-all-link:hover { color: #1d1d1f; border-color: #ccc; }
+  .home-proj-section {
+    padding-top: 80px;
+    padding-bottom: 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .home-proj-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 8px;
+  }
+  .home-proj-card {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .home-proj-card:hover .home-proj-img-wrap img {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  }
+  .home-proj-img-wrap {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f5f5f7;
+  }
+  .home-proj-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: box-shadow 0.2s;
+  }
+  .home-proj-title {
+    font-size: 13px; font-weight: 600; color: #1d1d1f;
+    margin: 0; letter-spacing: -0.01em;
+  }
+  .home-proj-venue {
+    font-size: 10.5px; color: #a0a0a0; font-style: italic; margin: 0;
+  }
+  .home-proj-desc {
+    font-size: 11.5px; color: #6a6a6a; line-height: 1.5; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .home-proj-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .home-proj-tag {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 3px 8px; border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 3px; color: #6b7280;
+  }
+
+  /* ── Projects modal ── */
+  .home-modal {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.38);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    align-items: center; justify-content: center;
+  }
+  .home-modal.open { display: flex; }
+  .hpm-nav-btn {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.9); border: 1px solid #e8e8e8;
+    border-radius: 50%; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: #1d1d1f; cursor: pointer;
+    z-index: 1001; opacity: 0.6; transition: opacity 0.15s;
+    flex-shrink: 0; padding: 0;
+  }
+  .hpm-nav-btn:hover { opacity: 1; }
+  #hpm-nav-prev { left: 20px; }
+  #hpm-nav-next { right: 20px; }
+  .home-modal-card {
+    position: relative;
+    width: min(1000px, 96vw); max-height: 88vh;
+    background: #fff; border-radius: 18px;
+    overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.22);
+    animation: modal-in 0.2s ease-out;
+    padding: 36px 96px 60px;
+    display: flex; flex-direction: column; gap: 0;
+    scrollbar-width: none;
+  }
+  .home-modal-card::-webkit-scrollbar { display: none; }
+  @keyframes modal-in {
+    from { opacity: 0; transform: scale(0.96) translateY(12px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+  }
+  .hpm-topbar {
+    display: flex; align-items: center; justify-content: flex-end;
+    margin-bottom: 52px; flex-shrink: 0; margin-right: -24px;
+  }
+  .hpm-visit-btn {
+    display: inline-flex; align-items: center;
+    padding: 8px 18px; border-radius: 100px;
+    background: #fff; color: #1d1d1f;
+    border: 1px solid #e8e8e8;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.01em;
+    text-decoration: none; transition: all 0.15s; flex-shrink: 0;
+  }
+  .hpm-visit-btn:hover { border-color: #ccc; color: #1d1d1f; }
+  .hpm-cs-header { margin-bottom: 22px; }
+  .hpm-logo {
+    height: 36px; width: auto;
+    object-fit: contain; object-position: left center;
+    display: block; margin-bottom: 20px;
+  }
+  .hpm-cs-title {
+    font-size: 26px; font-weight: 300; color: #1a1a1a;
+    letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 8px;
+  }
+  .hpm-cs-title-sep { color: #b0b0b0; font-weight: 300; }
+  .hpm-cs-title-year { color: #9a9a9a; font-weight: 300; }
+  .hpm-cs-venue {
+    font-size: 11.5px; color: #a0a0a0; font-style: italic;
+    letter-spacing: 0.01em; margin-bottom: 14px;
+  }
+  .hpm-cs-desc { font-size: 13.5px; color: #444; line-height: 1.7; margin: 0; }
+  .hpm-cs-stack { display: flex; gap: 0; margin-bottom: 44px; }
+  .hpm-cs-images {
+    background: #fff; border-radius: 12px;
+    padding: 52px; display: flex; flex-direction: column;
+  }
+
+  /* ── Footer ── */
+  /* ── Footer ── */
+  .home-footer {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 36px 0 52px;
+    gap: 24px;
+  }
+
+  /* Left: identity */
+  .hf-identity { display: flex; flex-direction: column; gap: 10px; }
+  .hf-name-row { display: flex; align-items: center; gap: 10px; }
+  .hf-name {
+    font-size: 28px; font-weight: 300; letter-spacing: -0.02em;
+    color: #1d1d1f; line-height: 1;
+  }
+  .hf-logo {
+    width: 28px; height: 28px; object-fit: contain;
+    opacity: 0.75;
+  }
+  .hf-copy {
+    font-size: 10.5px; color: #c0c0c0;
+    text-transform: uppercase; letter-spacing: 0.07em;
+  }
+
+  /* Right: contact */
+  .hf-contact { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .hf-tagline {
+    font-size: 13px; color: #7a7a7a; font-weight: 300;
+  }
+  .hf-email {
+    font-size: 15px; font-weight: 500; color: #1d1d1f;
+    text-decoration: none; transition: color 0.15s;
+    letter-spacing: -0.01em;
+  }
+  .hf-email:hover { color: var(--mauve); }
+  .hf-icons {
+    display: flex; align-items: center; gap: 18px;
+    margin-top: 6px;
+  }
+  .hf-icon-link { color: #9a9a9a; text-decoration: none; transition: color 0.15s; }
+  .hf-icon-link:hover { color: var(--mauve); }
+  .hf-icon { width: 19px; height: 19px; display: block; }
+
+  /* ── Mobile responsive overrides ── */
+  @media (max-width: 768px) {
+    .app-sidebar    { display: none !important; }
+    .sidebar-flyout { display: none !important; }
+    .mobile-nav     { display: flex; }
+
+    .archive-main   { padding-bottom: 72px; }
+    .archive-content { padding: 28px 20px 0; }
+
+    /* Header stacks */
+    .archive-header { flex-direction: column; gap: 12px; align-items: flex-start; margin-bottom: 32px; }
+    .archive-identity { text-align: left; }
+    .archive-socials  { justify-content: flex-start; }
+    .archive-name  { font-size: 22px; }
+
+    /* 3-col → 2-col grid */
+    .sections-grid { grid-template-columns: repeat(2, 1fr); column-gap: 16px; row-gap: 32px; margin-bottom: 48px; }
+
+    /* About: side-by-side → stack */
+    .about-layout { flex-direction: column; gap: 32px; }
+    .about-left   { flex: none; width: 100%; }
+    .about-right  { flex: none; width: 100%; }
+
+    /* Experience rows: hide date on very small screens */
+    .exp-date { display: none; }
+
+    /* Projects grid → 2×2 grid on mobile */
+    .home-proj-section { margin-left: 0; margin-right: 0; padding-top: 32px; align-items: stretch; }
+    .home-proj-section { padding-top: 32px; }
+    .home-proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      padding: 4px 0 12px;
+      overflow-x: unset;
+    }
+    .home-proj-card {
+      flex: unset;
+    }
+    .home-proj-title { font-size: 11.5px; }
+    .home-proj-desc  { font-size: 10.5px; -webkit-line-clamp: 3; }
+    .home-proj-tag   { font-size: 8px; padding: 2px 6px; }
+
+    /* Modal on mobile */
+    .home-modal-card { max-height: 90vh; width: 92vw; padding: 24px 20px 40px; }
+
+    /* Footer stacks on mobile */
+    .home-footer { flex-direction: column; gap: 28px; }
+    .hf-contact { align-items: flex-start; }
+    .hf-name { font-size: 22px; }
+
+    /* Home exp toggle: hide timeline on mobile, show list */
+    #home-btn-horiz { display: none; }
+    #home-tl-horiz  { display: none !important; }
+    #home-exp-list  { display: block !important; }
+    #home-btn-list  { display: none; }
+  }
+
+  /* ── Scroll spy ── */
+  .scroll-spy-wrap {
+    position: fixed;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    z-index: 100;
+  }
+  .spy-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 4px;
+  }
+  .spy-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #c0c0c0;
+    display: block;
+    transition: background 0.2s;
+  }
+  .spy-toggle:hover .spy-dot { background: #7a3060; }
+  .scroll-spy {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-end;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.25s ease;
+  }
+  .scroll-spy.open {
+    max-height: 200px;
+    opacity: 1;
+  }
+  .spy-item {
+    font-size: 11px;
+    font-weight: 500;
+    color: #c0c0c0;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .spy-item:hover { color: #3a3a3a; }
+  .spy-item.active { color: #7a3060; font-weight: 700; }
+</style>
+
+<style is:global>
+  /* ── Home horizontal timeline ── */
+  .home-tl-horiz { margin: 0 -32px; }
+  .home-tl-h-scroll {
+    overflow-x: auto; overflow-y: visible;
+    scrollbar-width: none;
+    padding: 24px 0 16px;
+  }
+  .home-tl-h-scroll::-webkit-scrollbar { display: none; }
+  .home-tl-h-track {
+    display: flex; align-items: flex-start;
+    position: relative; min-width: max-content;
+    padding: 0 32px;
+  }
+  .home-tl-h-line {
+    position: absolute; top: 264px; left: 0; right: 0;
+    height: 1px; background: #d4c8dc; pointer-events: none; z-index: 0;
+  }
+  .home-tl-h-entry {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0; width: 190px; padding: 0 14px;
+    position: relative; z-index: 1;
+  }
+  .home-tl-h-upper {
+    height: 250px; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+  }
+  .home-tl-h-lower {
+    height: 250px; width: 100%;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    overflow: hidden;
+  }
+  .home-tl-h-node {
+    position: relative; width: 28px; height: 28px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; z-index: 2;
+  }
+  .home-tl-ring {
+    position: absolute; inset: 0;
+    border: 1px dashed #b89ec0; border-radius: 50%;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .home-tl-dot {
+    width: 7px; height: 7px; background: #9e7fa4; border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  .home-tl-h-entry:hover .home-tl-ring { opacity: 1; }
+  .home-tl-h-entry:hover .home-tl-dot  { transform: scale(1.3); }
+  .h-above .home-tl-h-upper::after {
+    content: ''; display: block; width: 1px; height: 12px;
+    background: #d4c8dc; margin: 0 auto; opacity: 0; transition: opacity 0.25s;
+  }
+  .home-tl-h-entry.h-above:hover .home-tl-h-upper::after { opacity: 1; }
+  .h-below .home-tl-h-lower::before {
+    content: ''; display: block; width: 1px; height: 12px;
+    background: #d4c8dc; margin: 0 auto; opacity: 0; transition: opacity 0.25s;
+  }
+  .home-tl-h-entry.h-below:hover .home-tl-h-lower::before { opacity: 1; }
+  .home-tl-h-card {
+    width: 100%; white-space: normal; word-wrap: break-word; text-align: center;
+  }
+  .home-tl-logo-wrap {
+    width: 38px; height: 38px; border-radius: 50%;
+    overflow: hidden; border: 1px solid #efefef; background: #f5f5f7;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px; flex-shrink: 0;
+  }
+  .home-tl-logo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .home-tl-date {
+    font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+    color: #b8a8a2; margin: 0 0 8px;
+  }
+  .home-tl-title { font-size: 13px; font-weight: 500; color: #1d1d1f; margin: 0 0 2px; line-height: 1.3; }
+  .home-tl-company { font-size: 11px; color: #aaa; margin: 0 0 8px; }
+  .home-tl-desc {
+    font-size: 10.5px; color: #8a8a8a; line-height: 1.55; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hpm-cs-col { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+  .hpm-cs-col-label { font-size: 14px; color: #aaaaaa; }
+  .hpm-cs-col-item { font-size: 15px; color: #2e2e2e; margin: 0; }
+  .hpm-cs-image { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .hpm-cs-image + .hpm-cs-image { margin-top: 14px; }
+
+  /* Password gate */
+  .hpm-pw-gate { display: flex; flex-direction: column; }
+  .hpm-pw-icon-wrap {
+    width: 52px; height: 52px; background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+  }
+  .hpm-pw-lock { width: 22px; height: 22px; color: #555; }
+  .hpm-pw-title { font-size: 22px; font-weight: 400; color: #1a1a1a; letter-spacing: -0.01em; margin: 0 0 8px; }
+  .hpm-pw-sub { font-size: 15px; color: #9a9a9a; margin: 0 0 28px; }
+  .hpm-pw-email { color: #1a1a1a; font-weight: 700; text-decoration: none; }
+  .hpm-pw-email:hover { text-decoration: underline; }
+  .hpm-pw-form {
+    display: flex; align-items: center; background: #fff;
+    border-radius: 100px; padding: 10px 14px 10px 20px;
+    width: fit-content; min-width: 260px; gap: 8px;
+  }
+  .hpm-pw-input { border: none; outline: none; background: none; font-size: 15px; color: #555; flex: 1; font-family: inherit; }
+  .hpm-pw-input::placeholder { color: #bbb; }
+  .hpm-pw-btn { border: none; background: none; cursor: pointer; font-size: 18px; color: #888; padding: 0; line-height: 1; }
+  .hpm-pw-btn:hover { color: #1a1a1a; }
+  .hpm-pw-error { font-size: 12px; color: #d94f4f; margin-top: 10px; min-height: 16px; }
+  .hpm-pw-cover { margin-top: 32px; }
+
+</style>
+
+<script is:inline>
+(function () {
+  function initHomeExpToggle() {
+    var btnHoriz = document.getElementById("home-btn-horiz");
+    var btnList  = document.getElementById("home-btn-list");
+    var tlHoriz  = document.getElementById("home-tl-horiz");
+    var expList  = document.getElementById("home-exp-list");
+    if (!btnHoriz || !btnList) return;
+
+    function showHoriz() {
+      tlHoriz.style.display = "block";
+      expList.style.display = "none";
+      btnHoriz.classList.add("is-active");
+      btnList.classList.remove("is-active");
+      localStorage.setItem("home-exp-view", "horiz");
+    }
+    function showList() {
+      tlHoriz.style.display = "none";
+      expList.style.display = "block";
+      btnHoriz.classList.remove("is-active");
+      btnList.classList.add("is-active");
+      localStorage.setItem("home-exp-view", "list");
+    }
+
+    btnHoriz.addEventListener("click", showHoriz);
+    btnList.addEventListener("click", showList);
+
+    if (localStorage.getItem("home-exp-view") === "list") showList();
+  }
+
+  document.addEventListener("astro:page-load", initHomeExpToggle);
+  initHomeExpToggle();
+})();
+
+// Scroll spy
+(function () {
+  const sections = ["about", "experience", "projects", "interests"];
+  const spyItems = document.querySelectorAll(".spy-item");
+  const scroller = document.querySelector(".archive-content");
+  const nav = document.getElementById("scroll-spy");
+  const toggle = document.getElementById("spy-toggle");
+  if (!scroller || !nav || !toggle) return;
+
+  const wrap = document.querySelector(".scroll-spy-wrap");
+  if (wrap) {
+    wrap.addEventListener("mouseenter", () => nav.classList.add("open"));
+    wrap.addEventListener("mouseleave", () => nav.classList.remove("open"));
+  }
+
+  function update() {
+    let active = sections[0];
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 160) active = id;
+    }
+    spyItems.forEach((item) => {
+      item.classList.toggle("active", item.dataset.section === active);
+    });
+  }
+
+  scroller.addEventListener("scroll", update, { passive: true });
+  update();
+})();
+</script>

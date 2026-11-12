@@ -223,6 +223,12 @@ export const workPageContent: WorkPageContent = {
   description: `I've worked across AI research labs, startups, and enterprise teams — building systems that range from analog hardware benchmarks to production RAG pipelines.`,
   items: [
     {
+      title: "Teaching Assistant — AI in Context",
+      company: { name: "Columbia University", image: "/columbia.webp", url: "https://www.columbia.edu" },
+      date: "Sep – Dec 2026",
+      description: "Teaching Assistant for AI in Context at Columbia University.",
+    },
+    {
       title: "AI Model Trainer — Codex",
       company: { name: "OpenAI", image: "/openai.webp", url: "https://openai.com" },
       date: "Jun 2026 - Present",

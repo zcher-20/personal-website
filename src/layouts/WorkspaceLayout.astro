@@ -10,19 +10,17 @@ interface Props {
 const { seo } = Astro.props;
 
 const APP_NAV = [
-  { label: "Home",                 icon: "mdi:home-outline",          href: "/" },
-  { label: "About",                icon: "mdi:account-outline",       href: "/#about" },
-  { label: "Highlighted Projects", icon: "mdi:star-outline",          href: "/#projects" },
-  { label: "Experience",           icon: "mdi:briefcase-outline",     href: "/#experience" },
-  { label: "Projects",             icon: "mdi:folder-open-outline",   href: "/projects" },
-  { label: "Mind",                 icon: "mdi:brain",                 href: "/mind" },
-  { label: "Bookshelf",            icon: "mdi:book-open-outline",     href: "/books" },
-  { label: "Photography",          icon: "mdi:camera-outline",        href: "/photography" },
+  { label: "Home",         icon: "mdi:home-outline",          href: "/" },
+  { label: "About",        icon: "mdi:account-outline",       href: "/about" },
+  { label: "Experience",   icon: "mdi:briefcase-outline",     href: "/about#experience" },
+  { label: "Mind",         icon: "mdi:brain",                 href: "/mind" },
+  { label: "Bookshelf",    icon: "mdi:book-open-outline",     href: "/books" },
+  { label: "Photography",  icon: "mdi:camera-outline",        href: "/photography" },
 ];
 
 const MOBILE_NAV = [
   { label: "Home",        icon: "mdi:home-outline",        href: "/" },
-  { label: "Projects",    icon: "mdi:folder-open-outline", href: "/projects" },
+  { label: "About",       icon: "mdi:account-outline",     href: "/about" },
   { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
   { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
   { label: "Photos",      icon: "mdi:camera-outline",      href: "/photography" },
@@ -36,53 +34,32 @@ const path = Astro.url.pathname;
   <slot name="head" slot="head" />
   <div class="ws-shell">
 
-    <!-- App sidebar -->
-    <aside id="app-sidebar" class="app-sidebar open">
-
-      <div class="app-sidebar-header">
-        <button id="sidebar-toggle-btn" class="sidebar-icon-btn" title="Toggle sidebar">
-          <Icon name="mdi:chevron-left" id="toggle-icon-close" class="w-[15px] h-[15px]" />
-          <Icon name="mdi:chevron-right" id="toggle-icon-open" class="w-[15px] h-[15px] hidden" />
-        </button>
+    <!-- Shared page header -->
+    <div class="ws-page-header">
+      <div class="ws-page-header-left">
+        <span class="ws-page-name">Zayneb Cherif</span>
+        <span class="ws-page-sub">Creative Technologist · AI & Design Engineer</span>
+        <div class="ws-page-socials">
+          <a href="https://www.linkedin.com/in/zayneb-cherif-830294251/" target="_blank" rel="noopener noreferrer" class="ws-page-social-link">LinkedIn ↗</a>
+          <span class="ws-page-social-sep">·</span>
+          <a href="https://github.com/zcher-20" target="_blank" rel="noopener noreferrer" class="ws-page-social-link">GitHub ↗</a>
+          <span class="ws-page-social-sep">·</span>
+          <a href="mailto:zaynebcheriff@gmail.com" class="ws-page-social-link">Gmail ↗</a>
+        </div>
       </div>
-
-      <!-- Profile photo -->
-      <div class="sidebar-photo-wrap">
-        <img src="/headshot.jpg" alt="Zayneb Cherif" class="sidebar-photo" draggable="false" />
-      </div>
-
-      <nav class="app-nav">
-        {APP_NAV.map((item) => (
-          <>
-            <a
-              href={item.href}
-              class={`app-nav-btn ${path === item.href || path.startsWith(item.href + "/") ? "active" : ""}`}
-            >
-              <Icon name={item.icon} class="app-nav-icon" />
-              <span class="app-nav-label">{item.label}</span>
-            </a>
-            {item.label === "Experience" && <div class="nav-divider" />}
-          </>
-        ))}
+      <nav class="site-nav">
+        <a href="/" class={`site-nav-link ${path === "/" ? "active" : ""}`}>Home</a>
+        <div class="site-nav-dropdown">
+          <a href="/about" class={`site-nav-link ${path.startsWith("/about") ? "active" : ""}`}>About Me <span class="site-nav-caret">▾</span></a>
+          <div class="site-nav-dropdown-menu">
+            <a href="/about#experience" class="site-nav-dropdown-item">Experience</a>
+            <a href="/about#about" class="site-nav-dropdown-item">Skills</a>
+            <a href="/about#projects" class="site-nav-dropdown-item">Selected Work</a>
+            <a href="/about#interests" class="site-nav-dropdown-item">Interests</a>
+          </div>
+        </div>
+        <a href="/resume" class={`site-nav-link ${path === "/resume" ? "active" : ""}`}>Resume</a>
       </nav>
-
-      <div class="sidebar-resume-wrap">
-        <a href="/resume" class="sidebar-resume-btn">
-          <Icon name="mdi:download-outline" class="app-nav-icon" />
-          <span class="app-nav-label">Resume</span>
-        </a>
-      </div>
-
-    </aside>
-
-    <!-- Hover flyout (collapsed state) -->
-    <div id="sidebar-flyout" class="sidebar-flyout hidden">
-      {APP_NAV.map((item) => (
-        <a href={item.href} class={`flyout-item group ${path === item.href ? "flyout-active" : ""}`}>
-          <span class="flyout-dot"></span>
-          <span class="flyout-label">{item.label}</span>
-        </a>
-      ))}
     </div>
 
     <!-- Page content -->
@@ -193,8 +170,55 @@ const path = Astro.url.pathname;
 </script>
 
 <style>
+  /* ── Shared page header ── */
+  .ws-page-header {
+    flex-shrink: 0;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 52px 40px 6px;
+  }
+  .ws-page-header-left { display: flex; flex-direction: column; gap: 8px; }
+  .ws-page-name {
+    font-size: 28px; font-weight: 600; letter-spacing: -0.02em;
+    color: #1d1d1f; line-height: 1;
+  }
+  .ws-page-sub { font-size: 15px; color: #7a3060; line-height: 1; }
+  .ws-page-socials { display: flex; align-items: center; gap: 6px; }
+  .ws-page-social-link {
+    font-size: 12px; color: #7a7a7a; font-weight: 600;
+    text-decoration: none; transition: color 0.15s;
+  }
+  .ws-page-social-link:hover { color: #1d1d1f; }
+  .ws-page-social-sep { font-size: 12px; color: #c0c0c0; }
+
+  /* ── Shared site nav ── */
+  .site-nav { display: flex; align-items: center; gap: 4px; padding-bottom: 4px; align-self: center; }
+  .site-nav-link {
+    font-size: 14px; color: #2a2a2a; font-weight: 600; text-decoration: none;
+    padding: 5px 10px; border-radius: 6px;
+    display: flex; align-items: center; gap: 3px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .site-nav-link:hover { background: rgba(0,0,0,0.04); color: #000; }
+  .site-nav-link.active { color: #000; }
+  .site-nav-caret { font-size: 9px; opacity: 0.5; }
+  .site-nav-dropdown { position: relative; }
+  .site-nav-dropdown-menu {
+    display: none; position: absolute; top: calc(100% + 4px); right: 0;
+    background: #fff; border: 1px solid #efefef; border-radius: 10px;
+    padding: 6px; min-width: 140px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08); z-index: 200; flex-direction: column;
+  }
+  .site-nav-dropdown:hover .site-nav-dropdown-menu { display: flex; }
+  .site-nav-dropdown-item {
+    font-size: 12px; color: #7a7a7a; text-decoration: none;
+    padding: 7px 12px; border-radius: 6px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .site-nav-dropdown-item:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+
   .ws-shell {
     display: flex;
+    flex-direction: column;
     height: 100vh;
     overflow: hidden;
     background: #fff;
