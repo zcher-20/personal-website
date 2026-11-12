@@ -969,7 +969,7 @@ const SKILLS = [
     flex: 1;
     min-width: 0;
     overflow-y: auto;
-    padding: 40px 120px 0;
+    padding: 10px 120px 0;
   }
 
   .about-float-img {
@@ -1854,15 +1854,19 @@ const SKILLS = [
     // ── 3. Section entrances ──
     const sections = document.querySelectorAll(".about-section, .exp-section, #projects, #interests");
     sections.forEach(section => {
-      gsap.from(section, {
-        opacity: 0, y: 24, duration: 0.6, ease: "power2.out",
-        scrollTrigger: {
-          trigger: section,
-          scroller,
-          start: "top 85%",
-          once: true,
+      gsap.fromTo(section,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
+          clearProps: "opacity,transform",
+          scrollTrigger: {
+            trigger: section,
+            scroller,
+            start: "top 95%",
+            once: true,
+          }
         }
-      });
+      );
     });
 
     // ── 4. Headshot parallax ──
@@ -1884,16 +1888,20 @@ const SKILLS = [
     // ── 6. Experience row scroll-in ──
     const expRows = document.querySelectorAll("#experience .exp-row");
     expRows.forEach((row, i) => {
-      gsap.from(row, {
-        opacity: 0, x: -16, duration: 0.5, ease: "power2.out",
+      gsap.fromTo(row,
+        { opacity: 0, x: -16 },
+        {
+        opacity: 1, x: 0, duration: 0.5, ease: "power2.out",
+        clearProps: "opacity,transform",
         scrollTrigger: {
           trigger: row,
           scroller,
-          start: "top 88%",
+          start: "top 95%",
           once: true,
         },
         delay: i * 0.05,
-      });
+      }
+      );
     });
 
     // ── 8. Interest card hover tilt ──
@@ -1911,8 +1919,123 @@ const SKILLS = [
         gsap.to(el, { rotationX: 0, rotationY: 0, duration: 0.5, ease: "elastic.out(1, 0.5)", overwrite: "auto" });
       });
     });
+
+    // ── 1. Skill pill pop-in ──
+    const skillPills = document.querySelectorAll(".skill-pill");
+    if (skillPills.length) {
+      gsap.fromTo(skillPills,
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, stagger: 0.02, ease: "back.out(1.7)", clearProps: "transform,opacity",
+          scrollTrigger: { trigger: ".about-right", scroller, start: "top 90%", once: true }
+        }
+      );
+    }
+
+    // ── 2. Bio paragraph reveal ──
+    const bioParagraphs = document.querySelectorAll(".about-bio p");
+    if (bioParagraphs.length) {
+      gsap.fromTo(bioParagraphs,
+        { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+        { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.6, stagger: 0.15, ease: "power2.out", clearProps: "clip-path,opacity",
+          scrollTrigger: { trigger: ".about-bio", scroller, start: "top 90%", once: true }
+        }
+      );
+    }
+
+    // ── 3. Headshot zoom on scroll ──
+    const floatImg = document.querySelector(".about-float-img");
+    if (floatImg) {
+      gsap.fromTo(floatImg,
+        { scale: 1.05 },
+        { scale: 1, ease: "none",
+          scrollTrigger: { trigger: ".about-section", scroller, start: "top 80%", end: "top 20%", scrub: 1 }
+        }
+      );
+    }
+
+    // ── 4. Experience logo fade-slide ──
+    document.querySelectorAll("#experience .exp-logo").forEach(logo => {
+      gsap.fromTo(logo,
+        { x: -12, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, ease: "power2.out", clearProps: "transform,opacity",
+          scrollTrigger: { trigger: logo, scroller, start: "top 95%", once: true }
+        }
+      );
+    });
+
+    // ── 5. Section title underline draw ──
+    document.querySelectorAll(".exp-heading, .about-heading, .skills-heading").forEach(heading => {
+      const el = heading as HTMLElement;
+      el.style.position = "relative";
+      const line = document.createElement("span");
+      line.style.cssText = "position:absolute;bottom:-4px;left:0;height:2px;width:100%;background:#7a3060;transform:scaleX(0);transform-origin:left;display:block;";
+      el.appendChild(line);
+      gsap.to(line, { scaleX: 1, duration: 0.6, ease: "power2.out", clearProps: "transform",
+        scrollTrigger: { trigger: el, scroller, start: "top 90%", once: true }
+      });
+    });
+
+    // ── 6. Interest card image parallax ──
+    document.querySelectorAll(".interest-card").forEach(card => {
+      const img = card.querySelector(".interest-img");
+      if (img) {
+        gsap.fromTo(img,
+          { y: 10 },
+          { y: -10, ease: "none",
+            scrollTrigger: { trigger: card, scroller, start: "top bottom", end: "bottom top", scrub: 1 }
+          }
+        );
+      }
+    });
+
+    // ── 7. Selected work card stagger ──
+    const projCards = document.querySelectorAll(".home-proj-card");
+    if (projCards.length) {
+      gsap.fromTo(projCards,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power2.out", clearProps: "transform,opacity",
+          scrollTrigger: { trigger: "#projects", scroller, start: "top 85%", once: true }
+        }
+      );
+    }
+
+    // ── 8. About/Skills column stagger ──
+    const aboutLeft = document.querySelector(".about-left");
+    const aboutRight = document.querySelector(".about-right");
+    if (aboutLeft) {
+      gsap.fromTo(aboutLeft,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.6, ease: "power2.out", clearProps: "transform,opacity",
+          scrollTrigger: { trigger: ".about-section", scroller, start: "top 90%", once: true }
+        }
+      );
+    }
+    if (aboutRight) {
+      gsap.fromTo(aboutRight,
+        { opacity: 0, x: 20 },
+        { opacity: 1, x: 0, duration: 0.6, ease: "power2.out", clearProps: "transform,opacity",
+          scrollTrigger: { trigger: ".about-section", scroller, start: "top 90%", once: true }
+        }
+      );
+    }
+
+    // ── 9. Resume button pulse ──
+    const resumeBtn = document.querySelector(".about-resume-btn");
+    if (resumeBtn) {
+      gsap.to(resumeBtn, { keyframes: [{ scale: 1.03, duration: 0.2 }, { scale: 1, duration: 0.2 }], ease: "power1.inOut", delay: 1.2 });
+    }
+
+    // ── 10. Scroll progress bar ──
+    const archiveContent = document.querySelector(".archive-content");
+    if (archiveContent) {
+      const bar = document.createElement("div");
+      bar.style.cssText = "position:sticky;top:0;left:0;height:2px;background:#7a3060;width:0%;z-index:50;margin-bottom:-2px;";
+      archiveContent.insertBefore(bar, archiveContent.firstChild);
+      gsap.to(bar, { width: "100%", ease: "none",
+        scrollTrigger: { trigger: archiveContent, scroller, start: "top top", end: "bottom bottom", scrub: true }
+      });
+    }
   }
 
   document.addEventListener("astro:page-load", initAboutAnimations);
-  initAboutAnimations();
 </script>

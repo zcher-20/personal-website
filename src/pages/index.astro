@@ -1034,17 +1034,19 @@ const ITEMS = [
     const axisH = document.querySelector(".axis-h") as HTMLElement;
     const axisV = document.querySelector(".axis-v") as HTMLElement;
     if (axisH) {
-      const finalW = axisH.style.width || getComputedStyle(axisH).width;
-      gsap.from(axisH, { width: 0, duration: 0.8, ease: "power2.inOut" });
+      gsap.fromTo(axisH, { scaleX: 0, transformOrigin: "center" }, { scaleX: 1, duration: 0.8, ease: "power2.inOut", clearProps: "transform" });
     }
     if (axisV) {
-      gsap.from(axisV, { height: 0, duration: 0.8, delay: 0.2, ease: "power2.inOut" });
+      gsap.fromTo(axisV, { scaleY: 0, transformOrigin: "center" }, { scaleY: 1, duration: 0.8, delay: 0.2, ease: "power2.inOut", clearProps: "transform" });
     }
 
     // ── 1. Canvas card float-in ──
     const items = document.querySelectorAll(".item");
     if (items.length) {
-      gsap.from(items, { opacity: 0, y: 20, duration: 0.4, stagger: 0.08, ease: "power2.out", delay: 0.3 });
+      gsap.fromTo(items,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, stagger: 0.08, ease: "power2.out", delay: 0.3, clearProps: "opacity,transform" }
+      );
     }
 
     // ── 9. Magnetic hover on project cards ──
@@ -1069,7 +1071,6 @@ const ITEMS = [
   }
 
   document.addEventListener("astro:page-load", initCanvasAnimations);
-  initCanvasAnimations();
 </script>
 
 <style is:global>

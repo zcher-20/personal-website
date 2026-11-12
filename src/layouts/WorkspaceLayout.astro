@@ -94,8 +94,6 @@ const path = Astro.url.pathname;
 
   </div>
 
-  <!-- Page wipe overlay -->
-  <div class="page-wipe" id="page-wipe"></div>
 
   <!-- Mobile bottom nav -->
   <nav class="mobile-nav">
@@ -117,6 +115,9 @@ const path = Astro.url.pathname;
   gsap.registerPlugin(TextPlugin);
 
   function initLayoutAnimations() {
+    const isResume = window.location.pathname === "/resume";
+    if (isResume) return;
+
     // ── 2. Name word reveal ──
     const nameEl = document.querySelector<HTMLElement>(".ws-page-name");
     if (nameEl && !nameEl.dataset.animated) {
@@ -134,33 +135,12 @@ const path = Astro.url.pathname;
       subEl.dataset.typed = "1";
       const original = (subEl.textContent ?? "").trim();
       subEl.textContent = "";
-      gsap.to(subEl, { duration: 1.5, text: original, ease: "none", delay: 0.4 });
+      gsap.to(subEl, { duration: 0.8, text: original, ease: "none", delay: 0.1 });
     }
 
-    // ── 7. Page transition wipe ──
-    const wipe = document.getElementById("page-wipe");
-    if (wipe) {
-      document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach(link => {
-        const href = link.getAttribute("href");
-        if (!href || href.startsWith("#") || href.startsWith("mailto") || href.startsWith("http") || link.target === "_blank") return;
-        link.addEventListener("click", function(e) {
-          e.preventDefault();
-          const dest = href;
-          gsap.fromTo(wipe, { scaleX: 0, transformOrigin: "left" }, {
-            scaleX: 1, duration: 0.35, ease: "power2.inOut",
-            onComplete: () => { window.location.href = dest; }
-          });
-        }, { once: true });
-      });
-      // Wipe out on page load
-      gsap.fromTo(wipe, { scaleX: 1, transformOrigin: "right" }, {
-        scaleX: 0, duration: 0.35, ease: "power2.inOut", delay: 0.05
-      });
-    }
   }
 
   document.addEventListener("astro:page-load", initLayoutAnimations);
-  initLayoutAnimations();
 </script>
 
 <script is:inline>
@@ -483,12 +463,4 @@ const path = Astro.url.pathname;
     .wsf-name { font-size: 16px; }
   }
 
-  /* ── Page wipe ── */
-  .page-wipe {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #7a3060;
-    transform: scaleX(0);
-    transform-origin: left;
-    pointer-events: none;
-  }
 </style>
