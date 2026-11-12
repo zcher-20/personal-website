@@ -94,6 +94,9 @@ const path = Astro.url.pathname;
 
   </div>
 
+  <!-- Page wipe overlay -->
+  <div class="page-wipe" id="page-wipe"></div>
+
   <!-- Mobile bottom nav -->
   <nav class="mobile-nav">
     {MOBILE_NAV.map((item) => (
@@ -107,6 +110,58 @@ const path = Astro.url.pathname;
     ))}
   </nav>
 </Layout>
+
+<script>
+  import gsap from "gsap";
+  import { TextPlugin } from "gsap/TextPlugin";
+  gsap.registerPlugin(TextPlugin);
+
+  function initLayoutAnimations() {
+    // ── 2. Name word reveal ──
+    const nameEl = document.querySelector<HTMLElement>(".ws-page-name");
+    if (nameEl && !nameEl.dataset.animated) {
+      nameEl.dataset.animated = "1";
+      const words = (nameEl.textContent ?? "").trim().split(" ");
+      nameEl.innerHTML = words.map(w => `<span class="name-word" style="display:inline-block;overflow:hidden;vertical-align:bottom"><span style="display:inline-block">${w}</span></span>`).join(" ");
+      gsap.from(".ws-page-name .name-word span", {
+        y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: "power2.out", delay: 0.1
+      });
+    }
+
+    // ── 10. Subtitle typewriter ──
+    const subEl = document.querySelector<HTMLElement>(".ws-page-sub");
+    if (subEl && !subEl.dataset.typed) {
+      subEl.dataset.typed = "1";
+      const original = (subEl.textContent ?? "").trim();
+      subEl.textContent = "";
+      gsap.to(subEl, { duration: 1.5, text: original, ease: "none", delay: 0.4 });
+    }
+
+    // ── 7. Page transition wipe ──
+    const wipe = document.getElementById("page-wipe");
+    if (wipe) {
+      document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach(link => {
+        const href = link.getAttribute("href");
+        if (!href || href.startsWith("#") || href.startsWith("mailto") || href.startsWith("http") || link.target === "_blank") return;
+        link.addEventListener("click", function(e) {
+          e.preventDefault();
+          const dest = href;
+          gsap.fromTo(wipe, { scaleX: 0, transformOrigin: "left" }, {
+            scaleX: 1, duration: 0.35, ease: "power2.inOut",
+            onComplete: () => { window.location.href = dest; }
+          });
+        }, { once: true });
+      });
+      // Wipe out on page load
+      gsap.fromTo(wipe, { scaleX: 1, transformOrigin: "right" }, {
+        scaleX: 0, duration: 0.35, ease: "power2.inOut", delay: 0.05
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", initLayoutAnimations);
+  initLayoutAnimations();
+</script>
 
 <script is:inline>
   (function () {
@@ -426,5 +481,14 @@ const path = Astro.url.pathname;
     .ws-footer { flex-direction: column; gap: 20px; padding: 28px 20px 32px; }
     .wsf-contact { align-items: flex-start; }
     .wsf-name { font-size: 16px; }
+  }
+
+  /* ── Page wipe ── */
+  .page-wipe {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #7a3060;
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
   }
 </style>

@@ -1841,3 +1841,78 @@ const SKILLS = [
   update();
 })();
 </script>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initAboutAnimations() {
+    const scroller = document.querySelector(".archive-content");
+    if (!scroller) return;
+
+    // ── 3. Section entrances ──
+    const sections = document.querySelectorAll(".about-section, .exp-section, #projects, #interests");
+    sections.forEach(section => {
+      gsap.from(section, {
+        opacity: 0, y: 24, duration: 0.6, ease: "power2.out",
+        scrollTrigger: {
+          trigger: section,
+          scroller,
+          start: "top 85%",
+          once: true,
+        }
+      });
+    });
+
+    // ── 4. Headshot parallax ──
+    const img = document.querySelector(".about-float-img");
+    if (img) {
+      gsap.to(img, {
+        y: -40,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".about-section",
+          scroller,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        }
+      });
+    }
+
+    // ── 6. Experience row scroll-in ──
+    const expRows = document.querySelectorAll("#experience .exp-row");
+    expRows.forEach((row, i) => {
+      gsap.from(row, {
+        opacity: 0, x: -16, duration: 0.5, ease: "power2.out",
+        scrollTrigger: {
+          trigger: row,
+          scroller,
+          start: "top 88%",
+          once: true,
+        },
+        delay: i * 0.05,
+      });
+    });
+
+    // ── 8. Interest card hover tilt ──
+    document.querySelectorAll(".interest-card").forEach(card => {
+      const el = card as HTMLElement;
+      el.style.transformStyle = "preserve-3d";
+      el.style.perspective = "600px";
+      el.addEventListener("mousemove", (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        gsap.to(el, { rotationY: x * 16, rotationX: -y * 16, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+      });
+      el.addEventListener("mouseleave", () => {
+        gsap.to(el, { rotationX: 0, rotationY: 0, duration: 0.5, ease: "elastic.out(1, 0.5)", overwrite: "auto" });
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initAboutAnimations);
+  initAboutAnimations();
+</script>
