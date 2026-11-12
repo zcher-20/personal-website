@@ -297,7 +297,8 @@ const PROJECTS = [
     ],
     links: [],
   },
-].filter((item: any) => ["aimc", "pfizer", "healthcare-ai", "ricer"].includes(item.id));
+].filter((item: any) => ["pfizer", "healthcare-ai", "places-archive", "aimc"].includes(item.id))
+ .sort((a: any, b: any) => ["pfizer", "healthcare-ai", "places-archive", "aimc"].indexOf(a.id) - ["pfizer", "healthcare-ai", "places-archive", "aimc"].indexOf(b.id));
 
 const SKILLS = [
   {
@@ -343,7 +344,7 @@ const SKILLS = [
               <h2 class="about-heading">About</h2>
               <img src="/headshot.jpg" alt="Zayneb Cherif" class="about-float-img" draggable="false" />
               <div class="about-bio">
-                <p>I'm Zayneb Cherif, a B.A. Computer Science &amp; Design student at Columbia University (Class of 2028). I transferred from NYU in 2025. I'm currently studying at the University of Oxford studying AI &amp; Machine Learning as a part of their summer program. I work at the intersection of AI research, full-stack engineering, and human-centered design.</p>
+                <p>I'm Zayneb Cherif, a B.A. Computer Science &amp; Design student at Columbia University (Class of 2028). I transferred from NYU in 2025. I'm currently a Teaching Assistant for AI in Context at Columbia. I work at the intersection of AI research, full-stack engineering, and human-centered design.</p>
                 <p>My research spans analog in-memory computing, RAG systems, agentic AI pipelines, and quantum-classical ML — with publications at ICLR 2024 (Notable) and IJCAI 2024. On the engineering side I build everything from FastAPI backends and LLM applications to multimodal AI civic platforms.</p>
                 <p>I speak English, Arabic, Italian, and Spanish, and I'm driven by the belief that the best technology is both rigorous and humane.</p>
                 <p>Recognized as a IEEE WISC Scholar 2026, at ICLR 2024, IBM/IEEE AICS 2023, Best Research Award at the University of Sharjah, Genius Olympiad Finalist, and WESEF Finalist.</p>
@@ -1276,7 +1277,7 @@ const SKILLS = [
 
   /* ── Experience section ── */
   .exp-section {
-    padding-top: 32px;
+    padding-top: 20px;
     padding-bottom: 24px;
   }
   .exp-section .exp-row:last-child { border-bottom: none; }
@@ -1301,7 +1302,7 @@ const SKILLS = [
   .inter-section-divider {
     border: none;
     border-top: 1px solid #e8e8e8;
-    margin: 0;
+    margin: -16px 0 0;
   }
   .exp-heading {
     font-size: 28px; font-weight: 600; color: #1d1d1f;

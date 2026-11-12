@@ -405,11 +405,6 @@ const ITEMS = [
     ))}
 
   <!-- View toggle (bottom-right of canvas) -->
-  <div class="view-toggle" id="view-toggle">
-    <button class="vt-btn active" data-view="graph">Graph</button>
-    <button class="vt-btn" data-view="list">List</button>
-  </div>
-
   </div><!-- end canvas -->
 
   <!-- Mobile card list (hidden on desktop) -->
@@ -492,6 +487,11 @@ const ITEMS = [
       </div>
       <button class="cs-nav-btn" id="cs-nav-next"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1L7 6.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
+
+  <div class="view-toggle" id="view-toggle">
+    <button class="vt-btn active" data-view="graph">Graph</button>
+    <button class="vt-btn" data-view="list">List</button>
+  </div>
 
   <div class="proj-footer"></div>
   </div><!-- end proj-shell -->
@@ -718,15 +718,13 @@ const ITEMS = [
       toggleBtns.forEach(function (b) {
         b.classList.toggle("active", b.dataset.view === v);
       });
-      localStorage.setItem(VIEW_KEY, v);
     }
 
     toggleBtns.forEach(function (btn) {
       btn.addEventListener("click", function () { setView(btn.dataset.view); });
     });
 
-    var savedView = localStorage.getItem(VIEW_KEY) || "graph";
-    setView(savedView);
+    setView("graph");
 
     // ── Modal ─────────────────────────────────────────────────────────────
     var modal    = document.getElementById("proj-modal");
@@ -1042,7 +1040,7 @@ const ITEMS = [
   .ws-main.list-mode .proj-shell { height: auto !important; flex-shrink: 1 !important; }
   /* List view needs scrolling — toggled by JS on ws-main */
   .ws-main.list-mode { overflow-y: auto !important; }
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     .ws-main { overflow-y: auto !important; }
   }
 
@@ -1140,7 +1138,7 @@ const ITEMS = [
   /* ── View toggle ── */
   .proj-header-left { display: flex; flex-direction: column; gap: 8px; }
   .view-toggle {
-    position: absolute; bottom: 24px; right: 24px; z-index: 100;
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
     display: flex; align-items: center; gap: 2px;
     background: #f2f2f2; border-radius: 8px; padding: 3px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -1193,7 +1191,9 @@ const ITEMS = [
   .proj-shell {
     display: flex;
     flex-direction: column;
-    height: 114vh;
+    height: 100%;
+    min-height: calc(100vh - 120px);
+    min-width: 800px;
     font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     background: #fff;
@@ -1263,6 +1263,7 @@ const ITEMS = [
   /* ── Canvas fills remaining height ─────────────────────────────────────── */
   .canvas {
     flex: 1;
+    min-width: 800px;
     position: relative;
     background-color: #ffffff;
     overflow: hidden;
@@ -1490,7 +1491,7 @@ const ITEMS = [
   /* ── Mobile project list ── */
   .mobile-proj-list { display: none; }
 
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     .canvas           { display: none; }
     .proj-footer      { display: none; }
     .proj-shell       { height: auto; }
