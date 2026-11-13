@@ -369,7 +369,7 @@ const ITEMS = [
   <script id="items-data" type="application/json" set:html={JSON.stringify(ITEMS)} />
   <script is:inline>
     document.body.classList.add("home-gradient");
-    if (window.innerWidth <= 768) { window.location.replace("/about"); }
+    if (window.innerWidth <= 768 && !document.referrer.includes(window.location.hostname)) { window.location.replace("/about"); }
   </script>
 
   <div class="proj-shell">
