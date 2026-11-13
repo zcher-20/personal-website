@@ -128,9 +128,6 @@ const FAVORITES = [
   { id:"f09", title:"Devotions",                              author:"Mary Oliver",            isbn:"9780399563263", spineW:30, spineH:230,
     year:"2017", publisher:"Penguin Press",        format:"Hardcover", pages:"432 pages",
     desc:"A definitive collection spanning more than fifty years of Oliver's poetry — luminous, mindful writing about the natural world and the art of paying attention." },
-  { id:"f05", title:"A Room of One's Own",                     author:"Virginia Woolf",         isbn:"9780156787338", spineW:14, spineH:198,
-    year:"1929", publisher:"Hogarth Press",        format:"Paperback", pages:"112 pages",
-    desc:"Woolf argues that a woman must have financial independence and a private space if she is to write fiction. A landmark essay of feminist literary criticism." },
   { id:"f06", title:"The Miracle of Mindfulness",             author:"Thich Nhat Hanh",        isbn:"9780807012390", spineW:16, spineH:200,
     year:"1975", publisher:"Beacon Press",         format:"Paperback", pages:"140 pages",
     desc:"A gentle, eloquent introduction to the practice of meditation and mindfulness, cherished by generations of readers for its clarity and quiet wisdom." },
@@ -146,6 +143,9 @@ const FAVORITES = [
   { id:"f19", title:"Beloved",                                author:"Toni Morrison",          isbn:"9781400033416", spineW:24, spineH:222,
     year:"1987", publisher:"Knopf",                format:"Paperback", pages:"324 pages",
     desc:"Sethe escaped slavery to Ohio but is still haunted — literally — by a ghost. Morrison's unflinching look into the abyss of slavery, winner of the Pulitzer Prize." },
+  { id:"f05", title:"A Room of One's Own",                     author:"Virginia Woolf",         isbn:"9780156787338", spineW:14, spineH:198,
+    year:"1929", publisher:"Hogarth Press",        format:"Paperback", pages:"112 pages",
+    desc:"Woolf argues that a woman must have financial independence and a private space if she is to write fiction. A landmark essay of feminist literary criticism." },
 { id:"f22", title:"The Devil Finds Work",                   author:"James Baldwin",          isbn:"9780385334112", cover:"https://books.google.com/books/content?vid=ISBN9780385334112&printsec=frontcover&img=1&zoom=1", spineW:16, spineH:204,
     year:"1976", publisher:"Dial Press",           format:"Paperback", pages:"160 pages",
     desc:"Baldwin's book-length essay on racism in American cinema — our loves, hates, and fears reflected in film, from In the Heat of the Night to The Exorcist." },
@@ -373,7 +373,7 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
   .bs-page {
     font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
-    background: #fff;
+    background: transparent;
   }
 
   /* ── Hero ── */
@@ -393,17 +393,23 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
   }
   .bs-title {
     font-size: 28px;
-    font-weight: 300;
+    font-weight: 600;
     color: #1d1d1f;
     letter-spacing: -0.02em;
     line-height: 1;
     margin: 0;
   }
 
+  .bs-subtitle {
+    font-size: 14px; font-weight: 700; color: #3d3d3d;
+    margin: 6px 0 0; letter-spacing: -0.01em;
+  }
+
   /* ── Shelf area: vertically centers the shelf with lots of white space ── */
   .shelf-area {
     display: flex;
     align-items: center;
+    justify-content: center;
     min-height: 44vh;
     overflow-x: auto;
     overflow-y: visible;
@@ -429,7 +435,6 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
     position: relative;
     display: flex;
     align-items: flex-end;
-    overflow: hidden;
     flex-shrink: 0;
     cursor: pointer;
     /* width transitions from spineW → PANEL_W */
@@ -441,9 +446,14 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
     position: relative;
     flex-shrink: 0;
     overflow: hidden;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.18), -1px 0 4px rgba(0,0,0,0.08);
     transition:
       width 430ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      opacity 200ms ease;
+      opacity 200ms ease,
+      box-shadow 0.2s ease;
+  }
+  .spine:hover {
+    box-shadow: 4px 8px 20px rgba(0,0,0,0.25), -1px 0 6px rgba(0,0,0,0.1);
   }
 
   .book.selected .spine {
@@ -495,6 +505,7 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
     height: 100%;
     width: auto;
     display: block;
+    box-shadow: 4px 6px 20px rgba(0,0,0,0.22), 1px 2px 6px rgba(0,0,0,0.12);
   }
 
   /* Info panel */
@@ -539,7 +550,6 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
 
   .ml {
     font-size: 7px;
-    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #c0c0c0;
     font-weight: 400;
@@ -557,6 +567,8 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
     padding: 56px 52px 0;
     align-items: flex-start;
     justify-content: center;
+    max-width: 1100px;
+    margin: 0 auto;
   }
 
   .bs-map-col { flex: 0 0 600px; }
@@ -564,39 +576,40 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
 
   .bs-list-title {
     font-size: 28px;
-    font-weight: 300;
+    font-weight: 600;
     color: #1d1d1f;
     letter-spacing: -0.02em;
     line-height: 1;
+    text-align: center;
     margin: 0 0 56px;
     text-align: center;
   }
   .bs-list-sub {
     font-size: 13px;
-    color: #aaa;
+    color: #555;
     margin: 14px 0 0;
     text-align: center;
   }
 
   .bs-label {
     font-size: 10px; letter-spacing: 0.10em; text-transform: uppercase;
-    color: #b0b0b0; margin: 0 0 14px;
+    color: #666; margin: 0 0 14px;
   }
 
   .bs-map {
     width: 100%; aspect-ratio: 2/1;
-    background: #fff; overflow: hidden;
+    background: transparent; overflow: hidden;
   }
 
-  .bs-note { font-size: 10px; color: #ccc; margin: 8px 0 0; }
+  .bs-note { font-size: 10px; color: #777; margin: 8px 0 0; }
 
   .bs-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
   .bs-li { display: flex; align-items: baseline; font-size: 12px; flex-wrap: wrap; }
-  .bl-country { color: #9a9a9a; min-width: 108px; flex-shrink: 0; }
-  .bl-sep { color: #ddd; margin: 0 8px; }
+  .bl-country { color: #555; min-width: 108px; flex-shrink: 0; }
+  .bl-sep { color: #aaa; margin: 0 8px; }
   .bl-title { font-weight: 500; color: #1d1d1f; margin-right: 6px; }
-  .bl-author { color: #aaa; font-size: 11px; }
-  .bs-footnote { font-size: 10px; color: #ccc; margin-top: 20px; }
+  .bl-author { color: #666; font-size: 11px; }
+  .bs-footnote { font-size: 10px; color: #777; margin-top: 20px; }
   .bs-shelf-divider { border: none; border-top: 1px solid #e8e8e8; margin: 0 52px; }
 
   @media (max-width: 768px) {
@@ -710,13 +723,13 @@ const FAVORITES_DISPLAY = FAVORITES.map(b => ({ ...b, spineW: SPINE_W }));
       const w = container.clientWidth;
       const h = w * 0.5;
       container.innerHTML = "";
-      const svg = d3.select(container).append("svg").attr("width", w).attr("height", h);
+      const svg = d3.select(container).append("svg").attr("width", w).attr("height", h).style("background", "transparent");
       if (!geoData) { const r = await fetch("/world.geojson"); geoData = await r.json(); }
       const proj = d3.geoNaturalEarth1().fitSize([w, h], geoData);
       const path = d3.geoPath().projection(proj);
       svg.selectAll("path").data(geoData.features).join("path")
         .attr("d", path as any)
-        .attr("fill", (d: any) => bookMap.has(d.properties.name) ? "#B89EA9" : "#e5e7eb")
+        .attr("fill", (d: any) => bookMap.has(d.properties.name) ? "#B89EA9" : "rgba(0,0,0,0.07)")
         .attr("stroke", "none")
         .style("filter", (d: any) => bookMap.has(d.properties.name) ? "drop-shadow(0 0 4px rgba(184,158,169,0.5))" : "none")
         .style("cursor", (d: any) => bookMap.has(d.properties.name) ? "pointer" : "default")

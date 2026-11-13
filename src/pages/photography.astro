@@ -85,13 +85,29 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
   seo={{
     title: "Photography | " + identity.name,
     description: "Photography by Zayneb Cherif.",
-    image: identity.logo,
+    image: "/photography-cover.png",
   }}
 >
   <link rel="preload" href="/fonts/BastligaOne.otf" as="font" type="font/otf" crossorigin slot="head" />
 
+  <!-- ── External photography site ── -->
+  <div class="photo-embed-wrap">
+    <div class="photo-embed-left">
+      <h2 class="photo-embed-title">Photography Portfolio</h2>
+      <a href="https://zaynebcherifphotography.vercel.app/index.html" target="_blank" rel="noopener noreferrer" class="photo-embed-link">Open full site ↗</a>
+    </div>
+    <iframe
+      src="https://zaynebcherifphotography.vercel.app/index.html"
+      class="photo-embed"
+      title="Zayneb Cherif Photography"
+      loading="lazy"
+      allowfullscreen
+    ></iframe>
+  </div>
+
   <!-- ── Category landing ── -->
   <div id="photo-landing" class="photo-landing">
+  <h2 class="gallery-section-title">Selected Frames</h2>
 
     <div class="cat-grid">
       {ALL_CARDS.slice(0, 4).map((card: any) => {
@@ -112,13 +128,6 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
         );
       })}
 
-      <div class="photo-center-label">
-        <span class="pcl-sep">|</span>
-        <span class="pcl-active">Photography (08)</span>
-        <span class="pcl-sep">|</span>
-        <span class="pcl-muted">Travel (08)</span>
-        <span class="pcl-sep">|</span>
-      </div>
 
       {ALL_CARDS.slice(4).map((card: any) => {
         const frontSrc = card.images ? card.images[0] : card.cover;
@@ -168,7 +177,58 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
     <img id="lightbox-img" src="" alt="" />
   </div>
 
+
 </Layout>
+
+<style>
+  .gallery-section-title {
+    font-size: 28px; font-weight: 600; letter-spacing: -0.02em;
+    color: #1d1d1f; margin: 0 0 72px 0; text-align: center;
+  }
+  .photo-embed-wrap {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 40px 60px 80px;
+  }
+  .photo-embed-left {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: 24px;
+  }
+  .photo-embed-title {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .photo-embed-link {
+    font-size: 15px;
+    color: #7a7a7a;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .photo-embed-link:hover { color: #1d1d1f; }
+  .photo-embed {
+    flex: 1;
+    height: 70vh;
+    border: none;
+    border-radius: 12px;
+    display: block;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  @media (max-width: 768px) {
+    .photo-embed-wrap { flex-direction: column; gap: 16px; padding: 48px 20px 40px; }
+    .photo-embed-left { flex: none; text-align: center; align-items: center; }
+    .photo-embed-title { font-size: 24px; white-space: nowrap; }
+    .gallery-section-title { font-size: 24px; }
+    .photo-embed { height: 300px !important; width: 100%; border-radius: 10px; overflow: hidden; flex: none !important; margin-top: 36px; }
+  }
+</style>
 
 <script is:inline>
 (function () {
@@ -238,6 +298,33 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
     if (e.key === "Escape" && lightbox.classList.contains("open")) closeLightbox();
   });
 })();
+
+  // Selected Frames scroll animation
+  var cards = document.querySelectorAll(".cat-card");
+  cards.forEach(function(card) {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(28px)";
+    card.style.transition = "none";
+  });
+  requestAnimationFrame(function() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var siblings = Array.from(el.parentElement.children).filter(function(c) { return c.classList.contains("cat-card"); });
+          var idx = siblings.indexOf(el);
+          setTimeout(function() {
+            el.style.transition = "opacity 0.55s ease, transform 0.55s ease";
+            el.style.opacity = "1";
+            el.style.transform = "translateY(0)";
+          }, idx * 80);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.1 });
+    cards.forEach(function(card) { observer.observe(card); });
+  });
+})();
 </script>
 
 <style>
@@ -249,7 +336,7 @@ const DETAIL_CARDS = ALL_CARDS.filter((c: any) => c.images);
 
   /* ── Landing ── */
   .photo-landing {
-    padding: 72px 48px 80px;
+    padding: 24px 48px 80px;
     min-height: 100%;
   }
   .photo-landing.hidden { display: none; }

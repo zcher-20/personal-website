@@ -15,7 +15,7 @@ const SECTIONS = [
   { num: "001", label: "About",       image: "/about-cover.png",               href: "#about" },
   { num: "002", label: "Projects",    image: "/projects-canvas-cover.png",     href: "/projects" },
   { num: "003", label: "Experience",  image: "/experience-cover.png",          href: "#experience" },
-  { num: "004", label: "Mind",        image: "/ws-network.png",                 href: "/mind" },
+  { num: "004", label: "Mind",        image: "/mind-cover.png",                 href: "/mind" },
   { num: "005", label: "Bookshelf",   image: "/bookshelf-cover.jpg",            href: "/books" },
   { num: "006", label: "Photography", image: "/photography-cover.png",           href: "/photography" },
 ];
@@ -438,7 +438,7 @@ const SKILLS = [
             ))}
           </div>
 
-          <div class="home-tl-horiz" id="home-tl-horiz">
+          <div class="home-tl-horiz" id="home-tl-horiz" style="display:block">
             <div class="home-tl-h-scroll">
               <div class="home-tl-h-track">
                 <div class="home-tl-h-line"></div>
@@ -521,16 +521,18 @@ const SKILLS = [
         <section id="interests" class="interests-section">
           <h2 class="exp-heading">Interests</h2>
           <div class="interests-grid">
-            <a href="/photography" class="interest-card">
-              <img src="/photography-cover-2.png" alt="Photography" class="interest-img" />
-              <span class="interest-label">Photography ↗</span>
-            </a>
             <a href="/mind" class="interest-card">
-              <img src="/ws-network.png" alt="Mind" class="interest-img" />
+              <img src="/mind-cover.png" alt="Mind" class="interest-img" />
               <span class="interest-label">Mind ↗</span>
             </a>
+            <a href="/photography" class="interest-card">
+              <div style="overflow:hidden; border-radius:10px; aspect-ratio:4/3; width:100%;">
+                <img src="/photography-cover.png" alt="Photography" class="interest-img" style="border-radius:0; aspect-ratio:unset; height:100%; transform: scale(1.28); transform-origin: center 50%;" />
+              </div>
+              <span class="interest-label">Photography ↗</span>
+            </a>
             <a href="/books" class="interest-card">
-              <img src="/bookshelf-cover-2.png" alt="Bookshelf" class="interest-img" />
+              <img src="/books-cover.png" alt="Bookshelf" class="interest-img" style="object-position: center center;" />
               <span class="interest-label">Bookshelf ↗</span>
             </a>
           </div>
@@ -1027,9 +1029,11 @@ const SKILLS = [
   .interest-img {
     width: 100%; aspect-ratio: 4/3;
     object-fit: cover; border-radius: 10px; display: block;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+    opacity: 0.84;
   }
-  .interest-card:hover .interest-img { opacity: 0.85; }
+  .interest-card:hover .interest-img { opacity: 1; box-shadow: 0 4px 20px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08); }
   .interest-label { font-size: 13px; font-weight: 700; color: #3a3a3a; }
 
   .sidebar-divider {
@@ -1762,24 +1766,23 @@ const SKILLS = [
       expList.style.display = "none";
       btnHoriz.classList.add("is-active");
       btnList.classList.remove("is-active");
-      localStorage.setItem("home-exp-view", "horiz");
     }
     function showList() {
       tlHoriz.style.display = "none";
       expList.style.display = "block";
       btnHoriz.classList.remove("is-active");
       btnList.classList.add("is-active");
-      localStorage.setItem("home-exp-view", "list");
     }
 
     btnHoriz.addEventListener("click", showHoriz);
     btnList.addEventListener("click", showList);
 
-    if (localStorage.getItem("home-exp-view") === "list") showList();
+    showHoriz();
   }
 
   document.addEventListener("astro:page-load", initHomeExpToggle);
-  initHomeExpToggle();
+  document.addEventListener("DOMContentLoaded", initHomeExpToggle);
+  if (document.readyState !== "loading") initHomeExpToggle();
 })();
 
 // Scroll spy
@@ -1868,36 +1871,6 @@ const SKILLS = [
     animateOnScroll(".home-proj-card", 0.1);
     animateOnScroll(".interest-card", 0.1);
 
-    // ── Timeline: entries fade in as they scroll into the horizontal scroller ──
-    const tlLine = document.querySelector(".home-tl-h-line") as HTMLElement;
-    const tlEntries = Array.from(document.querySelectorAll(".home-tl-h-entry")) as HTMLElement[];
-    const tlScroll = document.querySelector(".home-tl-h-scroll") as HTMLElement;
-    if (tlLine && tlEntries.length && tlScroll) {
-      gsap.set(tlLine, { scaleX: 0, transformOrigin: "left center" });
-      gsap.set(tlEntries, { opacity: 0, y: 20 });
-
-      // First: watch for the whole timeline section to enter the vertical scroller
-      const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            gsap.to(tlLine, { scaleX: 1, duration: 0.8, ease: "power2.inOut" });
-            // Then watch each entry individually as user scrolls horizontally
-            const entryObserver = new IntersectionObserver((items) => {
-              items.forEach(item => {
-                if (item.isIntersecting) {
-                  gsap.to(item.target, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" });
-                  entryObserver.unobserve(item.target);
-                }
-              });
-            }, { root: tlScroll, threshold: 0.2, rootMargin: "0px -40px 0px -40px" });
-            tlEntries.forEach(el => entryObserver.observe(el));
-            sectionObserver.disconnect();
-          }
-        });
-      }, { root: scroller, threshold: 0.1 });
-
-      sectionObserver.observe(tlLine);
-    }
 
     // ── Interest card hover tilt ──
     document.querySelectorAll(".interest-card").forEach(card => {

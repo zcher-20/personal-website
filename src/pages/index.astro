@@ -1236,10 +1236,26 @@ const ITEMS = [
     font-size: 15px; font-weight: 400; color: #1a1a1a;
     letter-spacing: -0.01em; margin-bottom: 20px;
   }
+  .lv-tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid #efefef;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    background: transparent;
+  }
+  .lv-tab {
+    flex: 1; padding: 14px 0; font-size: 13px; font-weight: 500;
+    color: #aaa; background: none; border: none; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .lv-tab.active { color: #1d1d1f; border-bottom-color: #1d1d1f; }
+  .lv-panel { padding-top: 4px; }
   .lv-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
+    padding: 0 16px;
   }
   .lv-card {
     cursor: pointer; display: flex; flex-direction: column; gap: 10px;
@@ -1575,26 +1591,10 @@ const ITEMS = [
     .mobile-proj-list { display: none !important; }
     .list-view        { display: block !important; padding: 32px 0 60px; background: transparent; }
     .lv-tabs          { padding-top: 0; }
-    .lv-grid          { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 16px; }
-    .lv-panel         { padding-top: 4px; }
+    .lv-grid          { grid-template-columns: 1fr 1fr; gap: 14px; }
     .lv-img-wrap      { aspect-ratio: 4/3; border-radius: 10px; }
     .lv-title         { font-size: 13px; font-weight: 600; }
     .lv-venue         { font-size: 11px; }
-    /* Tab bar */
-    .lv-tabs {
-      display: flex; gap: 0;
-      border-bottom: 1px solid #efefef;
-      padding: 0 16px;
-      margin-bottom: 16px;
-      background: transparent;
-    }
-    .lv-tab {
-      flex: 1; padding: 14px 0; font-size: 13px; font-weight: 500;
-      color: #aaa; background: none; border: none; cursor: pointer;
-      border-bottom: 2px solid transparent; margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .lv-tab.active { color: #1d1d1f; border-bottom-color: #1d1d1f; }
     .proj-header      { padding: 20px 16px 10px; }
     .wordmark-title   { font-size: 20px; }
 
