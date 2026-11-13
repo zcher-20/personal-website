@@ -1543,8 +1543,10 @@ const SKILLS = [
     .exp-date { display: none; }
 
     /* Interests: 1-col on mobile */
-    .interests-grid { grid-template-columns: 1fr; gap: 16px; }
+    .interests-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .interest-card:last-child { grid-column: 1 / -1; max-width: 50%; margin: 0 auto; }
 
+    .home-proj-section { padding-top: 24px; padding-bottom: 24px; }
     /* Projects grid on mobile */
     .home-proj-grid {
       display: grid;
@@ -1574,7 +1576,7 @@ const SKILLS = [
     .about-section { padding-bottom: 32px; }
     .inter-section-divider { margin: 0 0 32px; }
     .exp-section { padding-top: 32px; }
-    .interests-section { padding-top: 32px; padding-bottom: 60px; }
+    .interests-section { padding-top: 32px; padding-bottom: 20px; }
 
     /* Skills */
     .skill-pills { gap: 6px; }
