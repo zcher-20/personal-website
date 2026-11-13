@@ -18,15 +18,6 @@ const APP_NAV = [
   { label: "Photography",  icon: "mdi:camera-outline",        href: "/photography" },
 ];
 
-const MOBILE_NAV = [
-  { label: "Home",        icon: "mdi:home-outline",        href: "/" },
-  { label: "About",       icon: "mdi:account-outline",     href: "/about" },
-  { label: "Mind",        icon: "mdi:brain",               href: "/mind" },
-  { label: "Bookshelf",   icon: "mdi:book-open-outline",   href: "/books" },
-  { label: "Photos",      icon: "mdi:camera-outline",      href: "/photography" },
-  { label: "Resume",      icon: "mdi:download-outline",    href: "/resume" },
-];
-
 const path = Astro.url.pathname;
 ---
 
@@ -60,6 +51,11 @@ const path = Astro.url.pathname;
         </div>
         <a href="/resume" class={`site-nav-link ${path === "/resume" ? "active" : ""}`}>Resume</a>
       </nav>
+
+      <!-- Mobile hamburger -->
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu" onclick="(function(){var b=document.getElementById('mobile-menu-btn');var m=document.getElementById('mobile-menu');if(b&&m){b.classList.toggle('open');m.classList.toggle('open');}})()">
+        <span></span><span></span><span></span>
+      </button>
     </div>
 
     <!-- Page content -->
@@ -94,20 +90,42 @@ const path = Astro.url.pathname;
 
   </div>
 
+  <!-- Mobile nav menu (outside ws-shell to avoid overflow clipping) -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/about" class="mobile-menu-link">About Me</a>
+    <a href="/about#experience" class="mobile-menu-sublink">Experience</a>
+    <a href="/about#about" class="mobile-menu-sublink">Skills</a>
+    <a href="/about#projects" class="mobile-menu-sublink">Selected Work</a>
+    <a href="/about#interests" class="mobile-menu-sublink">Interests</a>
+    <a href="/" class="mobile-menu-link">Projects</a>
+    <a href="/resume" class="mobile-menu-link">Resume</a>
+  </div>
 
-  <!-- Mobile bottom nav -->
-  <nav class="mobile-nav">
-    {MOBILE_NAV.map((item) => (
-      <a
-        href={item.href}
-        class={`mobile-nav-btn ${path === item.href || (item.href !== "/" && path.startsWith(item.href)) ? "mobile-nav-active" : ""}`}
-      >
-        <Icon name={item.icon} class="mobile-nav-icon" />
-        <span class="mobile-nav-label">{item.label}</span>
-      </a>
-    ))}
-  </nav>
 </Layout>
+
+<script is:inline>
+  function closeMenu() {
+    var btn = document.getElementById("mobile-menu-btn");
+    var menu = document.getElementById("mobile-menu");
+    if (btn) btn.classList.remove("open");
+    if (menu) menu.classList.remove("open");
+  }
+  function initHamburger() {
+    var btn = document.getElementById("mobile-menu-btn");
+    var menu = document.getElementById("mobile-menu");
+    if (!btn || !menu || btn._hamburgerInit) return;
+    btn._hamburgerInit = true;
+    btn.addEventListener("click", function() {
+      btn.classList.toggle("open");
+      menu.classList.toggle("open");
+    });
+    menu.querySelectorAll("a").forEach(function(a) {
+      a.addEventListener("click", closeMenu);
+    });
+  }
+  document.addEventListener("DOMContentLoaded", initHamburger);
+  document.addEventListener("astro:page-load", initHamburger);
+</script>
 
 <script>
   import gsap from "gsap";
@@ -141,6 +159,7 @@ const path = Astro.url.pathname;
   }
 
   document.addEventListener("astro:page-load", initLayoutAnimations);
+
 </script>
 
 <script is:inline>
@@ -409,58 +428,96 @@ const path = Astro.url.pathname;
   .wsf-icon-link:hover { color: var(--mauve); }
   .wsf-icon { width: 18px; height: 18px; display: block; }
 
-  /* ── Mobile bottom nav ── */
-  .mobile-nav {
+  /* ── Hamburger button (hidden on desktop) ── */
+  .mobile-menu-btn {
     display: none;
-    position: fixed; bottom: 0; left: 0; right: 0;
-    height: 60px;
-    padding-bottom: env(safe-area-inset-bottom);
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid #f0f0f0;
-    z-index: 200;
-    align-items: stretch;
+    flex-direction: column; gap: 5px; justify-content: center;
+    background: none; border: none; cursor: pointer; padding: 8px;
+    position: fixed; top: 20px; right: 16px;
+    z-index: 1001; pointer-events: auto;
   }
-  .mobile-nav-btn {
-    flex: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; text-decoration: none;
-    color: #b0b0b0; transition: color 0.15s;
+  .mobile-menu-btn span {
+    display: block; width: 22px; height: 2px;
+    background: #1d1d1f; border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s;
   }
-  .mobile-nav-btn.mobile-nav-active { color: #1d1d1f; }
-  .mobile-nav-icon { width: 20px; height: 20px; }
-  .mobile-nav-label { font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .mobile-menu-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+  .mobile-menu-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   /* ── Mobile overrides ── */
   @media (max-width: 768px) {
     .app-sidebar    { display: none !important; }
     .sidebar-flyout { display: none !important; }
-    .mobile-nav     { display: flex; }
-    .ws-main        { padding-bottom: 72px; padding-top: 0; }
+    .ws-main        { padding-bottom: 0; padding-top: 0; }
 
-    /* Header: stack name/nav vertically, tighten padding */
+    /* Header: row with hamburger on the right */
     .ws-page-header {
-      flex-direction: column;
+      flex-direction: row;
       align-items: flex-start;
+      justify-content: space-between;
       gap: 12px;
-      padding: 20px 20px 10px;
+      padding: 40px 20px 10px;
     }
     .ws-page-name  { font-size: 20px; }
     .ws-page-sub   { font-size: 13px; }
     .ws-page-socials { gap: 4px; }
     .ws-page-social-link { font-size: 11px; }
 
-    /* Nav: smaller, hide dropdown arrow, fit in one row */
-    .site-nav { gap: 2px; padding-bottom: 0; align-self: auto; }
-    .site-nav-link { font-size: 12px; padding: 4px 8px; }
-    .site-nav-dropdown-menu { display: none !important; }
-    .site-nav-caret { display: none; }
+    /* Hide desktop nav, show hamburger */
+    .site-nav { display: none; }
+    .mobile-menu-btn { display: flex; }
 
     /* Footer stacks on mobile */
-    .ws-footer { flex-direction: column; gap: 20px; padding: 28px 20px 32px; }
-    .wsf-contact { align-items: flex-start; }
+    .ws-footer { flex-direction: row; gap: 16px; padding: 24px 16px 32px; align-items: flex-start; }
+    .wsf-name { font-size: 16px; }
+    .wsf-email { font-size: 12px; }
+    .wsf-tagline { font-size: 11px; }
     .wsf-name { font-size: 16px; }
   }
 
+  /* ── Mobile nav menu ── */
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #f5e0e8 0%, #fff 50%, #f5ede0 100%);
+    padding: 60px 36px 40px;
+    z-index: 999;
+    pointer-events: none;
+    clip-path: circle(0% at calc(100% - 44px) 44px);
+    transition: clip-path 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  .mobile-menu.open {
+    pointer-events: auto;
+    clip-path: circle(150% at calc(100% - 44px) 44px);
+  }
+  .mobile-menu-link {
+    font-size: 28px; font-weight: 600; color: #1d1d1f;
+    text-decoration: none; padding: 10px 0;
+    letter-spacing: -0.02em;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.15s;
+  }
+  .mobile-menu.open .mobile-menu-link {
+    opacity: 1; transform: translateY(0);
+  }
+  .mobile-menu.open .mobile-menu-link:nth-child(1) { transition-delay: 0.18s; }
+  .mobile-menu.open .mobile-menu-link:nth-child(2) { transition-delay: 0.26s; }
+  .mobile-menu.open .mobile-menu-link:nth-child(3) { transition-delay: 0.34s; }
+  .mobile-menu-link:hover { color: #9a4a7a; }
+  .mobile-menu-sublink {
+    font-size: 15px; color: #7a7a7a;
+    text-decoration: none; padding: 4px 0 4px 2px;
+    opacity: 0; transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.15s;
+  }
+  .mobile-menu.open .mobile-menu-sublink { opacity: 1; transform: translateY(0); }
+  .mobile-menu.open .mobile-menu-sublink:nth-child(2) { transition-delay: 0.22s; }
+  .mobile-menu.open .mobile-menu-sublink:nth-child(3) { transition-delay: 0.26s; }
+  .mobile-menu.open .mobile-menu-sublink:nth-child(4) { transition-delay: 0.30s; }
+  .mobile-menu.open .mobile-menu-sublink:nth-child(5) { transition-delay: 0.34s; }
+  .mobile-menu-sublink:hover { color: #3a3a3a; }
 </style>

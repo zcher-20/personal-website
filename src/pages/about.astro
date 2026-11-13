@@ -562,15 +562,6 @@ const SKILLS = [
     <button class="hpm-nav-btn" id="hpm-nav-next"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1L7 6.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </div>
 
-  <!-- Mobile bottom nav -->
-  <nav class="mobile-nav">
-    {MOBILE_NAV.map((item) => (
-      <a href={item.href} class={`mobile-nav-btn${item.href === "/" ? " mobile-nav-active" : ""}`}>
-        <Icon name={item.icon} class="mobile-nav-icon" />
-        <span class="mobile-nav-label">{item.label}</span>
-      </a>
-    ))}
-  </nav>
 
 </Layout>
 
@@ -1329,28 +1320,6 @@ const SKILLS = [
     white-space: nowrap; padding-top: 2px;
   }
 
-  /* ── Mobile bottom nav ── */
-  .mobile-nav {
-    display: none;
-    position: fixed; bottom: 0; left: 0; right: 0;
-    height: 60px;
-    padding-bottom: env(safe-area-inset-bottom);
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid #f0f0f0;
-    z-index: 200;
-    align-items: stretch;
-  }
-  .mobile-nav-btn {
-    flex: 1;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 3px; text-decoration: none;
-    color: #b0b0b0; transition: color 0.15s;
-  }
-  .mobile-nav-btn.mobile-nav-active { color: #1d1d1f; }
-  .mobile-nav-icon { width: 20px; height: 20px; }
-  .mobile-nav-label { font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; }
 
   /* ── Projects section ── */
   .home-proj-header {
@@ -1541,10 +1510,12 @@ const SKILLS = [
   @media (max-width: 768px) {
     .app-sidebar    { display: none !important; }
     .sidebar-flyout { display: none !important; }
-    .mobile-nav     { display: flex; }
 
     /* Content padding */
-    .archive-content { padding: 24px 20px 80px; }
+    .archive-content { padding: 8px 20px 80px; scrollbar-width: none; }
+    .archive-content::-webkit-scrollbar { display: none; }
+    * { scrollbar-width: none; }
+    *::-webkit-scrollbar { display: none; }
     .about-page-wrap { overflow: visible; }
 
     /* About: side-by-side → stack */
@@ -1554,9 +1525,9 @@ const SKILLS = [
 
     /* Float image: clear float, center above bio on mobile */
     .about-float-img {
-      float: none;
-      width: 120px;
-      margin: 0 0 20px 0;
+      float: right;
+      width: 130px;
+      margin: 4px 0 16px 20px;
     }
 
     /* Section headings scale down */
@@ -1593,7 +1564,7 @@ const SKILLS = [
     #home-btn-list  { display: none; }
 
     /* Hide scroll spy on mobile */
-    .scroll-spy-wrap { display: none; }
+    .scroll-spy-wrap { display: none !important; }
 
     /* Sections spacing */
     .about-section { padding-bottom: 32px; }

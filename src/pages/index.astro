@@ -367,7 +367,9 @@ const ITEMS = [
   }}
 >
   <script id="items-data" type="application/json" set:html={JSON.stringify(ITEMS)} />
-  <script is:inline>document.body.classList.add("home-gradient");</script>
+  <script is:inline>
+    document.body.classList.add("home-gradient");
+  </script>
 
   <div class="proj-shell">
 
@@ -435,9 +437,15 @@ const ITEMS = [
 
   <!-- ── List view ── -->
   <div class="list-view" id="proj-list-view">
+    <!-- Tab bar -->
+    <div class="lv-tabs">
+      <button class="lv-tab active" data-tab="work">Projects</button>
+      <button class="lv-tab" data-tab="research">Research</button>
+      <button class="lv-tab" data-tab="design">Design</button>
+    </div>
+    <!-- Tab panels -->
     {(["work", "research", "design"] as const).map((sec) => (
-      <div class="lv-section">
-        <h2 class="lv-section-title">{sec === "work" ? "Work" : sec === "research" ? "Research" : "Design"}</h2>
+      <div class="lv-panel" data-panel={sec} style={sec !== "work" ? "display:none" : ""}>
         <div class="lv-grid">
           {ITEMS.filter((item) => !(item as any).hidden && (item as any).section === sec).map((item) => (
             <div class="lv-card" data-id={item.id}>
@@ -455,6 +463,27 @@ const ITEMS = [
       </div>
     ))}
   </div>
+
+  <script is:inline>
+    function initTabs() {
+      var tabs = document.querySelectorAll(".lv-tab");
+      var panels = document.querySelectorAll(".lv-panel");
+      if (!tabs.length || tabs[0]._tabInit) return;
+      tabs[0]._tabInit = true;
+      tabs.forEach(function(tab) {
+        tab.addEventListener("click", function() {
+          var target = tab.getAttribute("data-tab");
+          tabs.forEach(function(t) { t.classList.remove("active"); });
+          tab.classList.add("active");
+          panels.forEach(function(p) {
+            p.style.display = p.getAttribute("data-panel") === target ? "" : "none";
+          });
+        });
+      });
+    }
+    document.addEventListener("DOMContentLoaded", initTabs);
+    document.addEventListener("astro:page-load", initTabs);
+  </script>
 
     <!-- Detail modal -->
     <div id="proj-modal" class="modal" role="dialog" aria-modal="true">
@@ -1028,6 +1057,7 @@ const ITEMS = [
   }
 
   document.addEventListener("astro:page-load", init);
+
 })();
 </script>
 
@@ -1073,7 +1103,7 @@ const ITEMS = [
   .ws-main.list-mode .proj-shell { height: auto !important; flex-shrink: 1 !important; }
   /* List view needs scrolling — toggled by JS on ws-main */
   .ws-main.list-mode { overflow-y: auto !important; }
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     .ws-main { overflow-y: auto !important; }
   }
 
@@ -1227,8 +1257,8 @@ const ITEMS = [
   .lv-card:hover .lv-img { transform: scale(1.02); }
   .lv-info { display: flex; flex-direction: column; gap: 3px; }
   .lv-title { font-size: 13px; font-weight: 500; color: #1d1d1f; margin: 0; }
-  .lv-venue { font-size: 11px; color: #a0a0a0; font-style: italic; margin: 0; }
-  .lv-year  { font-size: 11px; color: #c0c0c0; margin: 0; }
+  .lv-venue { font-size: 11px; color: #4a4a4a; font-style: italic; margin: 0; }
+  .lv-year  { font-size: 11px; color: #6a6a6a; margin: 0; }
 
   /* ── Shell: header + canvas stacked ────────────────────────────────────── */
   .proj-shell {
@@ -1537,17 +1567,36 @@ const ITEMS = [
   /* ── Mobile project list ── */
   .mobile-proj-list { display: none; }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     .canvas           { display: none; }
     .proj-footer      { display: none; }
-    .proj-shell       { height: auto; }
+    .proj-shell       { height: auto; min-width: 0; }
     .view-toggle      { display: none; }
     .mobile-proj-list { display: none !important; }
-    .list-view        { display: block !important; padding: 24px 20px 80px; }
-    .lv-grid          { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-    .lv-section       { margin-bottom: 40px; }
-    .proj-header      { padding: 28px 20px 12px; }
-    .wordmark-title   { font-size: 22px; }
+    .list-view        { display: block !important; padding: 32px 0 60px; background: transparent; }
+    .lv-tabs          { padding-top: 0; }
+    .lv-grid          { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 16px; }
+    .lv-panel         { padding-top: 4px; }
+    .lv-img-wrap      { aspect-ratio: 4/3; border-radius: 10px; }
+    .lv-title         { font-size: 13px; font-weight: 600; }
+    .lv-venue         { font-size: 11px; }
+    /* Tab bar */
+    .lv-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid #efefef;
+      padding: 0 16px;
+      margin-bottom: 16px;
+      background: transparent;
+    }
+    .lv-tab {
+      flex: 1; padding: 14px 0; font-size: 13px; font-weight: 500;
+      color: #aaa; background: none; border: none; cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .lv-tab.active { color: #1d1d1f; border-bottom-color: #1d1d1f; }
+    .proj-header      { padding: 20px 16px 10px; }
+    .wordmark-title   { font-size: 20px; }
 
     /* ── Modal → full-page slide-in on mobile ── */
     .modal {
