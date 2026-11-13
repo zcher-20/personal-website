@@ -786,6 +786,7 @@ const SKILLS = [
 
   function openModal(id) {
     var d = itemMap[id]; if (!d) return;
+    if (window.innerWidth <= 768) { window.location.href = "/?open=" + id; return; }
     currentId = id;
 
     if (d.logo) {

@@ -1020,6 +1020,7 @@ const ITEMS = [
       updateNavBtns(id);
     }
 
+    window._projOpenModal = openModal;
     function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
 
     csNavPrev.addEventListener("click", function (e) {
@@ -1058,6 +1059,16 @@ const ITEMS = [
   }
 
   document.addEventListener("astro:page-load", init);
+
+  // Auto-open project from ?open= param (e.g. navigating from about page on mobile)
+  document.addEventListener("astro:page-load", function() {
+    var params = new URLSearchParams(window.location.search);
+    var openId = params.get("open");
+    if (openId && window._projOpenModal) {
+      history.replaceState(null, "", window.location.pathname);
+      setTimeout(function() { window._projOpenModal(openId); }, 100);
+    }
+  });
 
 })();
 </script>
@@ -1596,7 +1607,7 @@ const ITEMS = [
     .lv-img-wrap      { aspect-ratio: 4/3; border-radius: 10px; }
     .lv-title         { font-size: 13px; font-weight: 600; }
     .lv-venue         { font-size: 11px; }
-    .proj-header      { padding: 20px 16px 10px; }
+    .proj-header      { padding: 72px 16px 10px; }
     .wordmark-title   { font-size: 20px; }
 
     /* ── Modal → full-page slide-in on mobile ── */

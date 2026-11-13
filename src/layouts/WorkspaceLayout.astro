@@ -441,7 +441,7 @@ const path = Astro.url.pathname;
     display: none;
     flex-direction: column; gap: 5px; justify-content: center;
     background: none; border: none; cursor: pointer; padding: 8px;
-    position: fixed; top: 20px; right: 16px;
+    position: fixed; top: 60px; right: 16px;
     z-index: 1001; pointer-events: auto;
   }
   .mobile-menu-btn span {
@@ -465,7 +465,7 @@ const path = Astro.url.pathname;
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      padding: 40px 20px 10px;
+      padding: 70px 20px 10px;
     }
     .ws-page-name  { font-size: 20px; }
     .ws-page-sub   { font-size: 13px; }
@@ -495,12 +495,12 @@ const path = Astro.url.pathname;
     padding: 60px 36px 40px;
     z-index: 999;
     pointer-events: none;
-    clip-path: circle(0% at calc(100% - 44px) 44px);
+    clip-path: circle(0% at calc(100% - 44px) 84px);
     transition: clip-path 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   }
   .mobile-menu.open {
     pointer-events: auto;
-    clip-path: circle(150% at calc(100% - 44px) 44px);
+    clip-path: circle(150% at calc(100% - 44px) 84px);
   }
   .mobile-menu-link {
     font-size: 28px; font-weight: 600; color: #1d1d1f;
