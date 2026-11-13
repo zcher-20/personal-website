@@ -231,7 +231,7 @@ export const workPageContent: WorkPageContent = {
     {
       title: "AI Model Trainer — Codex",
       company: { name: "OpenAI", image: "/openai.webp", url: "https://openai.com" },
-      date: "Jun 2026 - Present",
+      date: "Jun – Aug 2026",
       description: "Training Codex by crafting targeted prompts and adversarial edge-case sets; providing structured feedback to improve code generation, reasoning, and instruction-following capabilities.",
     },
     {
@@ -244,7 +244,7 @@ export const workPageContent: WorkPageContent = {
     {
       title: "Agentic AI & ML Intern",
       company: { name: "MIT-Incubated Stealth AI Startup", image: "/startup.webp", url: "#" },
-      date: "Jun 2026 - Present",
+      date: "Jun – Aug 2026",
       description: "Building and evaluating production-facing AI agents with prompt engineering, model evaluation, and workflow design. Running large-scale testing of agentic AI systems and identifying optimization opportunities under <a href=\"https://um6pventures.com/\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">UM6P Ventures</a>. Mentored by <a href=\"https://www.linkedin.com/in/omarbenzit\" target=\"_blank\" style=\"text-decoration:underline; text-underline-offset:2px;\">Omar Benzit</a>.",
     },
     {

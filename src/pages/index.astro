@@ -367,6 +367,7 @@ const ITEMS = [
   }}
 >
   <script id="items-data" type="application/json" set:html={JSON.stringify(ITEMS)} />
+  <script is:inline>document.body.classList.add("home-gradient");</script>
 
   <div class="proj-shell">
 
@@ -885,11 +886,15 @@ const ITEMS = [
           });
         } else {
           var imgs = d.images && d.images.length ? d.images : [d.image];
+          var imgRow = document.createElement("div");
+          imgRow.style.cssText = "display:flex; gap:10px; align-items:flex-start;";
           imgs.forEach(function (src) {
             var img = document.createElement("img");
             img.src = src; img.alt = d.title; img.className = "cs-image";
-            csImages.appendChild(img);
+            img.style.cssText = "flex:1; min-width:0; width:0;";
+            imgRow.appendChild(img);
           });
+          csImages.appendChild(imgRow);
         }
       }
 
@@ -1049,25 +1054,6 @@ const ITEMS = [
       );
     }
 
-    // ── 9. Magnetic hover on project cards ──
-    items.forEach(item => {
-      const el = item as HTMLElement;
-      el.addEventListener("mousemove", (e: MouseEvent) => {
-        const rect = el.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = e.clientX - cx;
-        const dy = e.clientY - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 80) {
-          const pull = (80 - dist) / 80;
-          gsap.to(el, { x: dx * pull * 0.15, y: dy * pull * 0.15, duration: 0.3, ease: "power2.out", overwrite: "auto" });
-        }
-      });
-      el.addEventListener("mouseleave", () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)", overwrite: "auto" });
-      });
-    });
   }
 
   document.addEventListener("astro:page-load", initCanvasAnimations);
@@ -1123,7 +1109,6 @@ const ITEMS = [
     width: 100%; height: auto; border-radius: 8px;
     object-fit: cover; display: block;
   }
-  .cs-image + .cs-image { margin-top: 14px; }
 
   /* ── Password gate ── */
   .cs-pw-gate { display: flex; flex-direction: column; }
@@ -1177,6 +1162,17 @@ const ITEMS = [
   .cs-also-meta { font-size: 14px; color: #1a1a1a; margin: 0; }
   .cs-also-dot { color: #c0c0c0; }
   .cs-also-yr  { color: #b0b0b0; font-weight: 400; }
+
+  /* ── Full-page gradient ── */
+  body.home-gradient {
+    background: linear-gradient(135deg, #f5e0e8 0%, #fff 40%, #fff 60%, #f5ede0 100%);
+    min-height: 100vh;
+  }
+  body.home-gradient .ws-page-header,
+  body.home-gradient .ws-shell,
+  body.home-gradient .ws-main {
+    background: transparent !important;
+  }
 </style>
 
 <style>
@@ -1243,7 +1239,7 @@ const ITEMS = [
     min-width: 800px;
     font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
-    background: #fff;
+    background: transparent;
   }
 
   /* ── Static header ──────────────────────────────────────────────────────── */
@@ -1312,7 +1308,7 @@ const ITEMS = [
     flex: 1;
     min-width: 800px;
     position: relative;
-    background-color: #ffffff;
+    background: transparent;
     overflow: hidden;
   }
 
@@ -1378,15 +1374,18 @@ const ITEMS = [
     display: block;
     border-radius: 2px;
     pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
     transition: box-shadow 0.2s;
   }
   .item:hover .item-img {
-    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1);
+    transform: scale(1.04);
+    transition: box-shadow 0.2s, transform 0.2s;
   }
 
   .item-label {
     font-size: 10.5px;
-    color: #7a3060;
+    color: #1d1d1f;
     text-align: center;
     line-height: 1.4;
     pointer-events: none;
@@ -1480,14 +1479,14 @@ const ITEMS = [
   }
 
   .cs-title {
-    font-size: 26px; font-weight: 300; color: #1a1a1a;
+    font-size: 26px; font-weight: 600; color: #1a1a1a;
     letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 8px;
   }
   .cs-title-sep { color: #b0b0b0; font-weight: 300; }
   .cs-title-year { color: #9a9a9a; font-weight: 300; }
 
   .cs-venue {
-    font-size: 11.5px; color: #a0a0a0; font-style: italic;
+    font-size: 13px; color: #1a1a1a; font-style: italic;
     letter-spacing: 0.01em; margin-bottom: 14px;
   }
   .cs-desc {
