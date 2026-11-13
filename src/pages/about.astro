@@ -957,9 +957,16 @@ const SKILLS = [
     document.body.style.overflow = "hidden";
     card.scrollTop = 0;
     updateNavBtns(id);
+    var hambtn = document.getElementById("mobile-menu-btn");
+    if (hambtn) hambtn.style.display = "none";
   }
 
-  function closeModal() { modal.classList.remove("open"); document.body.style.overflow = ""; }
+  function closeModal() {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    var hambtn = document.getElementById("mobile-menu-btn");
+    if (hambtn) hambtn.style.display = "";
+  }
 
   function initModalCards() {
     document.querySelectorAll(".home-proj-card").forEach(function (el) {
